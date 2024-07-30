@@ -18,19 +18,20 @@ let numQuestions = 5; // Default value
 let selectedQuestions = [];
 const votes = {};
 const playerScores = {}; // For tracking player scores
+let readyForNextQuestion = {}; // Track readiness for next question
 
-app.use(express.static(join(__dirname, 'public')));
+app.use(express.static(join(__dirname)));
 
 app.get('/', (req, res) => {
-  res.sendFile(join(__dirname, 'public', 'index.html'));
+  res.sendFile(join(__dirname,'index.html'));
 });
 
 app.get('/client.html', (req, res) => {
-  res.sendFile(join(__dirname, 'public', 'client.html'));
+  res.sendFile(join(__dirname,'client.html'));
 });
 
 app.get('/game.html', (req, res) => {
-  res.sendFile(join(__dirname, 'public', 'game.html'));
+  res.sendFile(join(__dirname,'game.html'));
 });
 
 // Carica le domande dal file JSON all'avvio del server
@@ -72,6 +73,7 @@ io.on('connection', (socket) => {
       players.push(data.playerName);
       votes[data.playerName] = 0;
       playerScores[data.playerName] = 0; // Initialize player scores
+      readyForNextQuestion[data.playerName] = false; // Initialize readiness
       io.emit('addNewPlayer', data.playerName);
     } else {
       console.log('A client tried to join a non-existing lobby');
@@ -93,31 +95,64 @@ io.on('connection', (socket) => {
     console.log('Ho ricevuto il voto ', data);
     if (votes.hasOwnProperty(data.vote)) {
       votes[data.vote] += 1;
-    } else {
-      console.log(`Player ${data.vote} not found`);
     }
-
     numOfPlayers++;
     if (numOfPlayers === players.length) {
       numOfPlayers = 0;
-      calculateScores();
-      io.emit('showResults', { votes, players }); // Invia i risultati ai client
+      const resultMessage = calculateScores();
+      io.emit('showResults', { resultMessage, players }); // Invia il risultato corrente ai client
     }
   });
+
+  socket.on('readyForNextQuestion', (playerName) => {
+    readyForNextQuestion[playerName] = true;
+
+    if (Object.values(readyForNextQuestion).every(value => value === true)) {
+      if (currentQuestionIndex + 1 < numQuestions) {
+        currentQuestionIndex++;
+        sendQuestion();
+        resetReadyForNextQuestion(); // Reset readiness for the next round
+      } else {
+        io.emit('gameOver');
+        console.log('Game Over: no more questions.');
+        console.log('Risultati finali:');
+        players.forEach(player => {
+          console.log(`${player}: ${playerScores[player]} punti`);
+        });
+        io.emit('finalResults', playerScores); // Invia la classifica finale
+      }
+    }
+  });
+
+  function resetReadyForNextQuestion() {
+    players.forEach(player => {
+      readyForNextQuestion[player] = false;
+    });
+  }
+
+  function sendQuestion() {
+    const question = selectedQuestions[currentQuestionIndex];
+    io.emit('sendQuestion', { question, players });
+  }
 
   function calculateScores() {
     // Trova il giocatore con il maggior numero di voti
     const maxVotes = Math.max(...Object.values(votes));
     const winners = Object.keys(votes).filter(player => votes[player] === maxVotes);
 
-    // Aggiorna i punteggi dei vincitori
-    winners.forEach(winner => playerScores[winner] += 1);
+    let resultMessage;
+    if (winners.length > 1) {
+      resultMessage = 'Pareggio! Nessun punto assegnato';
+    } else {
+      const winner = winners[0];
+      playerScores[winner] += 1; // Aggiorna il punteggio del vincitore
+      resultMessage = `+ 1 punto a chi ha scelto ${winner}`;
+    }
 
-    // Crea un messaggio di risultato
-    const resultMessage = winners.length > 1 ? 'Pareggio!' : `+ 1 punto a chi ha scelto ${winners[0]}`;
-    
-    // Invia il messaggio di risultato ai client
-    io.emit('resultMessage', resultMessage);
+    // Resetta i voti per la prossima domanda
+    Object.keys(votes).forEach(player => votes[player] = 0);
+
+    return resultMessage;
   }
 
   socket.on('nextQuestion', () => {
@@ -131,6 +166,7 @@ io.on('connection', (socket) => {
       players.forEach(player => {
         console.log(`${player}: ${playerScores[player]} punti`);
       });
+      io.emit('finalResults', playerScores); // Invia la classifica finale
     }
   });
 
