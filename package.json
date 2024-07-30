@@ -1,4 +1,8 @@
 {
+  "name": "party_game",
+  "version": "0.1.0",
+  "main": "src/server.js",
+  "type": "module",
   "dependencies": {
     "express": "^4.19.2",
     "socket.io": "^4.7.5"

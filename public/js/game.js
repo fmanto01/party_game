@@ -1,5 +1,16 @@
 document.addEventListener('DOMContentLoaded', function () {
     const socket = io();
+
+    // Get the current URL
+    const url = new URL(window.location.href);
+
+    // Create a URLSearchParams object
+    const params = new URLSearchParams(url.search);
+
+    // Extract the values
+    const lobbyCode = params.get('lobbyCode');
+    // const playerName = params.get('name');
+
     socket.emit('ready');
     const timerElement = document.getElementById('timer');
     const timerContainer = document.getElementById('timerContainer');
@@ -27,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (timeRemaining <= 0) {
                 clearInterval(countdown);
                 if (!clicked) {
-                    socket.emit('vote', { voter: nameValue, vote: '' });
+                    socket.emit('vote', { lobbyCode: lobbyCode, voter: nameValue, vote: '' });
                 }
             }
         }, 1000);
@@ -97,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function () {
     nextQuestionBtn.addEventListener('click', () => {
         const url = new URL(window.location.href);
         const nameValue = url.searchParams.get('name');
-        socket.emit('readyForNextQuestion', nameValue); // Invia l'evento di prontezza al server
+        socket.emit('readyForNextQuestion', { lobbyCode: lobbyCode, playerName: nameValue }); // Invia l'evento di prontezza al server
         nextQuestionBtn.style.display = 'none'; // Nascondi il pulsante per evitare doppio click
     });
 

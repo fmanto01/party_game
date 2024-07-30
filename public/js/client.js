@@ -28,6 +28,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     socket.on('startGame', function () {
-        window.location.href = `/game.html/?name=${playerNameInput.value}`;
+        window.location.href = `/game.html/?lobbyCode=${lobbyCodeInput.value}name=${playerNameInput.value}`;
     });
 });
