@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Extract the values
     const lobbyCode = params.get('lobbyCode');
     // const playerName = params.get('name');
-
-    socket.emit('ready');
+    console.log("lobbyCode", lobbyCode);
+    socket.emit('ready', { lobbyCode: lobbyCode });
     const timerElement = document.getElementById('timer');
     const timerContainer = document.getElementById('timerContainer');
     const questionElement = document.getElementById('question');

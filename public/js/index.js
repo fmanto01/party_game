@@ -17,13 +17,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const playersTable = document.getElementById('playersTable');
     const startGameBtn = document.getElementById('startGameBtn');
     const numQuestionsInput = document.getElementById('numQuestions');
-
+    let lobbyCode;
     createGameBtn.addEventListener('click', function () {
         // Svuota la tabella dei giocatori
         playersTable.innerHTML = '';
 
         // Genera un nuovo codice per la lobby
-        const lobbyCode = generateLobbyCode();
+        lobbyCode = generateLobbyCode();
         lobbyCodeElement.textContent = 'Codice Lobby: ' + lobbyCode;
     });
 
@@ -38,7 +38,9 @@ document.addEventListener('DOMContentLoaded', function () {
     startGameBtn.addEventListener('click', function () {
         const numQuestions = parseInt(numQuestionsInput.value);
         if (numQuestions >= 5) {
-            socket.emit('startGame', { numQuestions: numQuestions });
+            const data = { lobbyCode: lobbyCode, numQuestions: numQuestions };
+            console.log('Invio dati:', data); // Aggiungi questo log
+            socket.emit('startGame', data);
         } else {
             alert('Il numero minimo di domande è 5.');
         }

@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    socket.on('startGame', function () {
-        window.location.href = `/game.html/?lobbyCode=${lobbyCodeInput.value}name=${playerNameInput.value}`;
+    socket.on('inizia', function () {
+        window.location.href = `/game.html/?lobbyCode=${lobbyCodeInput.value}&name=${playerNameInput.value}`;
     });
 });

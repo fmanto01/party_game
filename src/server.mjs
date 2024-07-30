@@ -66,12 +66,10 @@ io.on('connection', (socket) => {
   socket.on('lobbyCode', ([code, numQuestionsParam]) => {
     console.log('Ho ricevuto questo dato: ', code, " - ", numQuestionsParam);
     lobbyCode.push(code);
-    console.log('TUTTE LE LOBBY: ', lobbyCode)
     gameManager.games[code] = new Game(code, numQuestionsParam);
     // Mescola le domande e seleziona le prime numQuestions
     // TODO FIX sempre parametro (def 5)
     gameManager.games[code].selectedQuestions = shuffle(questions).slice(0, numQuestionsParam)
-    console.log(gameManager.games[code].selectedQuestions)
   });
 
   socket.on('joinLobby', (data) => {
@@ -91,14 +89,15 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('startGame', () => {
-    io.emit('startGame');
-    sendQuestion();
+  socket.on('startGame', (data) => {
+    console.log(data);
+    io.emit('inizia');
+    sendQuestion(data.lobbyCode);
   });
 
-  socket.on('ready', () => {
+  socket.on('ready', (data) => {
     console.log('The player is ready');
-    sendQuestion();
+    sendQuestion(data.lobbyCode);
   });
 
   socket.on('vote', (data) => {
@@ -123,7 +122,7 @@ io.on('connection', (socket) => {
     if (Object.values(thisGame.readyForNextQuestion).every(value => value === true)) {
       if (thisGame.currentQuestionIndex + 1 < thisGame.numQuestions) {
         thisGame.currentQuestionIndex++;
-        sendQuestion();
+        sendQuestion(data.lobbyCode);
         resetReadyForNextQuestion(data.lobbyCode); // Reset readiness for the next round
       } else {
         io.emit('gameOver');
@@ -169,7 +168,7 @@ io.on('connection', (socket) => {
     const thisGame = gameManager.games[lobbyCode];
     if (thisGame.currentQuestionIndex + 1 < thisGame.numQuestions) {
       thisGame.currentQuestionIndex++;
-      sendQuestion();
+      sendQuestion(lobbyCode);
     } else {
       io.emit('gameOver');
       console.log('Game Over: no more questions.');
@@ -182,9 +181,14 @@ io.on('connection', (socket) => {
   });
 
   function sendQuestion(lobbyCode) {
-    if (lobbyCode === null)
-      return
+
     const thisGame = gameManager.games[lobbyCode];
+
+    console.log("######");
+    console.log(lobbyCode);
+    console.log(thisGame);
+    console.log("######");
+
     const question = thisGame.selectedQuestions[thisGame.currentQuestionIndex];
     const p = thisGame.players;
     io.emit('sendQuestion', { question, p });
