@@ -93,7 +93,7 @@ io.on('connection', (socket) => {
 
   socket.on('vote', (data) => {
     console.log('Ho ricevuto il voto ', data);
-    if (votes.hasOwnProperty(data.vote)) {
+    if (Object.prototype.hasOwnProperty.call(votes, data.vote)) {
       votes[data.vote] += 1;
     }
     numOfPlayers++;
@@ -128,11 +128,6 @@ io.on('connection', (socket) => {
     players.forEach(player => {
       readyForNextQuestion[player] = false;
     });
-  }
-
-  function sendQuestion() {
-    const question = selectedQuestions[currentQuestionIndex];
-    io.emit('sendQuestion', { question, players });
   }
 
   function calculateScores() {
