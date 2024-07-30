@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gioco Iniziato</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div id="timerContainer" class="text-center mt-3">
+            <h3>Tempo rimasto: <span id="timer">10</span> secondi</h3>
+        </div>
+        <div id="questionContainer" class="text-center mt-5">
+            <h2 id="question"></h2>
+        </div>
+        <div id="playersContainer" class="text-center mt-3">
+            <!-- I pulsanti dei giocatori verranno aggiunti qui -->
+        </div>
+        <div id="resultsContainer" class="text-center mt-3" style="display: none;">
+            <div id="resultMessageContainer">
+                <h3 id="resultMessage"></h3>
+            </div>
+            <button id="nextQuestionBtn" class="btn btn-primary mt-3">Prosegui al prossimo turno</button>
+        </div>
+        <div id="gameOverMessage" class="text-center mt-5" style="display: none;">
+            <h2>Il gioco è finito!</h2>
+            <div id="finalResultsContainer">
+                <!-- La classifica finale verrà aggiunta qui -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="../js/game.js"></script>
+</body>
+
+</html>

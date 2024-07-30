@@ -20,22 +20,22 @@ const votes = {};
 const playerScores = {}; // For tracking player scores
 let readyForNextQuestion = {}; // Track readiness for next question
 
-app.use(express.static(join(__dirname)));
+app.use(express.static(join(__dirname, '../public')));
 
 app.get('/', (req, res) => {
-  res.sendFile(join(__dirname,'index.html'));
+  res.sendFile(join(__dirname, '../public/html/index.html'));
 });
 
 app.get('/client.html', (req, res) => {
-  res.sendFile(join(__dirname,'client.html'));
+  res.sendFile(join(__dirname, '../public/html/client.html'));
 });
 
 app.get('/game.html', (req, res) => {
-  res.sendFile(join(__dirname,'game.html'));
+  res.sendFile(join(__dirname, '../public/html/game.html'));
 });
 
 // Carica le domande dal file JSON all'avvio del server
-fs.readFile(path.join(__dirname, 'questions.json'), 'utf8', (err, data) => {
+fs.readFile(path.join(__dirname, '../questions.json'), 'utf8', (err, data) => {
   if (err) {
     console.error('Errore nella lettura del file delle domande:', err);
     return;
