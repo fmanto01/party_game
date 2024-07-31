@@ -1,17 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
     const socket = io();
 
-    // Get the current URL
     const url = new URL(window.location.href);
-
-    // Create a URLSearchParams object
     const params = new URLSearchParams(url.search);
-
-    // Extract the values
     const lobbyCode = params.get('lobbyCode');
-    // const playerName = params.get('name');
+    const playerName = params.get('name');
 
-    // console.log("lobbyCode", lobbyCode);
     socket.emit('ready', { lobbyCode: lobbyCode });
     const timerElement = document.getElementById('timer');
     const timerContainer = document.getElementById('timerContainer');
@@ -27,8 +21,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let clicked = false;
 
     function startTimer(duration) {
-        const url = new URL(window.location.href);
-        const nameValue = url.searchParams.get('name');
         let timeRemaining = duration;
         timerElement.textContent = timeRemaining;
 
@@ -39,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (timeRemaining <= 0) {
                 clearInterval(countdown);
                 if (!clicked) {
-                    socket.emit('vote', { lobbyCode: lobbyCode, voter: nameValue, vote: '' });
+                    socket.emit('vote', { lobbyCode: lobbyCode, voter: playerName, vote: '' });
                 }
             }
         }, 1000);
@@ -51,11 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Ricevi e mostra la domanda
-    socket.on('sendQuestion', (data) => {
-        const question = data.question;
-        const players = data.p;
-        console.log('io sto ricevendo questo da sendquestion');
-        console.log(question, players);
+    socket.on('sendQuestion', ({ question, players }) => {
         clicked = false;
         resetTimer();
         startTimer(10); // Inizia un nuovo timer di 10 secondi
@@ -70,9 +58,6 @@ document.addEventListener('DOMContentLoaded', function () {
             button.id = player;
             button.dataset.playerName = player;
 
-            const url = new URL(window.location.href);
-            const nameValue = url.searchParams.get('name');
-
             button.addEventListener('click', () => {
                 if (clicked) {
                     console.log('Hai già votato!');
@@ -81,8 +66,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 clicked = true;
                 clearInterval(countdown);
                 console.log(`Pulsante cliccato: ${player}`);
-                console.log(nameValue);
-                socket.emit('vote', { lobbyCode: lobbyCode, voter: nameValue, vote: player });
+                console.log(playerName);
+                socket.emit('vote', { lobbyCode: lobbyCode, voter: playerName, vote: player });
             });
 
             playersContainer.appendChild(button);
@@ -111,9 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Gestisci il pulsante per passare alla domanda successiva
     nextQuestionBtn.addEventListener('click', () => {
-        const url = new URL(window.location.href);
-        const nameValue = url.searchParams.get('name');
-        socket.emit('readyForNextQuestion', { lobbyCode: lobbyCode, playerName: nameValue }); // Invia l'evento di prontezza al server
+        socket.emit('readyForNextQuestion', { lobbyCode: lobbyCode, playerName: playerName }); // Invia l'evento di prontezza al server
         nextQuestionBtn.style.display = 'none'; // Nascondi il pulsante per evitare doppio click
     });
 

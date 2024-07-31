@@ -92,7 +92,7 @@ io.on('connection', (socket) => {
   socket.on('startGame', (data) => {
     console.log(data);
     io.emit('inizia');
-    // TODO (mi sembra di troppo)
+    // TODO mi sembra di troppo
     // sendQuestion(data.lobbyCode);
   });
 
@@ -104,8 +104,6 @@ io.on('connection', (socket) => {
   socket.on('vote', (data) => {
     console.log('Ho ricevuto il voto ', data);
     const thisGame = gameManager.games[data.lobbyCode];
-    console.log('VOTO: xxxx', thisGame);
-    console.log(thisGame);
     if (Object.prototype.hasOwnProperty.call(thisGame.votes, data.vote)) {
       thisGame.votes[data.vote] += 1;
     }
@@ -113,8 +111,8 @@ io.on('connection', (socket) => {
     if (thisGame.numOfPlayers === thisGame.players.length) {
       thisGame.numOfPlayers = 0;
       const resultMessage = calculateScores(data.lobbyCode);
-      const p = thisGame.players;
-      io.emit('showResults', { resultMessage, p }); // Invia il risultato corrente ai client
+      const players = thisGame.players;
+      io.emit('showResults', { resultMessage, players }); // Invia il risultato corrente ai client
     }
   });
 
@@ -184,23 +182,10 @@ io.on('connection', (socket) => {
   });
 
   function sendQuestion(lobbyCode) {
-    console.log("___________________")
-    console.log('Sendquestions');
     const thisGame = gameManager.games[lobbyCode];
-
-    // console.log("######");
-    // console.log(lobbyCode);
-    // console.log(thisGame);
-    // console.log("######");
-
     const question = thisGame.selectedQuestions[thisGame.currentQuestionIndex];
-    const p = thisGame.players;
-
-    console.log("******")
-    console.log(p)
-    console.log("******")
-
-    io.emit('sendQuestion', { question, p });
+    const players = thisGame.players;
+    io.emit('sendQuestion', { question, players });
   }
 });
 
