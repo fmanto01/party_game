@@ -10,7 +10,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Extract the values
     const lobbyCode = params.get('lobbyCode');
     // const playerName = params.get('name');
-    console.log("lobbyCode", lobbyCode);
+
+    // console.log("lobbyCode", lobbyCode);
     socket.emit('ready', { lobbyCode: lobbyCode });
     const timerElement = document.getElementById('timer');
     const timerContainer = document.getElementById('timerContainer');
@@ -77,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 clearInterval(countdown);
                 console.log(`Pulsante cliccato: ${player}`);
                 console.log(nameValue);
-                socket.emit('vote', { voter: nameValue, vote: player });
+                socket.emit('vote', { lobbyCode: lobbyCode, voter: nameValue, vote: player });
             });
 
             playersContainer.appendChild(button);
