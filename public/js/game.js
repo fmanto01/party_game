@@ -51,7 +51,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Ricevi e mostra la domanda
-    socket.on('sendQuestion', ({ question, players }) => {
+    socket.on('sendQuestion', (data) => {
+        const question = data.question;
+        const players = data.p;
+        console.log('io sto ricevendo questo da sendquestion');
+        console.log(question, players);
         clicked = false;
         resetTimer();
         startTimer(10); // Inizia un nuovo timer di 10 secondi

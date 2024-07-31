@@ -125,7 +125,7 @@ io.on('connection', (socket) => {
     if (Object.values(thisGame.readyForNextQuestion).every(value => value === true)) {
       if (thisGame.currentQuestionIndex + 1 < thisGame.numQuestions) {
         thisGame.currentQuestionIndex++;
-        sendQuestion(data.lobbyCode, thisGame.players);
+        sendQuestion(data.lobbyCode);
         resetReadyForNextQuestion(data.lobbyCode); // Reset readiness for the next round
       } else {
         io.emit('gameOver');
