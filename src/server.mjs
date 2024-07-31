@@ -6,7 +6,6 @@ import { readFile } from 'node:fs';
 import { join as _join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
@@ -20,7 +19,6 @@ const gameManager = new GameManager();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
 
 app.use(express.static(join(__dirname, '../public')));
 
@@ -44,6 +42,22 @@ readFile(_join(__dirname, '../questions.json'), 'utf8', (err, data) => {
   }
   questions = JSON.parse(data);
 });
+
+
+function reportRoomStatus() {
+  setInterval(() => {
+    const rooms = io.sockets.adapter.rooms;
+    console.log('Room status:');
+    rooms.forEach((room, roomName) => {
+      // Exclude rooms that are just sockets (which have socket IDs as names)
+      if (!room.has(roomName)) {
+        console.log(`Room: ${roomName}, Number of clients: ${room.size}`);
+      }
+    });
+  }, 5000); // 20000 milliseconds = 20 seconds
+}
+
+reportRoomStatus();
 
 // Funzione per mescolare un array
 function shuffle(array) {
@@ -74,7 +88,8 @@ io.on('connection', (socket) => {
       gameManager.games[code].playerScores[data.playerName] = 0; // Initialize player scores
       gameManager.games[code].readyForNextQuestion[data.playerName] = false; // Initialize readiness
 
-      io.emit('addNewPlayer', data.playerName);
+      socket.join(code); // Client joins the room with the lobby code
+      io.to(code).emit('addNewPlayer', data.playerName); // Emit to specific room
     } else {
       console.log('A client tried to join a non-existing lobby');
       socket.emit('error', 'Codice lobby non esistente');
@@ -83,9 +98,7 @@ io.on('connection', (socket) => {
 
   socket.on('startGame', (data) => {
     console.log(data);
-    io.emit('inizia');
-    // TODO mi sembra di troppo
-    // sendQuestion(data.lobbyCode);
+    io.to(data.lobbyCode).emit('inizia'); // Emit to specific room
   });
 
   socket.on('ready', (data) => {
@@ -104,7 +117,7 @@ io.on('connection', (socket) => {
       thisGame.numOfPlayers = 0;
       const resultMessage = calculateScores(data.lobbyCode);
       const players = thisGame.players;
-      io.emit('showResults', { resultMessage, players }); // Invia il risultato corrente ai client
+      io.to(data.lobbyCode).emit('showResults', { resultMessage, players }); // Emit to specific room
     }
   });
 
@@ -118,13 +131,13 @@ io.on('connection', (socket) => {
         sendQuestion(data.lobbyCode);
         resetReadyForNextQuestion(data.lobbyCode); // Reset readiness for the next round
       } else {
-        io.emit('gameOver');
+        io.to(data.lobbyCode).emit('gameOver');
         console.log('Game Over: no more questions.');
         console.log('Risultati finali:');
         thisGame.players.forEach(player => {
           console.log(`${player}: ${thisGame.playerScores[player]} punti`);
         });
-        io.emit('finalResults', thisGame.playerScores); // Invia la classifica finale
+        io.to(data.lobbyCode).emit('finalResults', thisGame.playerScores); // Emit to specific room
       }
     }
   });
@@ -146,7 +159,7 @@ io.on('connection', (socket) => {
       resultMessage = 'Pareggio! Nessun punto assegnato';
     } else {
       const winner = winners[0];
-      thisGame.playerScores[winner] += 1
+      thisGame.playerScores[winner] += 1;
       resultMessage = `+ 1 punto a chi ha scelto ${winner}`;
     }
 
@@ -162,13 +175,13 @@ io.on('connection', (socket) => {
       thisGame.currentQuestionIndex++;
       sendQuestion(lobbyCode);
     } else {
-      io.emit('gameOver');
+      io.to(lobbyCode).emit('gameOver');
       console.log('Game Over: no more questions.');
       console.log('Risultati finali:');
       thisGame.players.forEach(player => {
         console.log(`${player}: ${thisGame.playerScores[player]} punti`);
       });
-      io.emit('finalResults', thisGame.playerScores); // Invia la classifica finale
+      io.to(lobbyCode).emit('finalResults', thisGame.playerScores); // Emit to specific room
     }
   });
 
@@ -176,7 +189,7 @@ io.on('connection', (socket) => {
     const thisGame = gameManager.games[lobbyCode];
     const question = thisGame.selectedQuestions[thisGame.currentQuestionIndex];
     const players = thisGame.players;
-    io.emit('sendQuestion', { question, players });
+    io.to(lobbyCode).emit('sendQuestion', { question, players }); // Emit to specific room
   }
 });
 
