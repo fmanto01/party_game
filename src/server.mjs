@@ -83,7 +83,7 @@ io.on('connection', (socket) => {
 
   socket.on('startGame', (data) => {
     console.log(data);
-    io.to(data.lobbyCode).emit('inizia');
+    io.emit('inizia');
     // TODO mi sembra di troppo
     // sendQuestion(data.lobbyCode);
   });
