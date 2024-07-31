@@ -20,22 +20,22 @@ const votes = {};
 const playerScores = {}; // For tracking player scores
 let readyForNextQuestion = {}; // Track readiness for next question
 
-app.use(express.static(join(__dirname)));
+app.use(express.static(join(__dirname, '../public')));
 
 app.get('/', (req, res) => {
-  res.sendFile(join(__dirname,'index.html'));
+  res.sendFile(join(__dirname, '../public/html/index.html'));
 });
 
 app.get('/client.html', (req, res) => {
-  res.sendFile(join(__dirname,'client.html'));
+  res.sendFile(join(__dirname, '../public/html/client.html'));
 });
 
 app.get('/game.html', (req, res) => {
-  res.sendFile(join(__dirname,'game.html'));
+  res.sendFile(join(__dirname, '../public/html/game.html'));
 });
 
 // Carica le domande dal file JSON all'avvio del server
-fs.readFile(path.join(__dirname, 'questions.json'), 'utf8', (err, data) => {
+fs.readFile(path.join(__dirname, '../questions.json'), 'utf8', (err, data) => {
   if (err) {
     console.error('Errore nella lettura del file delle domande:', err);
     return;
@@ -93,7 +93,7 @@ io.on('connection', (socket) => {
 
   socket.on('vote', (data) => {
     console.log('Ho ricevuto il voto ', data);
-    if (votes.hasOwnProperty(data.vote)) {
+    if (Object.prototype.hasOwnProperty.call(votes, data.vote)) {
       votes[data.vote] += 1;
     }
     numOfPlayers++;
@@ -128,11 +128,6 @@ io.on('connection', (socket) => {
     players.forEach(player => {
       readyForNextQuestion[player] = false;
     });
-  }
-
-  function sendQuestion() {
-    const question = selectedQuestions[currentQuestionIndex];
-    io.emit('sendQuestion', { question, players });
   }
 
   function calculateScores() {
