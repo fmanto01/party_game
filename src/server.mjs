@@ -102,6 +102,8 @@ io.on('connection', (socket) => {
   });
 
   socket.on('ready', (data) => {
+    console.log('rejoining the lobby');
+    socket.join(data.lobbyCode);
     console.log('The player is ready');
     sendQuestion(data.lobbyCode);
   });
