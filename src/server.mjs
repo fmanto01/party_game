@@ -12,15 +12,7 @@ const server = createServer(app);
 const io = new Server(server);
 
 let lobbyCode = [];
-// let players = [];
-// let numOfPlayers = 0;
-// let currentQuestionIndex = 0;
 let questions = [];
-// let numQuestions = 5; // Default value
-// let selectedQuestions = [];
-// const votes = {};
-// const playerScores = {}; // For tracking player scores
-// let readyForNextQuestion = {}; // Track readiness for next question
 
 import { GameManager } from './data/GameManager.mjs';  // Correct path
 import { Game } from './data/Game.mjs';
@@ -91,7 +83,7 @@ io.on('connection', (socket) => {
 
   socket.on('startGame', (data) => {
     console.log(data);
-    io.emit('inizia');
+    io.to(data.lobbyCode).emit('inizia');
     // TODO mi sembra di troppo
     // sendQuestion(data.lobbyCode);
   });
@@ -146,7 +138,6 @@ io.on('connection', (socket) => {
 
   function calculateScores(lobbyCode) {
     const thisGame = gameManager.games[lobbyCode];
-    // Trova il giocatore con il maggior numero di voti
     const maxVotes = Math.max(...Object.values(thisGame.votes));
     const winners = Object.keys(thisGame.votes).filter(player => thisGame.votes[player] === maxVotes);
 
@@ -155,7 +146,7 @@ io.on('connection', (socket) => {
       resultMessage = 'Pareggio! Nessun punto assegnato';
     } else {
       const winner = winners[0];
-      thisGame.playerScores[winner] += 1; // Aggiorna il punteggio del vincitore
+      thisGame.playerScores[winner] += 1
       resultMessage = `+ 1 punto a chi ha scelto ${winner}`;
     }
 
