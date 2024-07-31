@@ -13,7 +13,7 @@ const io = new Server(server);
 let lobbyCode = [];
 let questions = [];
 
-import { GameManager } from './data/GameManager.mjs';  // Correct path
+import { GameManager } from './data/GameManager.mjs';
 import { Game } from './data/Game.mjs';
 const gameManager = new GameManager();
 
@@ -44,21 +44,6 @@ readFile(_join(__dirname, '../questions.json'), 'utf8', (err, data) => {
 });
 
 
-function reportRoomStatus() {
-  setInterval(() => {
-    const rooms = io.sockets.adapter.rooms;
-    console.log('Room status:');
-    rooms.forEach((room, roomName) => {
-      // Exclude rooms that are just sockets (which have socket IDs as names)
-      if (!room.has(roomName)) {
-        console.log(`Room: ${roomName}, Number of clients: ${room.size}`);
-      }
-    });
-  }, 5000); // 20000 milliseconds = 20 seconds
-}
-
-reportRoomStatus();
-
 // Funzione per mescolare un array
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -74,7 +59,7 @@ io.on('connection', (socket) => {
     lobbyCode.push(code);
     gameManager.games[code] = new Game(code, numQuestionsParam);
     // Mescola le domande e seleziona le prime numQuestions
-    // TODO FIX sempre parametro (def 5)
+    // TODO FIX sempre parametro (default 5)
     gameManager.games[code].selectedQuestions = shuffle(questions).slice(0, numQuestionsParam)
   });
 
@@ -85,11 +70,11 @@ io.on('connection', (socket) => {
       const code = data.lobbyCode;
       gameManager.games[code].players.push(data.playerName);
       gameManager.games[code].votes[data.playerName] = 0;
-      gameManager.games[code].playerScores[data.playerName] = 0; // Initialize player scores
-      gameManager.games[code].readyForNextQuestion[data.playerName] = false; // Initialize readiness
+      gameManager.games[code].playerScores[data.playerName] = 0;
+      gameManager.games[code].readyForNextQuestion[data.playerName] = false;
 
-      socket.join(code); // Client joins the room with the lobby code
-      io.to(code).emit('addNewPlayer', data.playerName); // Emit to specific room
+      socket.join(code);
+      io.to(code).emit('addNewPlayer', data.playerName);
     } else {
       console.log('A client tried to join a non-existing lobby');
       socket.emit('error', 'Codice lobby non esistente');
@@ -98,7 +83,7 @@ io.on('connection', (socket) => {
 
   socket.on('startGame', (data) => {
     console.log(data);
-    io.to(data.lobbyCode).emit('inizia'); // Emit to specific room
+    io.to(data.lobbyCode).emit('inizia');
   });
 
   socket.on('ready', (data) => {
@@ -119,7 +104,7 @@ io.on('connection', (socket) => {
       thisGame.numOfPlayers = 0;
       const resultMessage = calculateScores(data.lobbyCode);
       const players = thisGame.players;
-      io.to(data.lobbyCode).emit('showResults', { resultMessage, players }); // Emit to specific room
+      io.to(data.lobbyCode).emit('showResults', { resultMessage, players });
     }
   });
 
@@ -139,7 +124,7 @@ io.on('connection', (socket) => {
         thisGame.players.forEach(player => {
           console.log(`${player}: ${thisGame.playerScores[player]} punti`);
         });
-        io.to(data.lobbyCode).emit('finalResults', thisGame.playerScores); // Emit to specific room
+        io.to(data.lobbyCode).emit('finalResults', thisGame.playerScores);
       }
     }
   });
@@ -183,7 +168,7 @@ io.on('connection', (socket) => {
       thisGame.players.forEach(player => {
         console.log(`${player}: ${thisGame.playerScores[player]} punti`);
       });
-      io.to(lobbyCode).emit('finalResults', thisGame.playerScores); // Emit to specific room
+      io.to(lobbyCode).emit('finalResults', thisGame.playerScores);
     }
   });
 
@@ -191,7 +176,7 @@ io.on('connection', (socket) => {
     const thisGame = gameManager.games[lobbyCode];
     const question = thisGame.selectedQuestions[thisGame.currentQuestionIndex];
     const players = thisGame.players;
-    io.to(lobbyCode).emit('sendQuestion', { question, players }); // Emit to specific room
+    io.to(lobbyCode).emit('sendQuestion', { question, players });
   }
 });
 
