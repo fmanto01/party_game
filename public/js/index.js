@@ -1,3 +1,4 @@
+import * as c from './socketConsts.mjs';
 const socket = io();
 
 function generateLobbyCode() {
@@ -7,7 +8,7 @@ function generateLobbyCode() {
   for (let i = 0; i < 6; i++) {
     code += characters.charAt(Math.floor(Math.random() * characters.length));
   }
-  socket.emit('lobbyCode', [code, parseInt(numQuestionsInput.value)]);
+  socket.emit(c.LOBBY_CODE, [code, parseInt(numQuestionsInput.value)]);
   return code;
 }
 
@@ -27,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
     lobbyCodeElement.textContent = 'Codice Lobby: ' + lobbyCode;
   });
 
-  socket.on('addNewPlayer', function (playerName) {
+  socket.on(c.ADD_NEW_PLAYER, function (playerName) {
     const row = document.createElement('tr');
     const cell = document.createElement('td');
     cell.textContent = playerName;
@@ -40,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (numQuestions >= 5) {
       const data = { lobbyCode: lobbyCode, numQuestions: numQuestions };
       console.log('Invio dati:', data); // Aggiungi questo log
-      socket.emit('startGame', data);
+      socket.emit(c.START_GAME, data);
     } else {
       alert('Il numero minimo di domande è 5.');
     }

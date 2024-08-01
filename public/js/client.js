@@ -1,3 +1,4 @@
+import * as c from './socketConsts.mjs';
 document.addEventListener('DOMContentLoaded', function () {
   const joinBtn = document.getElementById('joinBtn');
   const lobbyCodeInput = document.getElementById('lobbyCodeInput');
@@ -21,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log('Joining the lobby ', data.lobbyCode);
       waitingText.textContent = `Ciao ${data.playerName}, in attesa dell'inizio della partita...`;
       waitingMessage.style.display = 'block';
-      socket.emit('joinLobby', data);
+      socket.emit(c.JOIN_LOBBY, data);
     } else {
       alert('Per favore, inserisci sia il tuo nome che un codice alfanumerico.');
     }
