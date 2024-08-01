@@ -1,4 +1,4 @@
-export const LOBBY_CODE = "lobbyCode";
+export const LOBBY_CODE = 'lobbyCode';
 export const ADD_NEW_PLAYER = 'addNewPlayer';
 export const START_GAME = 'startGame';
 export const JOIN_LOBBY = 'joinLobby';
