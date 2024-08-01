@@ -1,7 +1,8 @@
 {
   "name": "party_game",
   "version": "0.1.0",
-  "main": "src/server.js",
+  "description": "Party game ispirato a \"Dimmi chi sei!\"",
+  "main": "src/server.mjs",
   "type": "module",
   "dependencies": {
     "express": "^4.19.2",

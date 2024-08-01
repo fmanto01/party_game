@@ -55,7 +55,7 @@ function shuffle(array) {
 
 io.on(c.CONNECTION, (socket) => {
   socket.on(c.LOBBY_CODE, ([code, numQuestionsParam]) => {
-    console.log('Ho ricevuto questo dato: ', code, " - ", numQuestionsParam);
+    console.log('Ho ricevuto questo dato: ', code, ' - ', numQuestionsParam);
     lobbyCode.push(code);
     gameManager.games[code] = new Game(code, numQuestionsParam);
     // Mescola le domande e seleziona le prime numQuestions
