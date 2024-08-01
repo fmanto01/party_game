@@ -1,12 +1,12 @@
+import * as c from './socketConsts.mjs';
 document.addEventListener('DOMContentLoaded', function () {
   const socket = io();
-
   const url = new URL(window.location.href);
   const params = new URLSearchParams(url.search);
   const lobbyCode = params.get('lobbyCode');
   const playerName = params.get('name');
 
-  socket.emit('ready', { lobbyCode: lobbyCode });
+  socket.emit(c.READY, { lobbyCode: lobbyCode });
   const timerElement = document.getElementById('timer');
   const timerContainer = document.getElementById('timerContainer');
   const questionElement = document.getElementById('question');
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (timeRemaining <= 0) {
         clearInterval(countdown);
         if (!clicked) {
-          socket.emit('vote', { lobbyCode: lobbyCode, voter: playerName, vote: '' });
+          socket.emit(c.VOTE, { lobbyCode: lobbyCode, voter: playerName, vote: '' });
         }
       }
     }, 1000);
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Ricevi e mostra la domanda
-  socket.on('sendQuestion', ({ question, players }) => {
+  socket.on(c.SEND_QUESTION, ({ question, players }) => {
     clicked = false;
     resetTimer();
     startTimer(10); // Inizia un nuovo timer di 10 secondi
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function () {
         clearInterval(countdown);
         console.log(`Pulsante cliccato: ${player}`);
         console.log(playerName);
-        socket.emit('vote', { lobbyCode: lobbyCode, voter: playerName, vote: player });
+        socket.emit(c.VOTE, { lobbyCode: lobbyCode, voter: playerName, vote: player });
       });
 
       playersContainer.appendChild(button);
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // Ricevi i risultati dei voti
-  socket.on('showResults', ({ resultMessage, players }) => {
+  socket.on(c.SHOW_RESULTS, ({ resultMessage, players }) => {
     console.log('Mostra risultati: ', resultMessage, ' ', players);
     resultsContainer.style.display = 'block';
     resultMessageElement.textContent = resultMessage;
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // Ricevi il messaggio di risultato
-  socket.on('resultMessage', (message) => {
+  socket.on(c.RESULT_MESSAGE, (message) => {
     console.log('Mostra messaggio di risultato');
     resultMessageElement.textContent = message;
     resultMessageContainer.style.display = 'block';
@@ -96,12 +96,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Gestisci il pulsante per passare alla domanda successiva
   nextQuestionBtn.addEventListener('click', () => {
-    socket.emit('readyForNextQuestion', { lobbyCode: lobbyCode, playerName: playerName }); // Invia l'evento di prontezza al server
+    socket.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode: lobbyCode, playerName: playerName }); // Invia l'evento di prontezza al server
     nextQuestionBtn.style.display = 'none'; // Nascondi il pulsante per evitare doppio click
   });
 
   // Ricevi il messaggio di fine gioco
-  socket.on('gameOver', () => {
+  socket.on(c.GAME_OVER, () => {
     console.log('Il gioco è finito!');
     questionElement.style.display = 'none';
     playersContainer.style.display = 'none';
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   // Ricevi la classifica finale e mostralo come una tabella
-  socket.on('finalResults', (playerScores) => {
+  socket.on(c.FINAL_RESULTS, (playerScores) => {
     console.log('Risultati finali ricevuti: ', playerScores);
 
     timerContainer.style.display = 'none'; // Nascondi il timer
