@@ -1,21 +1,20 @@
 import express from 'express';
-import { createServer } from 'node:http';
-import { dirname, join } from 'node:path';
 import { Server } from 'socket.io';
 import { readFile } from 'node:fs';
-import { join as _join } from 'node:path';
+import { createServer } from 'node:http';
+import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+import { Game } from './data/Game.mjs';
+import { GameManager } from './data/GameManager.mjs';
 
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
 
+const gameManager = new GameManager();
 let lobbyCode = [];
 let questions = [];
-
-import { GameManager } from './data/GameManager.mjs';
-import { Game } from './data/Game.mjs';
-const gameManager = new GameManager();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -35,7 +34,7 @@ app.get('/game.html', (req, res) => {
 });
 
 // Carica le domande dal file JSON all'avvio del server
-readFile(_join(__dirname, '../questions.json'), 'utf8', (err, data) => {
+readFile(join(__dirname, '../questions.json'), 'utf8', (err, data) => {
   if (err) {
     console.error('Errore nella lettura del file delle domande:', err);
     return;
@@ -55,12 +54,12 @@ function shuffle(array) {
 
 io.on('connection', (socket) => {
   socket.on('lobbyCode', ([code, numQuestionsParam]) => {
-    console.log('Ho ricevuto questo dato: ', code, " - ", numQuestionsParam);
+    console.log('Ho ricevuto questo dato: ', code, ' - ', numQuestionsParam);
     lobbyCode.push(code);
     gameManager.games[code] = new Game(code, numQuestionsParam);
     // Mescola le domande e seleziona le prime numQuestions
     // TODO FIX sempre parametro (default 5)
-    gameManager.games[code].selectedQuestions = shuffle(questions).slice(0, numQuestionsParam)
+    gameManager.games[code].selectedQuestions = shuffle(questions).slice(0, numQuestionsParam);
   });
 
   socket.on('joinLobby', (data) => {
