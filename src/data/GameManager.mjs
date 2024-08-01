@@ -10,10 +10,10 @@ export class GameManager {
     if (!this.games[lobbyCode]) {
       this.games[lobbyCode] = new Game(lobbyCode, numQuestionsParam);
       return this.games[lobbyCode];
-    } 
+    }
     console.error('Lobby code already exists.');
     return null;
-        
+
   }
 
   // Method to get a game by lobby code

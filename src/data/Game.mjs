@@ -10,6 +10,7 @@ export class Game {
     this.votes = {};
     this.playerScores = {}; // For tracking player scores
     this.readyForNextQuestion = {}; // Track readiness for next question
+    this.isReady
   }
 
   // Method to add a new player
