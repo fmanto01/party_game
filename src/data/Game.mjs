@@ -2,24 +2,45 @@ export class Game {
   constructor(lobbyCode, numQuestions) {
     this.lobbyCode = lobbyCode;
     this.players = [];
-    this.numOfPlayers = 0;
+    this.numOfVoters = 0;
     this.currentQuestionIndex = 0;
     this.numQuestions = numQuestions >= 5 ? numQuestions : 5;; // Default value
     this.selectedQuestions = [];
+    this.iterator = this.createIterator();
     // player denormalizzato, sono 3 Map
     this.votes = {};
     this.playerScores = {}; // For tracking player scores
     this.readyForNextQuestion = {}; // Track readiness for next question
-    this.isReady
+  }
+
+  calculateScores() {
+    const maxVotes = Math.max(...Object.values(this.votes));
+    const winners = Object.keys(this.votes).filter(player => this.votes[player] === maxVotes);
+
+    let resultMessage;
+    if (winners.length > 1) {
+      resultMessage = 'Pareggio! Nessun punto assegnato';
+    } else {
+      const winner = winners[0];
+      this.playerScores[winner] += 1;
+      resultMessage = `+ 1 punto a chi ha scelto ${winner}`;
+    }
+    this.resetVoters();
+    return resultMessage;
+  }
+
+  resetVoters(){
+    this.numOfVoters = 0;
+    Object.keys(this.votes).forEach(player => this.votes[player] = 0);
   }
 
   // Method to add a new player
   addPlayer(playerName) {
     if (!this.players.includes(playerName)) {
       this.players.push(playerName);
-      this.numOfPlayers = this.players.length;
       this.playerScores[playerName] = 0; // Initialize score for new player
       this.readyForNextQuestion[playerName] = false; // Set readiness status
+      this.votes[playerName] = 0;
     }
   }
 
@@ -29,7 +50,6 @@ export class Game {
       this.players.splice(index, 1);
       delete this.playerScores[playerName];
       delete this.readyForNextQuestion[playerName];
-      this.numOfPlayers = this.players.length;
     }
   }
 
@@ -54,10 +74,15 @@ export class Game {
   // Method to handle votes
   castVote(playerName, vote) {
     if (this.players.includes(playerName)) {
-      this.votes[playerName] = vote;
+      this.votes[vote]++;
     } else {
       console.error('Giocatore non trovato.');
     }
+    this.numOfVoters++;
+  }
+
+  isAllPlayerVoter(){
+    return this.numOfVoters === this.players.length;
   }
 
   // Method to update player scores
@@ -70,9 +95,9 @@ export class Game {
   }
 
   // Method to set readiness for next question
-  setReadyForNextQuestion(playerName, isReady) {
+  setReadyForNextQuestion(playerName) {
     if (this.players.includes(playerName)) {
-      this.readyForNextQuestion[playerName] = isReady;
+      this.readyForNextQuestion[playerName] = true;
     } else {
       console.error('Giocatore non trovato.');
     }
@@ -93,7 +118,23 @@ export class Game {
   }
 
   // Method to check if all players are ready
-  areAllPlayersReady() {
+  isAllPlayersReady() {
     return this.players.every(player => this.readyForNextQuestion[player]);
+  }
+
+  getNextQuestion() {
+    return this.iterator.next();
+  }
+
+  *createIterator() {
+    for (const question of this.selectedQuestions) {
+      yield question;
+    }
+  }
+  
+  resetReadyForNextQuestion() {
+    this.players.forEach(player => {
+      this.readyForNextQuestion[player] = false;
+    });
   }
 }

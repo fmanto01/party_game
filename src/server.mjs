@@ -6,7 +6,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as c from '../public/js/socketConsts.mjs';
 
-import { Game } from './data/Game.mjs';
+// import { Game } from './data/Game.mjs';
 import { GameManager } from './data/GameManager.mjs';
 
 const app = express();
@@ -58,9 +58,7 @@ io.on(c.CONNECTION, (socket) => {
     console.log('Ho ricevuto questo dato: ', code, ' - ', numQuestionsParam);
     lobbyCode.push(code);
     gameManager.createGame(code, numQuestionsParam);
-    // Mescola le domande e seleziona le prime numQuestions
-    // TODO FIX sempre parametro (default 5)
-    gameManager.games[code].selectedQuestions = shuffle(questions).slice(0, numQuestionsParam);
+    gameManager.getGame(code).selectedQuestions = shuffle(questions).slice(0, numQuestionsParam);
   });
 
   socket.on(c.JOIN_LOBBY, (data) => {
@@ -68,13 +66,10 @@ io.on(c.CONNECTION, (socket) => {
       console.log(data.playerName + ' just joined the lobby');
 
       const code = data.lobbyCode;
-      gameManager.games[code].players.push(data.playerName);
-      gameManager.games[code].votes[data.playerName] = 0;
-      gameManager.games[code].playerScores[data.playerName] = 0;
-      gameManager.games[code].readyForNextQuestion[data.playerName] = false;
+      gameManager.getGame(code).addPlayer(data.playerName);
 
       socket.join(code);
-      // io.to non fa funzionare la tabella che fa vedere l'elenco dei giocatori
+      // TODO io.to non fa funzionare la tabella che fa vedere l'elenco dei giocatori
       //io.to(code).emit('addNewPlayer', data.playerName);
       io.emit(c.ADD_NEW_PLAYER, data.playerName);
     } else {
@@ -92,18 +87,15 @@ io.on(c.CONNECTION, (socket) => {
     console.log('rejoining the lobby');
     socket.join(data.lobbyCode);
     console.log('The player is ready');
-    sendQuestion(data.lobbyCode);
   });
 
   socket.on(c.VOTE, (data) => {
     console.log('Ho ricevuto il voto ', data);
-    const thisGame = gameManager.games[data.lobbyCode];
-    if (Object.prototype.hasOwnProperty.call(thisGame.votes, data.vote)) {
-      thisGame.votes[data.vote] += 1;
-    }
-    thisGame.numOfPlayers++;
-    if (thisGame.numOfPlayers === thisGame.players.length) {
-      thisGame.numOfPlayers = 0;
+    const thisGame = gameManager.getGame(data.lobbyCode);
+
+    thisGame.castVote(data.voter, data.vote);
+
+    if (thisGame.isAllPlayerVoter()) {
       const resultMessage = calculateScores(data.lobbyCode);
       const players = thisGame.players;
       io.to(data.lobbyCode).emit(c.SHOW_RESULTS, { resultMessage, players });
@@ -111,75 +103,31 @@ io.on(c.CONNECTION, (socket) => {
   });
 
   socket.on(c.READY_FOR_NEXT_QUESTION, (data) => {
-    const thisGame = gameManager.games[data.lobbyCode];
-    thisGame.readyForNextQuestion[data.playerName] = true;
+    const thisGame = gameManager.getGame(data.lobbyCode);
+    thisGame.setReadyForNextQuestion(data.playerName);
 
-    if (Object.values(thisGame.readyForNextQuestion).every(value => value === true)) {
-      if (thisGame.currentQuestionIndex + 1 < thisGame.numQuestions) {
-        thisGame.currentQuestionIndex++;
-        sendQuestion(data.lobbyCode);
-        resetReadyForNextQuestion(data.lobbyCode); // Reset readiness for the next round
-      } else {
-        io.to(data.lobbyCode).emit(c.GAME_OVER);
-        console.log('Game Over: no more questions.');
-        console.log('Risultati finali:');
-        thisGame.players.forEach(player => {
-          console.log(`${player}: ${thisGame.playerScores[player]} punti`);
-        });
-        io.to(data.lobbyCode).emit(c.FINAL_RESULTS, thisGame.playerScores);
-      }
-    }
-  });
-
-  function resetReadyForNextQuestion(lobbyCode) {
-    const thisGame = gameManager.games[lobbyCode];
-    thisGame.players.forEach(player => {
-      thisGame.readyForNextQuestion[player] = false;
-    });
-  }
-
-  function calculateScores(lobbyCode) {
-    const thisGame = gameManager.games[lobbyCode];
-    const maxVotes = Math.max(...Object.values(thisGame.votes));
-    const winners = Object.keys(thisGame.votes).filter(player => thisGame.votes[player] === maxVotes);
-
-    let resultMessage;
-    if (winners.length > 1) {
-      resultMessage = 'Pareggio! Nessun punto assegnato';
-    } else {
-      const winner = winners[0];
-      thisGame.playerScores[winner] += 1;
-      resultMessage = `+ 1 punto a chi ha scelto ${winner}`;
+    if (!thisGame.isAllPlayersReady()) {
+      return;
     }
 
-    // Resetta i voti per la prossima domanda
-    Object.keys(thisGame.votes).forEach(player => thisGame.votes[player] = 0);
-
-    return resultMessage;
-  }
-
-  socket.on(c.NEXT_QUESTION, (lobbyCode) => {
-    const thisGame = gameManager.games[lobbyCode];
-    if (thisGame.currentQuestionIndex + 1 < thisGame.numQuestions) {
-      thisGame.currentQuestionIndex++;
-      sendQuestion(lobbyCode);
+    // chiedo la prossima domanda, se posso altrimento partita finita
+    const { value: question, done } = thisGame.getNextQuestion();
+    if (!done) {
+      thisGame.resetReadyForNextQuestion(); // Reset readiness for the next round
+      io.to(lobbyCode).emit(c.SEND_QUESTION, { question, players });
     } else {
-      io.to(lobbyCode).emit(c.GAME_OVER);
       console.log('Game Over: no more questions.');
       console.log('Risultati finali:');
       thisGame.players.forEach(player => {
         console.log(`${player}: ${thisGame.playerScores[player]} punti`);
       });
-      io.to(lobbyCode).emit(c.FINAL_RESULTS, thisGame.playerScores);
+      io.to(data.lobbyCode).emit(c.GAME_OVER);
+      io.to(data.lobbyCode).emit(c.FINAL_RESULTS, thisGame.playerScores);
     }
   });
 
-  function sendQuestion(lobbyCode) {
-    const thisGame = gameManager.games[lobbyCode];
-    const question = thisGame.selectedQuestions[thisGame.currentQuestionIndex];
-    const players = thisGame.players;
-    io.to(lobbyCode).emit(c.SEND_QUESTION, { question, players });
-  }
+  
+
 });
 
 server.listen(3000, () => {
