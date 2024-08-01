@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     socket.on('addNewPlayer', function (playerName) {
+        console.log('Aggiunta del giocatore alla tabella');
         const row = document.createElement('tr');
         const cell = document.createElement('td');
         cell.textContent = playerName;

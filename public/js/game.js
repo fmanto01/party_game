@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
     const socket = io();
-
     const url = new URL(window.location.href);
     const params = new URLSearchParams(url.search);
     const lobbyCode = params.get('lobbyCode');

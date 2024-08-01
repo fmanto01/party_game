@@ -1,0 +1,16 @@
+export const LOBBY_CODE = "lobbyCode";
+export const ADD_NEW_PLAYER = 'addNewPlayer';
+export const START_GAME = 'startGame';
+export const JOIN_LOBBY = 'joinLobby';
+export const VOTE = 'vote';
+export const SEND_QUESTION = 'sendQuestion';
+export const SHOW_RESULTS = 'showResults';
+export const RESULT_MESSAGE = 'resultMessage';
+export const READY_FOR_NEXT_QUESTION = 'readyForNextQuestion';
+export const GAME_OVER = 'gameOver';
+export const FINAL_RESULTS = 'finalResults';
+export const NEXT_QUESTION = 'nextQuestion';
+export const CONNECTION = 'connection';
+export const ERROR = 'error';
+export const INIZIA = 'inizia';
+export const READY = 'ready';
