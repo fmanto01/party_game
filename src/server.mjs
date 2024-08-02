@@ -3,7 +3,7 @@ import { Server } from 'socket.io';
 import { createServer } from 'node:http';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { readFile } from 'node:fs';
+import { readFile } from 'node:fs/promises';
 
 import { setupRoutes } from './routes.mjs';
 import { setupSocket } from './socket.mjs';
@@ -17,20 +17,22 @@ const __dirname = dirname(__filename);
 
 app.use(express.static(join(__dirname, '../public')));
 
-let questions;
-readFile(join(__dirname, '../questions.json'), 'utf8', (err, data) => {
-  if (err) {
+async function init() {
+  try {
+    const data = await readFile(join(__dirname, '../questions.json'), 'utf8');
+    const questions = JSON.parse(data);
+    console.log('Contenuto file JSON: ', questions);
+
+    // setup
+    setupRoutes(app, __dirname);
+    setupSocket(io, questions);
+
+    server.listen(3000, () => {
+      console.log('server running at http://localhost:3000');
+    });
+  } catch (err) {
     console.error('Errore nella lettura del file delle domande:', err);
-    return;
   }
-  questions = JSON.parse(data);
-});
+}
 
-// setup
-setupRoutes(app, __dirname);
-setupSocket(io, questions);
-
-
-server.listen(3000, () => {
-  console.log('server running at http://localhost:3000');
-});
+init();
