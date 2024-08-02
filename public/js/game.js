@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     players.forEach((player) => {
       const button = document.createElement('button');
-      button.className = 'btn btn-primary m-2';
+      button.className = 'btn btn-primary m-2 player-button';
       button.textContent = player;
       button.id = player;
       button.dataset.playerName = player;
