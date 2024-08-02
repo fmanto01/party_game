@@ -29,7 +29,7 @@ export class Game {
     return resultMessage;
   }
 
-  resetVoters(){
+  resetVoters() {
     this.numOfVoters = 0;
     Object.keys(this.votes).forEach(player => this.votes[player] = 0);
   }
@@ -81,7 +81,7 @@ export class Game {
     this.numOfVoters++;
   }
 
-  isAllPlayerVoter(){
+  isAllPlayerVoter() {
     return this.numOfVoters === this.players.length;
   }
 
@@ -131,7 +131,7 @@ export class Game {
       yield question;
     }
   }
-  
+
   resetReadyForNextQuestion() {
     this.players.forEach(player => {
       this.readyForNextQuestion[player] = false;

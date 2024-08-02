@@ -109,7 +109,6 @@ io.on(c.CONNECTION, (socket) => {
     if (!thisGame.isAllPlayersReady()) {
       return;
     }
-
     // chiedo la prossima domanda, se posso altrimento partita finita
     const { value: question, done } = thisGame.getNextQuestion();
     if (!done) {
@@ -126,7 +125,7 @@ io.on(c.CONNECTION, (socket) => {
     }
   });
 
-  
+
 
 });
 
