@@ -1,40 +1,22 @@
 import express from 'express';
 import { Server } from 'socket.io';
-import { readFile } from 'node:fs';
 import { createServer } from 'node:http';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import * as c from '../public/js/socketConsts.mjs';
 
-import { Game } from './data/Game.mjs';
-import { GameManager } from './data/GameManager.mjs';
+import { setupRoutes } from './routes.mjs';
+import { setupSocket } from './socket.mjs';
 
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
-
-const gameManager = new GameManager();
-let lobbyCode = [];
-let questions = [];
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 app.use(express.static(join(__dirname, '../public')));
 
-app.get('/', (req, res) => {
-  res.sendFile(join(__dirname, '../public/html/index.html'));
-});
-
-app.get('/client.html', (req, res) => {
-  res.sendFile(join(__dirname, '../public/html/client.html'));
-});
-
-app.get('/game.html', (req, res) => {
-  res.sendFile(join(__dirname, '../public/html/game.html'));
-});
-
-// Carica le domande dal file JSON all'avvio del server
+let questions;
 readFile(join(__dirname, '../questions.json'), 'utf8', (err, data) => {
   if (err) {
     console.error('Errore nella lettura del file delle domande:', err);
@@ -43,144 +25,10 @@ readFile(join(__dirname, '../questions.json'), 'utf8', (err, data) => {
   questions = JSON.parse(data);
 });
 
+// setup
+setupRoutes(app, __dirname);
+setupSocket(io, questions);
 
-// Funzione per mescolare un array
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
-
-io.on(c.CONNECTION, (socket) => {
-  socket.on(c.LOBBY_CODE, ([code, numQuestionsParam]) => {
-    console.log('Ho ricevuto questo dato: ', code, ' - ', numQuestionsParam);
-    lobbyCode.push(code);
-    gameManager.games[code] = new Game(code, numQuestionsParam);
-    // Mescola le domande e seleziona le prime numQuestions
-    // TODO FIX sempre parametro (default 5)
-    gameManager.games[code].selectedQuestions = shuffle(questions).slice(0, numQuestionsParam);
-  });
-
-  socket.on(c.JOIN_LOBBY, (data) => {
-    if (lobbyCode.includes(data.lobbyCode)) {
-      console.log(data.playerName + ' just joined the lobby');
-
-      const code = data.lobbyCode;
-      gameManager.games[code].players.push(data.playerName);
-      gameManager.games[code].votes[data.playerName] = 0;
-      gameManager.games[code].playerScores[data.playerName] = 0;
-      gameManager.games[code].readyForNextQuestion[data.playerName] = false;
-
-      socket.join(code);
-      // io.to non fa funzionare la tabella che fa vedere l'elenco dei giocatori
-      //io.to(code).emit('addNewPlayer', data.playerName);
-      io.emit(c.ADD_NEW_PLAYER, data.playerName);
-    } else {
-      console.log('A client tried to join a non-existing lobby');
-      socket.emit(c.ERROR, 'Codice lobby non esistente');
-    }
-  });
-
-  socket.on(c.START_GAME, (data) => {
-    console.log(data);
-    io.to(data.lobbyCode).emit(c.INIZIA);
-  });
-
-  socket.on(c.READY, (data) => {
-    console.log('rejoining the lobby');
-    socket.join(data.lobbyCode);
-    console.log('The player is ready');
-    sendQuestion(data.lobbyCode);
-  });
-
-  socket.on(c.VOTE, (data) => {
-    console.log('Ho ricevuto il voto ', data);
-    const thisGame = gameManager.games[data.lobbyCode];
-    if (Object.prototype.hasOwnProperty.call(thisGame.votes, data.vote)) {
-      thisGame.votes[data.vote] += 1;
-    }
-    thisGame.numOfPlayers++;
-    if (thisGame.numOfPlayers === thisGame.players.length) {
-      thisGame.numOfPlayers = 0;
-      const resultMessage = calculateScores(data.lobbyCode);
-      const players = thisGame.players;
-      io.to(data.lobbyCode).emit(c.SHOW_RESULTS, { resultMessage, players });
-    }
-  });
-
-  socket.on(c.READY_FOR_NEXT_QUESTION, (data) => {
-    const thisGame = gameManager.games[data.lobbyCode];
-    thisGame.readyForNextQuestion[data.playerName] = true;
-
-    if (Object.values(thisGame.readyForNextQuestion).every(value => value === true)) {
-      if (thisGame.currentQuestionIndex + 1 < thisGame.numQuestions) {
-        thisGame.currentQuestionIndex++;
-        sendQuestion(data.lobbyCode);
-        resetReadyForNextQuestion(data.lobbyCode); // Reset readiness for the next round
-      } else {
-        io.to(data.lobbyCode).emit(c.GAME_OVER);
-        console.log('Game Over: no more questions.');
-        console.log('Risultati finali:');
-        thisGame.players.forEach(player => {
-          console.log(`${player}: ${thisGame.playerScores[player]} punti`);
-        });
-        io.to(data.lobbyCode).emit(c.FINAL_RESULTS, thisGame.playerScores);
-      }
-    }
-  });
-
-  function resetReadyForNextQuestion(lobbyCode) {
-    const thisGame = gameManager.games[lobbyCode];
-    thisGame.players.forEach(player => {
-      thisGame.readyForNextQuestion[player] = false;
-    });
-  }
-
-  function calculateScores(lobbyCode) {
-    const thisGame = gameManager.games[lobbyCode];
-    const maxVotes = Math.max(...Object.values(thisGame.votes));
-    const winners = Object.keys(thisGame.votes).filter(player => thisGame.votes[player] === maxVotes);
-
-    let resultMessage;
-    if (winners.length > 1) {
-      resultMessage = 'Pareggio! Nessun punto assegnato';
-    } else {
-      const winner = winners[0];
-      thisGame.playerScores[winner] += 1;
-      resultMessage = `+ 1 punto a chi ha scelto ${winner}`;
-    }
-
-    // Resetta i voti per la prossima domanda
-    Object.keys(thisGame.votes).forEach(player => thisGame.votes[player] = 0);
-
-    return resultMessage;
-  }
-
-  socket.on(c.NEXT_QUESTION, (lobbyCode) => {
-    const thisGame = gameManager.games[lobbyCode];
-    if (thisGame.currentQuestionIndex + 1 < thisGame.numQuestions) {
-      thisGame.currentQuestionIndex++;
-      sendQuestion(lobbyCode);
-    } else {
-      io.to(lobbyCode).emit(c.GAME_OVER);
-      console.log('Game Over: no more questions.');
-      console.log('Risultati finali:');
-      thisGame.players.forEach(player => {
-        console.log(`${player}: ${thisGame.playerScores[player]} punti`);
-      });
-      io.to(lobbyCode).emit(c.FINAL_RESULTS, thisGame.playerScores);
-    }
-  });
-
-  function sendQuestion(lobbyCode) {
-    const thisGame = gameManager.games[lobbyCode];
-    const question = thisGame.selectedQuestions[thisGame.currentQuestionIndex];
-    const players = thisGame.players;
-    io.to(lobbyCode).emit(c.SEND_QUESTION, { question, players });
-  }
-});
 
 server.listen(3000, () => {
   console.log('server running at http://localhost:3000');
