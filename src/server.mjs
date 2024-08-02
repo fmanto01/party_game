@@ -3,6 +3,7 @@ import { Server } from 'socket.io';
 import { createServer } from 'node:http';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { readFile } from 'node:fs';
 
 import { setupRoutes } from './routes.mjs';
 import { setupSocket } from './socket.mjs';
