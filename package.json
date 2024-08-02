@@ -4,15 +4,22 @@
   "description": "Party game ispirato a \"Dimmi chi sei!\"",
   "main": "src/server.mjs",
   "type": "module",
+  "scripts": {
+    "test": "jest"
+  },
   "dependencies": {
     "express": "^4.19.2",
     "socket.io": "^4.7.5"
   },
   "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/preset-env": "^7.25.3",
     "@eslint/js": "^9.8.0",
     "@stylistic/eslint-plugin-js": "^2.6.1",
+    "babel-jest": "^29.7.0",
     "eslint": "^9.8.0",
     "globals": "^15.8.0",
+    "jest": "^29.7.0",
     "nodemon": "^3.1.4"
   }
 }
