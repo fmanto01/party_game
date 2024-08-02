@@ -13,6 +13,10 @@ export class Game {
     this.readyForNextQuestion = {}; // Track readiness for next question
   }
 
+  getPlayers() {
+    return [...this.players];
+  }
+
   calculateScores() {
     const maxVotes = Math.max(...Object.values(this.votes));
     const winners = Object.keys(this.votes).filter(player => this.votes[player] === maxVotes);

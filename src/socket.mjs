@@ -91,5 +91,12 @@ export function setupSocket(io, questions) {
         io.to(data.lobbyCode).emit(c.FINAL_RESULTS, thisGame.playerScores);
       }
     });
+
+    socket.on(c.LEAVE_LOBBY, (data) => {
+      const gameInstance = gameManager.getGame(data.lobbyCode);
+      if (gameInstance) {
+        gameInstance.removePlayer(data.playerName);
+      }
+    });
   });
 }

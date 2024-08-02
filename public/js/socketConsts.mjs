@@ -2,6 +2,7 @@ export const LOBBY_CODE = 'lobbyCode';
 export const ADD_NEW_PLAYER = 'addNewPlayer';
 export const START_GAME = 'startGame';
 export const JOIN_LOBBY = 'joinLobby';
+export const LEAVE_LOBBY = 'leaveLobby';
 export const VOTE = 'vote';
 export const SEND_QUESTION = 'sendQuestion';
 export const SHOW_RESULTS = 'showResults';
