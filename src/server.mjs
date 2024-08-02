@@ -21,7 +21,6 @@ async function init() {
   try {
     const data = await readFile(join(__dirname, '../questions.json'), 'utf8');
     const questions = JSON.parse(data);
-    console.log('Contenuto file JSON: ', questions);
 
     // setup
     setupRoutes(app, __dirname);

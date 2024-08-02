@@ -31,10 +31,8 @@ export function setupSocket(io, questions) {
     });
 
     socket.on(c.JOIN_LOBBY, (data) => {
-      console.log('sto per joinare');
-      console.log(data.lobbyCode);
       if (lobbyCode.includes(data.lobbyCode)) {
-        console.log(data.playerName + ' just joined the lobby');
+        console.log(`${data.playerName} just joined the lobby`);
 
         const code = data.lobbyCode;
         gameManager.getGame(code).addPlayer(data.playerName);
@@ -50,7 +48,6 @@ export function setupSocket(io, questions) {
     });
 
     socket.on(c.START_GAME, (data) => {
-      console.log(data);
       io.to(data.lobbyCode).emit(c.INIZIA);
     });
 
@@ -103,9 +100,8 @@ export function setupSocket(io, questions) {
 
     socket.on(c.REQUEST_RENDER_LOBBY, (code) => {
       const thisGame = gameManager.getGame(code);
-      console.log('rejoining');
       socket.join(code);
-      socket.emit(c.RENDER_LOBBY, thisGame);
+      io.to(code).emit(c.RENDER_LOBBY, thisGame);
     });
 
 

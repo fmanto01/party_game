@@ -5,11 +5,16 @@ document.addEventListener('DOMContentLoaded', function () {
   const playersTable = document.getElementById('playersTable');
   const startGameBtn = document.getElementById('startGameBtn');
   const numQuestionsInput = document.getElementById('numQuestions');
+  const lobbyCodeTabTitle = document.getElementById('lobbyCodeTabTitle');
+  const lobbyCodeTitle = document.getElementById('lobbyCodeTitle');
+
 
   const url = new URL(window.location.href);
   const params = new URLSearchParams(url.search);
   const currentLobbyCode = params.get('lobbyCode');
   const currentPlayer = params.get('name');
+
+  lobbyCodeTitle.textContent = lobbyCodeTabTitle.textContent = currentLobbyCode;
 
   socket.emit(c.REQUEST_RENDER_LOBBY, currentLobbyCode);
 
@@ -24,13 +29,14 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  startGameBtn.addEventListener('click', function () {
-    const numQuestions = parseInt(numQuestionsInput.value);
-    if (numQuestions >= 5) {
-      const data = { lobbyCode: currentLobbyCode, numQuestions: numQuestions };
-      socket.emit(c.START_GAME, data);
-    } else {
-      alert('Il numero minimo di domande è 5.');
-    }
+  startGameBtn.addEventListener('click', () => {
+    const data = {
+      lobbyCode: currentLobbyCode,
+    };
+    socket.emit(c.START_GAME, data);
+  });
+
+  socket.on('inizia', function () {
+    window.location.href = `/game.html/?lobbyCode=${currentLobbyCode}&name=${currentPlayer}`;
   });
 });
