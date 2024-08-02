@@ -5,8 +5,8 @@ export function setupRoutes(app, __dirname) {
     res.sendFile(join(__dirname, '../public/html/index.html'));
   });
 
-  app.get('/client.html', (req, res) => {
-    res.sendFile(join(__dirname, '../public/html/client.html'));
+  app.get('/lobby.html', (req, res) => {
+    res.sendFile(join(__dirname, '../public/html/lobby.html'));
   });
 
   app.get('/game.html', (req, res) => {

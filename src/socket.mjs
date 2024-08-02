@@ -20,14 +20,19 @@ function shuffle(array) {
 
 export function setupSocket(io, questions) {
   io.on(c.CONNECTION, (socket) => {
-    socket.on(c.LOBBY_CODE, ([code, numQuestionsParam]) => {
+    socket.on(c.CREATE_LOBBY, ([code, numQuestionsParam]) => {
       console.log('Ho ricevuto questo dato: ', code, ' - ', numQuestionsParam);
       lobbyCode.push(code);
       gameManager.createGame(code, numQuestionsParam);
       gameManager.getGame(code).selectedQuestions = shuffle(questions).slice(0, numQuestionsParam);
+      const lobbies = gameManager.listGames();
+      console.log(lobbyCode);
+      socket.emit(c.RENDER_LOBBIES, { lobbies });
     });
 
     socket.on(c.JOIN_LOBBY, (data) => {
+      console.log('sto per joinare');
+      console.log(data.lobbyCode);
       if (lobbyCode.includes(data.lobbyCode)) {
         console.log(data.playerName + ' just joined the lobby');
 
@@ -37,7 +42,7 @@ export function setupSocket(io, questions) {
         socket.join(code);
         // TODO io.to non fa funzionare la tabella che fa vedere l'elenco dei giocatori
         //io.to(code).emit('addNewPlayer', data.playerName);
-        io.emit(c.ADD_NEW_PLAYER, data.playerName);
+        // io.emit(c.ADD_NEW_PLAYER, data.playerName);
       } else {
         console.log('A client tried to join a non-existing lobby');
         socket.emit(c.ERROR, 'Codice lobby non esistente');
@@ -95,5 +100,19 @@ export function setupSocket(io, questions) {
         io.to(data.lobbyCode).emit(c.FINAL_RESULTS, thisGame.playerScores);
       }
     });
+
+    socket.on(c.REQUEST_RENDER_LOBBY, (code) => {
+      const thisGame = gameManager.getGame(code);
+      console.log('rejoining');
+      socket.join(code);
+      socket.emit(c.RENDER_LOBBY, thisGame);
+    });
+
+
+    socket.on('disconnect', () => {
+      console.log('Client disconnected:', socket.id);
+    });
+
+
   });
 }

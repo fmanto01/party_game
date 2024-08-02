@@ -32,6 +32,6 @@ export class GameManager {
 
   // Method to list all games
   listGames() {
-    return Object.keys(this.games);
+    return Object.values(this.games);
   }
 }

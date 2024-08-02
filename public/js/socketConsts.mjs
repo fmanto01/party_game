@@ -1,4 +1,4 @@
-export const LOBBY_CODE = 'lobbyCode';
+export const CREATE_LOBBY = 'createLobby';
 export const ADD_NEW_PLAYER = 'addNewPlayer';
 export const START_GAME = 'startGame';
 export const JOIN_LOBBY = 'joinLobby';
@@ -14,3 +14,6 @@ export const CONNECTION = 'connection';
 export const ERROR = 'error';
 export const INIZIA = 'inizia';
 export const READY = 'ready';
+export const RENDER_LOBBIES = 'renderLobbies';
+export const RENDER_LOBBY = 'renderLobby';
+export const REQUEST_RENDER_LOBBY = 'requestRenderLobby';

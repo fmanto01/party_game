@@ -1,22 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nome Gioco</title>
-    <link
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
     <script type="module" src="../js/index.js"></script>
-  </head>
+</head>
 
-  <body>
+<body>
     <div class="container mt-5">
         <h1 class="text-center">Nome Gioco</h1>
         <div class="text-center mt-4">
@@ -27,22 +25,21 @@
             <label for="numQuestions">Numero domande:</label>
             <input type="number" id="numQuestions" min="5" value="5" class="form-control w-25 mx-auto">
         </div>
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input type="text" id="playerNameInput" class="form-control mb-3"
+                        placeholder="Inserisci il tuo nome" />
+                </div>
+            </div>
+        </div>
         <div class="mt-5">
             <h2>Giocatori nella Lobby</h2>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Nome Giocatore</th>
-                    </tr>
-                </thead>
-                <tbody id="playersTable">
-                    <!-- I nomi dei giocatori verranno aggiunti qui -->
-                </tbody>
+            <table id="lobbiesList" class="table table-bordered">
+                <!-- list of all games -->
             </table>
         </div>
-        <div class="text-center mt-4">
-            <button id="startGameBtn" class="btn btn-primary">Inizia partita</button>
-        </div>
     </div>
-  </body>
+</body>
+
 </html>
