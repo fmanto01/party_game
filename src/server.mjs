@@ -87,6 +87,10 @@ io.on(c.CONNECTION, (socket) => {
     console.log('rejoining the lobby');
     socket.join(data.lobbyCode);
     console.log('The player is ready');
+    const thisGame = gameManager.getGame(data.lobbyCode);
+    const { value: question, done } = thisGame.getNextQuestion();
+    const players = thisGame.players;
+    io.to(lobbyCode).emit(c.SEND_QUESTION, { question, players });
   });
 
   socket.on(c.VOTE, (data) => {
@@ -96,7 +100,7 @@ io.on(c.CONNECTION, (socket) => {
     thisGame.castVote(data.voter, data.vote);
 
     if (thisGame.isAllPlayerVoter()) {
-      const resultMessage = calculateScores(data.lobbyCode);
+      const resultMessage = thisGame.calculateScores();
       const players = thisGame.players;
       io.to(data.lobbyCode).emit(c.SHOW_RESULTS, { resultMessage, players });
     }
@@ -113,6 +117,7 @@ io.on(c.CONNECTION, (socket) => {
     const { value: question, done } = thisGame.getNextQuestion();
     if (!done) {
       thisGame.resetReadyForNextQuestion(); // Reset readiness for the next round
+      const players = thisGame.players;
       io.to(lobbyCode).emit(c.SEND_QUESTION, { question, players });
     } else {
       console.log('Game Over: no more questions.');
