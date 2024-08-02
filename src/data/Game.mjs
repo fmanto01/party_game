@@ -81,7 +81,7 @@ export class Game {
     this.numOfVoters++;
   }
 
-  isAllPlayerVoter() {
+  isAllPlayersVoter() {
     return this.numOfVoters === this.players.length;
   }
 
