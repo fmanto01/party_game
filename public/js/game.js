@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const lobbyCode = params.get('lobbyCode');
   const playerName = params.get('name');
 
-  socket.emit(c.READY, { lobbyCode: lobbyCode });
+  socket.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode: lobbyCode, playerName: playerName, rejoin: true });
   const timerElement = document.getElementById('timer');
   const timerContainer = document.getElementById('timerContainer');
   const questionElement = document.getElementById('question');
@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Gestisci il pulsante per passare alla domanda successiva
   nextQuestionBtn.addEventListener('click', () => {
-    socket.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode: lobbyCode, playerName: playerName }); // Invia l'evento di prontezza al server
+    socket.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode: lobbyCode, playerName: playerName, rejoin: false }); // Invia l'evento di prontezza al server
     nextQuestionBtn.style.display = 'none'; // Nascondi il pulsante per evitare doppio click
   });
 
