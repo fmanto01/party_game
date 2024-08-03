@@ -4,7 +4,7 @@ const socket = io();
 document.addEventListener('DOMContentLoaded', function () {
   const playersTable = document.getElementById('playersTable');
   const startGameBtn = document.getElementById('startGameBtn');
-  const numQuestionsInput = document.getElementById('numQuestions');
+  // const numQuestionsInput = document.getElementById('numQuestions'); TODO mostra e potenzialmente modifica la lobby
   const lobbyCodeTabTitle = document.getElementById('lobbyCodeTabTitle');
   const lobbyCodeTitle = document.getElementById('lobbyCodeTitle');
 
