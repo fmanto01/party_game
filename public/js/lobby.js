@@ -3,7 +3,7 @@ const socket = io();
 
 document.addEventListener('DOMContentLoaded', function () {
   const playersTable = document.getElementById('playersTable');
-  const startGameBtn = document.getElementById('startGameBtn');
+  const toggleisReadyToGame = document.getElementById('toggleisReadyToGame');
   // const numQuestionsInput = document.getElementById('numQuestions'); TODO mostra e potenzialmente modifica la lobby
   const lobbyCodeTabTitle = document.getElementById('lobbyCodeTabTitle');
   const lobbyCodeTitle = document.getElementById('lobbyCodeTitle');
@@ -29,11 +29,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  startGameBtn.addEventListener('click', () => {
+  toggleisReadyToGame.addEventListener('click', () => {
     const data = {
       lobbyCode: currentLobbyCode,
+      playerName: currentPlayer,
     };
-    socket.emit(c.START_GAME, data);
+    socket.emit(c.TOGGLE_IS_READY_TO_GAME, data);
   });
 
   socket.on('inizia', function () {

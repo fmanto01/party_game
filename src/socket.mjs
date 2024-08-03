@@ -49,19 +49,15 @@ export function setupSocket(io, questions) {
       io.to(socket.id).emit(c.RENDER_LOBBIES, { lobbies });
     });
 
-    socket.on(c.START_GAME, (data) => {
+    socket.on(c.TOGGLE_IS_READY_TO_GAME, (data) => {
+      console.log(`sono in toogle ready: ${data}`);
+      const thisGame = gameManager.getGame(data.lobbyCode);
+      thisGame.toogleIsReadyToGame(data.playerName);
+      if (!thisGame.isAllPlayersReadyToGame()) {
+        return;
+      }
       io.to(data.lobbyCode).emit(c.INIZIA);
     });
-
-    // socket.on(c.READY, (data) => {
-    //   console.log('rejoining the lobby');
-    //   socket.join(data.lobbyCode);
-    //   console.log('The player is ready');
-    //   const thisGame = gameManager.getGame(data.lobbyCode);
-    //   const { value: question } = thisGame.getNextQuestion();
-    //   const players = thisGame.players;
-    //   io.to(lobbyCode).emit(c.SEND_QUESTION, { question, players });
-    // });
 
     socket.on(c.VOTE, (data) => {
       console.log('Ho ricevuto il voto ', data);

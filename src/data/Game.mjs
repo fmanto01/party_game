@@ -11,6 +11,7 @@ export class Game {
     this.votes = {};
     this.playerScores = {}; // For tracking player scores
     this.readyForNextQuestion = {}; // Track readiness for next question
+    this.isReadyToGame = {}; // Track readiness for next question
   }
 
   calculateScores() {
@@ -41,6 +42,7 @@ export class Game {
       this.playerScores[playerName] = 0; // Initialize score for new player
       this.readyForNextQuestion[playerName] = false; // Set readiness status
       this.votes[playerName] = 0;
+      this.isReadyToGame[playerName] = false;
     }
   }
 
@@ -50,7 +52,12 @@ export class Game {
       this.players.splice(index, 1);
       delete this.playerScores[playerName];
       delete this.readyForNextQuestion[playerName];
+      delete this.isReadyToGame[playerName];
     }
+  }
+
+  toogleIsReadyToGame(playerName) {
+    this.isReadyToGame[playerName] = !this.isReadyToGame[playerName];
   }
 
   // Method to set number of questions
@@ -120,6 +127,10 @@ export class Game {
   // Method to check if all players are ready
   isAllPlayersReady() {
     return this.players.every(player => this.readyForNextQuestion[player]);
+  }
+
+  isAllPlayersReadyToGame() {
+    return this.players.every(player => this.isReadyToGame[player]);
   }
 
   getNextQuestion() {
