@@ -12,14 +12,18 @@ function generateLobbyCode() {
 
 document.addEventListener('DOMContentLoaded', function () {
   const createGameBtn = document.getElementById('createGameBtn');
-  const playersTable = document.getElementById('playersTable');
   const numQuestionsInput = document.getElementById('numQuestions');
   const playerNameInput = document.getElementById('playerNameInput');
+  const refreshGameBtn = document.getElementById('refreshGameBtn');
 
   createGameBtn.addEventListener('click', function () {
     // Genera un nuovo codice per la lobby
     const code = generateLobbyCode();
     socket.emit(c.CREATE_LOBBY, [code, parseInt(numQuestionsInput.value)]);
+  });
+
+  refreshGameBtn.addEventListener('click', () => {
+    socket.emit(c.REQUEST_RENDER_LOBBIES);
   });
 
   socket.on(c.RENDER_LOBBIES, ({ lobbies }) => {
@@ -36,6 +40,10 @@ document.addEventListener('DOMContentLoaded', function () {
       row.appendChild(codeCell);
       row.appendChild(playersCell);
       row.onclick = () => {
+        if (playerNameInput.value === '') {
+          alert('inserisci un nome utente');
+          return;
+        }
         const data = {
           lobbyCode: lobby.lobbyCode,
           playerName: playerNameInput.value,

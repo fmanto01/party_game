@@ -16,4 +16,5 @@ export const INIZIA = 'inizia';
 export const READY = 'ready';
 export const RENDER_LOBBIES = 'renderLobbies';
 export const RENDER_LOBBY = 'renderLobby';
+export const REQUEST_RENDER_LOBBIES = 'requestRenderLobbies';
 export const REQUEST_RENDER_LOBBY = 'requestRenderLobby';

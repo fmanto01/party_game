@@ -47,6 +47,11 @@ export function setupSocket(io, questions) {
       }
     });
 
+    socket.on(c.REQUEST_RENDER_LOBBIES, () => {
+      const lobbies = gameManager.listGames();
+      io.to(socket.id).emit(c.RENDER_LOBBIES, { lobbies });
+    });
+
     socket.on(c.START_GAME, (data) => {
       io.to(data.lobbyCode).emit(c.INIZIA);
     });
