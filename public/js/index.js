@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const playersCell = document.createElement('td');
       const joinCell = document.createElement('td');
       
-      codeCell.textContent = `${lobby.lobbyCode}`;
+      codeCell.textContent = lobby.lobbyCode;
       playersCell.textContent = lobby.players.length;
 
       // Crea il pulsante Join
@@ -57,7 +57,14 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         console.log(data);
         socket.emit(c.JOIN_LOBBY, data);
-        window.location.href = `/lobby.html/?lobbyCode=${data.lobbyCode}&name=${data.playerName}`;
+
+        socket.on(c.ERROR_SAME_NAME, (canJoin) => {
+          alert('Giocatore già presente');
+        });
+
+        socket.on(c.PLAYER_CAN_JOIN, () => {
+          window.location.href = `/lobby.html/?lobbyCode=${data.lobbyCode}&name=${data.playerName}`;
+        });
       };
 
       joinCell.appendChild(joinButton);
