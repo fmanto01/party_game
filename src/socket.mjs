@@ -38,9 +38,9 @@ export function setupSocket(io, questions) {
           console.log(`Player with name ${data.playerName} already exists in lobby ${data.lobbyCode}`);
           socket.emit(c.ERROR_SAME_NAME);
           return;
-        } else {
-          socket.emit(c.PLAYER_CAN_JOIN);
-        }
+        } 
+        socket.emit(c.PLAYER_CAN_JOIN);
+        
         
         console.log(`${data.playerName} just joined the lobby`);
 
