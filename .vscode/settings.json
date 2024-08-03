@@ -18,5 +18,8 @@
         "eslint.format.enable": true,
         "editor.tabSize": 2
     },
+    "[javascriptreact]": {
+        "editor.tabSize": 2
+    },
     "editor.formatOnSave": true,
 }
