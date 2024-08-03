@@ -1,11 +1,12 @@
 import React from "react";
+import { generateLobbyCode } from '../js/index'
 
 function Home() {
   return (
     <div className="container mt-5">
       <h1 className="text-center">Nome Gioco</h1>
       <div className="text-center mt-4">
-        <button id="createGameBtn" className="btn btn-primary">Crea una Partita</button>
+        <button id="createGameBtn" className="btn btn-primary" onClick={console.log(generateLobbyCode)}>Crea una Partita</button>
       </div>
       <div className="text-center mt-4">
         <label htmlFor="numQuestions">Numero domande:</label>

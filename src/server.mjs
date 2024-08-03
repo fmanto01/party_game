@@ -27,10 +27,10 @@ async function init() {
     const questions = JSON.parse(data);
 
     // setup
-    setupRoutes(app, __dirname);
+    // setupRoutes(app, __dirname);
     setupSocket(io, questions);
 
-    server.listen(3000, () => {
+    server.listen(5000, () => {
       console.log('server running at http://localhost:3000');
     });
   } catch (err) {
