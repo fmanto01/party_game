@@ -4,7 +4,6 @@ import { GameManager } from './data/GameManager.mjs';
 const gameManager = new GameManager();
 let lobbyCode = [];
 
-
 // Funzione per mescolare un array
 function shuffle(array) {
   if (!Array.isArray(array)) {
@@ -32,11 +31,20 @@ export function setupSocket(io, questions) {
 
     socket.on(c.JOIN_LOBBY, (data) => {
       if (lobbyCode.includes(data.lobbyCode)) {
+        const code = data.lobbyCode;
+        const game = gameManager.getGame(code);
+        
+        if (game.players.includes(data.playerName)) {
+          console.log(`Player with name ${data.playerName} already exists in lobby ${data.lobbyCode}`);
+          socket.emit(c.ERROR_SAME_NAME);
+          return;
+        } else {
+          socket.emit(c.PLAYER_CAN_JOIN);
+        }
+        
         console.log(`${data.playerName} just joined the lobby`);
 
-        const code = data.lobbyCode;
-        gameManager.getGame(code).addPlayer(data.playerName);
-
+        game.addPlayer(data.playerName);
         socket.join(code);
       } else {
         console.log('A client tried to join a non-existing lobby');
@@ -104,11 +112,8 @@ export function setupSocket(io, questions) {
       io.to(code).emit(c.RENDER_LOBBY, thisGame);
     });
 
-
     socket.on(c.DISCONNECT, () => {
       console.log('Client disconnected:', socket.id);
     });
-
-
   });
 }

@@ -20,3 +20,5 @@ export const REQUEST_RENDER_LOBBIES = 'requestRenderLobbies';
 export const REQUEST_RENDER_LOBBY = 'requestRenderLobby';
 export const TOGGLE_IS_READY_TO_GAME = 'toggleIsReadyToGame';
 export const DISCONNECT = 'disconnect';
+export const ERROR_SAME_NAME = 'errorSameName';
+export const PLAYER_CAN_JOIN = 'playerCanJoin';
