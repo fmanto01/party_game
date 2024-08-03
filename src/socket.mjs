@@ -50,9 +50,9 @@ export function setupSocket(io, questions) {
     });
 
     socket.on(c.TOGGLE_IS_READY_TO_GAME, (data) => {
-      console.log(`sono in toogle ready: ${data}`);
       const thisGame = gameManager.getGame(data.lobbyCode);
       thisGame.toogleIsReadyToGame(data.playerName);
+      io.emit(c.RENDER_LOBBY, thisGame);
       if (!thisGame.isAllPlayersReadyToGame()) {
         return;
       }
@@ -105,7 +105,7 @@ export function setupSocket(io, questions) {
     });
 
 
-    socket.on('disconnect', () => {
+    socket.on(c.DISCONNECT, () => {
       console.log('Client disconnected:', socket.id);
     });
 

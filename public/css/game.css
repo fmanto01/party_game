@@ -1,28 +1,28 @@
 #playersContainer .player-button {
-    width: 100%;
-    max-width: 300px;
-    margin: 10px auto;
-    padding: 15px;
-    font-size: 1.5rem;
+	width: 100%;
+	max-width: 300px;
+	margin: 10px auto;
+	padding: 15px;
+	font-size: 1.5rem;
 }
 
 .top-container {
-    background-color: #007bff;
-    padding: 20px;
-    margin: 0 -15px;
-    position: relative;
-    width: calc(100% + 30px);
-    box-sizing: border-box;
-    border-top: none;
-    border-radius: 0;
+	background-color: #007bff;
+	padding: 20px;
+	margin: 0 -15px;
+	position: relative;
+	width: calc(100% + 30px);
+	box-sizing: border-box;
+	border-top: none;
+	border-radius: 0;
 }
 
 #questionContainer h2 {
-    font-size: 1.5rem;
-    color: #fff;
+	font-size: 1.5rem;
+	color: #fff;
 }
 
 #timerContainer h3 {
-    font-size: 1.25rem;
-    color: #fff;
+	font-size: 1.25rem;
+	color: #fff;
 }

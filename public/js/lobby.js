@@ -22,10 +22,14 @@ document.addEventListener('DOMContentLoaded', function () {
     playersTable.innerHTML = '';
     game.players.forEach(player => {
       const row = document.createElement('tr');
-      const cell = document.createElement('td');
-      cell.textContent = player;
-      row.appendChild(cell);
+      // 
+      const name = document.createElement('td');
+      name.textContent = player;
+      //
+      row.classList.add(game.isReadyToGame[player] ? 'color-ok' : 'color-ko');
+      row.appendChild(name);
       playersTable.appendChild(row);
+
     });
   });
 
