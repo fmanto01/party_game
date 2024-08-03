@@ -18,3 +18,5 @@ export const RENDER_LOBBIES = 'renderLobbies';
 export const RENDER_LOBBY = 'renderLobby';
 export const REQUEST_RENDER_LOBBIES = 'requestRenderLobbies';
 export const REQUEST_RENDER_LOBBY = 'requestRenderLobby';
+export const TOGGLE_IS_READY_TO_GAME = 'toggleIsReadyToGame';
+export const DISCONNECT = 'disconnect';

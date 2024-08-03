@@ -38,9 +38,6 @@ export function setupSocket(io, questions) {
         gameManager.getGame(code).addPlayer(data.playerName);
 
         socket.join(code);
-        // TODO io.to non fa funzionare la tabella che fa vedere l'elenco dei giocatori
-        //io.to(code).emit('addNewPlayer', data.playerName);
-        // io.emit(c.ADD_NEW_PLAYER, data.playerName);
       } else {
         console.log('A client tried to join a non-existing lobby');
         socket.emit(c.ERROR, 'Codice lobby non esistente');
@@ -52,18 +49,14 @@ export function setupSocket(io, questions) {
       io.to(socket.id).emit(c.RENDER_LOBBIES, { lobbies });
     });
 
-    socket.on(c.START_GAME, (data) => {
-      io.to(data.lobbyCode).emit(c.INIZIA);
-    });
-
-    socket.on(c.READY, (data) => {
-      console.log('rejoining the lobby');
-      socket.join(data.lobbyCode);
-      console.log('The player is ready');
+    socket.on(c.TOGGLE_IS_READY_TO_GAME, (data) => {
       const thisGame = gameManager.getGame(data.lobbyCode);
-      const { value: question } = thisGame.getNextQuestion();
-      const players = thisGame.players;
-      io.to(lobbyCode).emit(c.SEND_QUESTION, { question, players });
+      thisGame.toogleIsReadyToGame(data.playerName);
+      io.emit(c.RENDER_LOBBY, thisGame);
+      if (!thisGame.isAllPlayersReadyToGame()) {
+        return;
+      }
+      io.to(data.lobbyCode).emit(c.INIZIA);
     });
 
     socket.on(c.VOTE, (data) => {
@@ -82,6 +75,8 @@ export function setupSocket(io, questions) {
     socket.on(c.READY_FOR_NEXT_QUESTION, (data) => {
       const thisGame = gameManager.getGame(data.lobbyCode);
       thisGame.setReadyForNextQuestion(data.playerName);
+
+      if (data.rejoin) { socket.join(data.lobbyCode); }
 
       if (!thisGame.isAllPlayersReady()) {
         return;
@@ -110,7 +105,7 @@ export function setupSocket(io, questions) {
     });
 
 
-    socket.on('disconnect', () => {
+    socket.on(c.DISCONNECT, () => {
       console.log('Client disconnected:', socket.id);
     });
 

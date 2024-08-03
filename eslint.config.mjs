@@ -16,8 +16,8 @@ export default [
       '@stylistic/js/arrow-spacing': 'warn',
       '@stylistic/js/block-spacing': 'error',
       '@stylistic/js/space-infix-ops': 'warn',
+      '@stylistic/js/no-multiple-empty-lines': 'warn',
 
-      // General JavaScript rules
       'no-const-assign': 'error',
       'no-duplicate-imports': 'warn',
       'camelcase': 'warn',
