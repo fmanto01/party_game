@@ -19,7 +19,6 @@
         <h1 class="text-center">Nome Gioco</h1>
         <div class="text-center mt-4">
             <button id="createGameBtn" class="btn btn-primary">Crea una Partita</button>
-            <button id="refreshGameBtn" class="btn btn-secondary">Refresh partite</button>
         </div>
         <div class="text-center mt-4">
             <label for="numQuestions">Numero domande:</label>
@@ -34,9 +33,17 @@
             </div>
         </div>
         <div class="mt-5">
-            <h2>Giocatori nella Lobby</h2>
+            <h2>Lobby attive</h2>
             <table id="lobbiesList" class="table table-bordered">
-                <!-- list of all games -->
+                <thead>
+                    <tr>
+                        <th>Codice Lobby</th>
+                        <th>Num Giocatori</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- list of all games -->
+                </tbody>
             </table>
         </div>
     </div>
