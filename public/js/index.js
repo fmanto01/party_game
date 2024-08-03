@@ -10,11 +10,15 @@ function generateLobbyCode() {
   return code;
 }
 
+function updateLobbies() {
+  console.log('Updating lobbies...');
+  socket.emit(c.REQUEST_RENDER_LOBBIES);
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   const createGameBtn = document.getElementById('createGameBtn');
   const numQuestionsInput = document.getElementById('numQuestions');
   const playerNameInput = document.getElementById('playerNameInput');
-  const refreshGameBtn = document.getElementById('refreshGameBtn');
 
   createGameBtn.addEventListener('click', function () {
     // Genera un nuovo codice per la lobby
@@ -22,12 +26,10 @@ document.addEventListener('DOMContentLoaded', function () {
     socket.emit(c.CREATE_LOBBY, [code, parseInt(numQuestionsInput.value)]);
   });
 
-  refreshGameBtn.addEventListener('click', () => {
-    socket.emit(c.REQUEST_RENDER_LOBBIES);
-  });
+  setInterval(updateLobbies, 2000);
 
   socket.on(c.RENDER_LOBBIES, ({ lobbies }) => {
-    const table = document.getElementById('lobbiesList');
+    const table = document.getElementById('lobbiesList').querySelector('tbody');
     table.innerHTML = '';
     // Itera su ogni lobby
     lobbies.forEach(lobby => {
@@ -35,13 +37,18 @@ document.addEventListener('DOMContentLoaded', function () {
       const row = document.createElement('tr');
       const codeCell = document.createElement('td');
       const playersCell = document.createElement('td');
-      codeCell.textContent = `Lobby: ${lobby.lobbyCode}`;
+      const joinCell = document.createElement('td');
+      
+      codeCell.textContent = `${lobby.lobbyCode}`;
       playersCell.textContent = lobby.players.length;
-      row.appendChild(codeCell);
-      row.appendChild(playersCell);
-      row.onclick = () => {
+
+      // Crea il pulsante Join
+      const joinButton = document.createElement('button');
+      joinButton.textContent = 'Join';
+      joinButton.className = 'btn btn-success';
+      joinButton.onclick = () => {
         if (playerNameInput.value === '') {
-          alert('inserisci un nome utente');
+          alert('Inserisci un nome utente');
           return;
         }
         const data = {
@@ -52,16 +59,14 @@ document.addEventListener('DOMContentLoaded', function () {
         socket.emit(c.JOIN_LOBBY, data);
         window.location.href = `/lobby.html/?lobbyCode=${data.lobbyCode}&name=${data.playerName}`;
       };
+
+      joinCell.appendChild(joinButton);
+      
+      row.appendChild(codeCell);
+      row.appendChild(playersCell);
+      row.appendChild(joinCell);
+      
       table.appendChild(row);
     });
   });
-
-  // socket.on(c.ADD_NEW_PLAYER, function (playerName) {
-  //   const row = document.createElement('tr');
-  //   const cell = document.createElement('td');
-  //   cell.textContent = playerName;
-  //   row.appendChild(cell);
-  //   playersTable.appendChild(row);
-  // });
-
 });
