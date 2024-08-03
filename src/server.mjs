@@ -15,6 +15,10 @@ const io = new Server(server);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
 app.use(express.static(join(__dirname, '../public')));
 
 async function init() {

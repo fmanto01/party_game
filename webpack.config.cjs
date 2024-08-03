@@ -7,10 +7,13 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
   },
+  resolve: {
+    extensions: ['.js', '.jsx'], // Aggiungi estensioni .jsx qui
+  },
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(js|jsx)$/, // Aggiungi estensioni .jsx qui
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
@@ -18,6 +21,10 @@ module.exports = {
             presets: ['@babel/preset-env', '@babel/preset-react'],
           },
         },
+      },
+      {
+        test: /\.css$/, // Aggiungi un loader per i file CSS
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },
