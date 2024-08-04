@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc && cp src/questions.json dist/questions.json",
-    "start": "nodemon dist/index.js"
+    "start": "npm run build && nodemon dist/index.js"
   },
   "keywords": [],
   "author": "",
