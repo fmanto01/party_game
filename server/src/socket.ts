@@ -1,12 +1,11 @@
-import * as c from '../public/js/socketConsts.mjs';
-import { GameManager } from './data/GameManager.mjs';
+import * as c from './socketConsts.js';
+import { GameManager } from './data/GameManager.js';
 
 const gameManager = new GameManager();
-let lobbyCode = [];
-
+let lobbyCode: string[] = [];
 
 // Funzione per mescolare un array
-function shuffle(array) {
+function shuffle(array: string[]) {
   if (!Array.isArray(array)) {
     console.error('shuffle: input is not an array', array);
     return [];
@@ -18,9 +17,10 @@ function shuffle(array) {
   return array;
 }
 
-export function setupSocket(io, questions) {
-  io.on(c.CONNECTION, (socket) => {
-    socket.on(c.CREATE_LOBBY, ([code, numQuestionsParam]) => {
+
+export function setupSocket(io: any, questions: string[]) {
+  io.on(c.CONNECTION, (socket: any) => {
+    socket.on(c.CREATE_LOBBY, ([code, numQuestionsParam]: [string, number]) => {
       console.log('Ho ricevuto questo dato: ', code, ' - ', numQuestionsParam);
       lobbyCode.push(code);
       gameManager.createGame(code, numQuestionsParam);
@@ -30,13 +30,22 @@ export function setupSocket(io, questions) {
       socket.emit(c.RENDER_LOBBIES, { lobbies });
     });
 
-    socket.on(c.JOIN_LOBBY, (data) => {
+    socket.on(c.JOIN_LOBBY, (data: { lobbyCode: string; playerName: string }) => {
       if (lobbyCode.includes(data.lobbyCode)) {
+        const code = data.lobbyCode;
+        const game = gameManager.getGame(code);
+
+        if (game.players.includes(data.playerName)) {
+          console.log(`Player with name ${data.playerName} already exists in lobby ${data.lobbyCode}`);
+          socket.emit(c.ERROR_SAME_NAME);
+          return;
+        }
+        socket.emit(c.PLAYER_CAN_JOIN);
+
+
         console.log(`${data.playerName} just joined the lobby`);
 
-        const code = data.lobbyCode;
-        gameManager.getGame(code).addPlayer(data.playerName);
-
+        game.addPlayer(data.playerName);
         socket.join(code);
       } else {
         console.log('A client tried to join a non-existing lobby');
@@ -49,7 +58,7 @@ export function setupSocket(io, questions) {
       io.to(socket.id).emit(c.RENDER_LOBBIES, { lobbies });
     });
 
-    socket.on(c.TOGGLE_IS_READY_TO_GAME, (data) => {
+    socket.on(c.TOGGLE_IS_READY_TO_GAME, (data: { lobbyCode: string; playerName: string }) => {
       const thisGame = gameManager.getGame(data.lobbyCode);
       thisGame.toogleIsReadyToGame(data.playerName);
       io.emit(c.RENDER_LOBBY, thisGame);
@@ -59,7 +68,7 @@ export function setupSocket(io, questions) {
       io.to(data.lobbyCode).emit(c.INIZIA);
     });
 
-    socket.on(c.VOTE, (data) => {
+    socket.on(c.VOTE, (data: { lobbyCode: string; voter: string, vote: string }) => {
       console.log('Ho ricevuto il voto ', data);
       const thisGame = gameManager.getGame(data.lobbyCode);
 
@@ -72,11 +81,12 @@ export function setupSocket(io, questions) {
       }
     });
 
-    socket.on(c.READY_FOR_NEXT_QUESTION, (data) => {
+    socket.on(c.READY_FOR_NEXT_QUESTION, (data: { lobbyCode: string; playerName: string }) => {
       const thisGame = gameManager.getGame(data.lobbyCode);
       thisGame.setReadyForNextQuestion(data.playerName);
 
-      if (data.rejoin) { socket.join(data.lobbyCode); }
+      // TODO check, non dovrebbe piu servire una volta finito
+      // if (data.rejoin) { socket.join(data.lobbyCode); }
 
       if (!thisGame.isAllPlayersReady()) {
         return;
@@ -90,25 +100,28 @@ export function setupSocket(io, questions) {
       } else {
         console.log('Game Over: no more questions.');
         console.log('Risultati finali:');
-        thisGame.players.forEach(player => {
+
+
+
+        thisGame.players.forEach((player: string) => {
           console.log(`${player}: ${thisGame.playerScores[player]} punti`);
         });
+
+
+
         io.to(data.lobbyCode).emit(c.GAME_OVER);
         io.to(data.lobbyCode).emit(c.FINAL_RESULTS, thisGame.playerScores);
       }
     });
 
-    socket.on(c.REQUEST_RENDER_LOBBY, (code) => {
+    socket.on(c.REQUEST_RENDER_LOBBY, (code: string) => {
       const thisGame = gameManager.getGame(code);
       socket.join(code);
       io.to(code).emit(c.RENDER_LOBBY, thisGame);
     });
 
-
     socket.on(c.DISCONNECT, () => {
       console.log('Client disconnected:', socket.id);
     });
-
-
   });
 }

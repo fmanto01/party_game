@@ -1,4 +1,4 @@
-import * as c from './socketConsts.mjs';
+import * as c from '../../../server/src/socketConsts.js';
 document.addEventListener('DOMContentLoaded', function () {
   const socket = io();
   const url = new URL(window.location.href);

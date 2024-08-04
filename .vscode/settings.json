@@ -18,7 +18,14 @@
         "eslint.format.enable": true,
         "editor.tabSize": 2
     },
+    // "[typescript]": {
+    //     "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    //     "editor.tabSize": 2
+    // },
     "[javascriptreact]": {
+        "editor.tabSize": 2
+    },
+    "[typescriptreact]": {
         "editor.tabSize": 2
     },
     "editor.formatOnSave": true,
