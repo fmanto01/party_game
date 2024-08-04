@@ -30,23 +30,21 @@ export function setupSocket(io: any, questions: string[]) {
       socket.emit(c.RENDER_LOBBIES, { lobbies });
     });
 
-    socket.on(c.JOIN_LOBBY, (data: { lobbyCode: string; playerName: string }) => {
+    socket.on(c.REQUEST_TO_JOIN_LOBBY, (data: { lobbyCode: string; playerName: string }) => {
       if (lobbyCode.includes(data.lobbyCode)) {
         const code = data.lobbyCode;
         const game = gameManager.getGame(code);
 
         if (game.players.includes(data.playerName)) {
           console.log(`Player with name ${data.playerName} already exists in lobby ${data.lobbyCode}`);
-          socket.emit(c.ERROR_SAME_NAME);
+          socket.emit(c.PLAYER_CAN_JOIN, { canJoin: false, lobbyCode: code, playerName: data.playerName });
           return;
         }
-        socket.emit(c.PLAYER_CAN_JOIN);
-
 
         console.log(`${data.playerName} just joined the lobby`);
-
         game.addPlayer(data.playerName);
         socket.join(code);
+        socket.emit(c.PLAYER_CAN_JOIN, { canJoin: true, lobbyCode: code, playerName: data.playerName });
       } else {
         console.log('A client tried to join a non-existing lobby');
         socket.emit(c.ERROR, 'Codice lobby non esistente');

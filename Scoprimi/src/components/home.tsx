@@ -1,39 +1,21 @@
 // Home.tsx
 import React, { useState, useEffect } from 'react';
-import { handleCreateGame, updateLobbies, socket, initializeSocket } from '../../public/ts/home.ts'; // Assicurati che il percorso sia corretto
+import { handleCreateGame, updateLobbies, listenToRenderLobbies, handleJoinGame, listen } from '../ts/home.ts'; // Assicurati che il percorso sia corretto
+import { useNavigate } from 'react-router-dom';
 
 const Home: React.FC = () => {
   const [lobbies, setLobbies] = useState<any[]>([]);
   const [playerName, setPlayerName] = useState<string>('');
   const [numQuestions, setNumQuestions] = useState<number>(5);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Inizializza socket e gestisci l'aggiornamento delle lobby
-    initializeSocket(setLobbies);
-
-    // Funzione per aggiornare le lobby
-    const intervalId = setInterval(updateLobbies, 2000);
-
-    // Pulizia dell'intervallo e dell'ascoltatore del socket
-    return () => {
-      clearInterval(intervalId);
-      socket.off(); // Pulisce tutti gli ascoltatori per evitare memory leaks
-    };
-  }, []);
-
-  const handleJoinLobby = (lobbyCode: string) => {
-    if (playerName === '') {
-      alert('Inserisci un nome utente');
-      return;
-    }
-    const data = {
-      lobbyCode,
-      playerName,
-    };
-    console.log(data);
-    socket.emit(c.JOIN_LOBBY, data);
-    window.location.href = `/lobby.html/?lobbyCode=${data.lobbyCode}&name=${data.playerName}`;
-  };
+    updateLobbies();
+    listenToRenderLobbies(({ lobbies }) => {
+      setLobbies(lobbies);
+    });
+    listen(navigate);
+  }, [navigate]);
 
   return (
     <div className="container mt-5">
@@ -79,6 +61,18 @@ const Home: React.FC = () => {
             </tr>
           </thead>
           <tbody>
+            {/* qua ci finisono le lobby */}
+            {lobbies.map((lobby) => (
+              <tr key={lobby.lobbyCode}>
+                <td>{lobby.lobbyCode}</td>
+                <td>{lobby.players.length}</td>
+                <td>
+                  <button className="btn btn-success" onClick={() => handleJoinGame(lobby.lobbyCode, playerName)}>
+                    Join
+                  </button>
+                </td>
+              </tr>
+            ))}
             {/* qua ci finisono le lobby */}
           </tbody>
         </table>

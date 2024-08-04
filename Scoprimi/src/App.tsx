@@ -1,25 +1,18 @@
-import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from './components/home.tsx';
+import Lobby from './components/lobby.tsx';
 import Game from './components/game.tsx';
-import Lobby from './components/lobby.js';
-import Home from './components/home.js';
 
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route path="/" element={<Home />}>
-      <Route path="/lobby" element={<Lobby />} />
-      <Route path="/game" element={<Game />} />
-    </Route>
-  )
-)
-
-function App() {
-
-
+const App = () => {
   return (
-    <>
-      <RouterProvider router={router}></RouterProvider>
-    </>
-  )
-}
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/lobby" element={<Lobby />} />
+        <Route path="/game" element={<Game />} />
+      </Routes>
+    </Router>
+  );
+};
 
 export default App
