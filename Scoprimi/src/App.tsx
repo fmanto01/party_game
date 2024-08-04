@@ -1,7 +1,7 @@
 import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from 'react-router-dom';
 import Game from './components/game.tsx';
-import Lobby from './components/lobby.jsx';
-import Home from './components/home.jsx';
+import Lobby from './components/lobby.js';
+import Home from './components/home.js';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
