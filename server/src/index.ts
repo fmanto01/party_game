@@ -3,7 +3,7 @@ import { Server } from 'socket.io';
 import { createServer } from 'node:http';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { setupSocket } from './socket.mjs';
+import { setupSocket } from './socket.js';
 import { readFile } from 'node:fs/promises';
 import cors from 'cors';
 

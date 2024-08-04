@@ -1,4 +1,4 @@
-export const CREATE_LOBBY = 'createLobby';
+export const CREATE_LOBBY: string = 'createLobby';
 export const ADD_NEW_PLAYER = 'addNewPlayer';
 export const START_GAME = 'startGame';
 export const JOIN_LOBBY = 'joinLobby';

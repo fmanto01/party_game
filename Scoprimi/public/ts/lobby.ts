@@ -1,4 +1,4 @@
-import * as c from '../../../server/socketConsts.mjs';
+import * as c from '../../../server/src/socketConsts.js';
 const socket = io();
 
 document.addEventListener('DOMContentLoaded', function () {

@@ -1,5 +1,5 @@
-import * as c from './socketConsts.mjs';
-import { GameManager } from './data/GameManager.mjs';
+import * as c from './socketConsts.js';
+import { GameManager } from '../data/GameManager.mjs';
 
 const gameManager = new GameManager();
 let lobbyCode = [];
@@ -33,15 +33,15 @@ export function setupSocket(io, questions) {
       if (lobbyCode.includes(data.lobbyCode)) {
         const code = data.lobbyCode;
         const game = gameManager.getGame(code);
-        
+
         if (game.players.includes(data.playerName)) {
           console.log(`Player with name ${data.playerName} already exists in lobby ${data.lobbyCode}`);
           socket.emit(c.ERROR_SAME_NAME);
           return;
-        } 
+        }
         socket.emit(c.PLAYER_CAN_JOIN);
-        
-        
+
+
         console.log(`${data.playerName} just joined the lobby`);
 
         game.addPlayer(data.playerName);
