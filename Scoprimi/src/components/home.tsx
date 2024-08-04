@@ -1,18 +1,21 @@
 // Home.tsx
 import React, { useState, useEffect } from 'react';
-import { handleCreateGame, updateLobbies, listenToUpdate } from '../ts/home.ts'; // Assicurati che il percorso sia corretto
+import { handleCreateGame, updateLobbies, listenToRenderLobbies, handleJoinGame, listen } from '../ts/home.ts'; // Assicurati che il percorso sia corretto
+import { useNavigate } from 'react-router-dom';
 
 const Home: React.FC = () => {
   const [lobbies, setLobbies] = useState<any[]>([]);
   const [playerName, setPlayerName] = useState<string>('');
   const [numQuestions, setNumQuestions] = useState<number>(5);
+  const navigate = useNavigate();
 
   useEffect(() => {
     updateLobbies();
-    listenToUpdate(({ lobbies }) => {
+    listenToRenderLobbies(({ lobbies }) => {
       setLobbies(lobbies);
     });
-  })
+    listen(navigate);
+  }, [navigate]);
 
   return (
     <div className="container mt-5">
@@ -64,7 +67,7 @@ const Home: React.FC = () => {
                 <td>{lobby.lobbyCode}</td>
                 <td>{lobby.players.length}</td>
                 <td>
-                  <button className="btn btn-success" onClick={() => joinLobby(lobby.lobbyCode)}>
+                  <button className="btn btn-success" onClick={() => handleJoinGame(lobby.lobbyCode, playerName)}>
                     Join
                   </button>
                 </td>

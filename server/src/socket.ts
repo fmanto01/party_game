@@ -37,16 +37,14 @@ export function setupSocket(io: any, questions: string[]) {
 
         if (game.players.includes(data.playerName)) {
           console.log(`Player with name ${data.playerName} already exists in lobby ${data.lobbyCode}`);
-          socket.emit(c.ERROR_SAME_NAME);
+          socket.emit(c.PLAYER_CAN_JOIN, false);
           return;
         }
-        socket.emit(c.PLAYER_CAN_JOIN);
-
 
         console.log(`${data.playerName} just joined the lobby`);
-
         game.addPlayer(data.playerName);
         socket.join(code);
+        socket.emit(c.PLAYER_CAN_JOIN, true);
       } else {
         console.log('A client tried to join a non-existing lobby');
         socket.emit(c.ERROR, 'Codice lobby non esistente');

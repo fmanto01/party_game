@@ -2,8 +2,7 @@
 import { io } from 'socket.io-client';
 import * as c from '../../../server/src/socketConsts.js'; // Assicurati che il percorso sia corretto
 
-
-const socket = io();
+const socket = io('http://localhost:3001');
 
 function generateLobbyCode() {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -23,63 +22,33 @@ export function updateLobbies() {
 
 export function handleCreateGame(numQuestions: number) {
   console.log("sto creando coglione");
-  const code = generateLobbyCode;
-  socket.emit('createLobby', [code, numQuestions]);
+  const code = generateLobbyCode();
+  socket.emit(c.CREATE_LOBBY, [code, numQuestions]);
 }
 
 
-export function listenToUpdate(callback: (data: { lobbies: any[] }) => void) {
+export function listenToRenderLobbies(callback: (data: { lobbies: any[] }) => void) {
   socket.on(c.RENDER_LOBBIES, callback);
 }
 
-
-
-socket.on(c.RENDER_LOBBIES, ({ lobbies }) => {
-  const table = document.getElementById('lobbiesList').querySelector('tbody');
-  table.innerHTML = '';
-  // Itera su ogni lobby
-  lobbies.forEach(lobby => {
-    // Crea una riga di intestazione per la lobby
-    const row = document.createElement('tr');
-    const codeCell = document.createElement('td');
-    const playersCell = document.createElement('td');
-    const joinCell = document.createElement('td');
-
-    codeCell.textContent = lobby.lobbyCode;
-    playersCell.textContent = lobby.players.length;
-
-    // Crea il pulsante Join
-    const joinButton = document.createElement('button');
-    joinButton.textContent = 'Join';
-    joinButton.className = 'btn btn-success';
-    joinButton.onclick = () => {
-      if (playerNameInput.value === '') {
-        alert('Inserisci un nome utente');
-        return;
-      }
-      const data = {
-        lobbyCode: lobby.lobbyCode,
-        playerName: playerNameInput.value,
-      };
-      console.log(data);
-      socket.emit(c.JOIN_LOBBY, data);
-
-      socket.on(c.ERROR_SAME_NAME, (canJoin) => {
-        alert('Giocatore già presente');
-      });
-
-      socket.on(c.PLAYER_CAN_JOIN, () => {
-        window.location.href = `/lobby.html/?lobbyCode=${data.lobbyCode}&name=${data.playerName}`;
-      });
-    };
-
-    joinCell.appendChild(joinButton);
-
-    row.appendChild(codeCell);
-    row.appendChild(playersCell);
-    row.appendChild(joinCell);
-
-    table.appendChild(row);
+export function listen(navigate) {
+  socket.on(c.PLAYER_CAN_JOIN, (canJoin) => {
+    if (canJoin) {
+      navigate('/lobby');
+    } else {
+      alert('Sei gia in questa lobby')
+    }
   });
-});
+}
 
+export function handleJoinGame(lobbyCode: string, playerName: string) {
+  if (playerName === '') {
+    alert('Inserisci un nome utente');
+    return;
+  }
+  const data = {
+    lobbyCode: lobbyCode,
+    playerName: playerName,
+  };
+  socket.emit(c.JOIN_LOBBY, data);
+}
