@@ -21,7 +21,6 @@ export function updateLobbies() {
 // 
 
 export function handleCreateGame(numQuestions: number) {
-  console.log("sto creando coglione");
   const code = generateLobbyCode();
   socket.emit(c.CREATE_LOBBY, [code, numQuestions]);
 }
@@ -31,10 +30,12 @@ export function listenToRenderLobbies(callback: (data: { lobbies: any[] }) => vo
   socket.on(c.RENDER_LOBBIES, callback);
 }
 
-export function listen(navigate) {
-  socket.on(c.PLAYER_CAN_JOIN, (canJoin) => {
-    if (canJoin) {
-      navigate('/lobby');
+export function listen(navigate: Function) {
+  socket.on(c.PLAYER_CAN_JOIN, (data) => {
+    console.log(data);
+    if (data.canJoin) {
+      const queryParams = new URLSearchParams({ lobbyCode: data.lobbyCode, playerName: data.playerName });
+      navigate(`/lobby?${queryParams.toString()}`);
     } else {
       alert('Sei gia in questa lobby')
     }
@@ -50,5 +51,5 @@ export function handleJoinGame(lobbyCode: string, playerName: string) {
     lobbyCode: lobbyCode,
     playerName: playerName,
   };
-  socket.emit(c.JOIN_LOBBY, data);
+  socket.emit(c.REQUEST_TO_JOIN_LOBBY, data);
 }

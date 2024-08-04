@@ -1,7 +1,7 @@
 export const CREATE_LOBBY: string = 'createLobby';
 export const ADD_NEW_PLAYER: string = 'addNewPlayer';
 export const START_GAME: string = 'startGame';
-export const JOIN_LOBBY: string = 'joinLobby';
+export const REQUEST_TO_JOIN_LOBBY: string = 'joinLobby';
 export const VOTE: string = 'vote';
 export const SEND_QUESTION: string = 'sendQuestion';
 export const SHOW_RESULTS: string = 'showResults';

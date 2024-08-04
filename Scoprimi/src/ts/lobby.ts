@@ -1,47 +1,25 @@
 import * as c from '../../../server/src/socketConsts.js';
-const socket = io();
+import { io } from 'socket.io-client';
 
-document.addEventListener('DOMContentLoaded', function () {
-    const playersTable = document.getElementById('playersTable');
-    const toggleisReadyToGame = document.getElementById('toggleisReadyToGame');
-    // const numQuestionsInput = document.getElementById('numQuestions'); TODO mostra e potenzialmente modifica la lobby
-    const lobbyCodeTabTitle = document.getElementById('lobbyCodeTabTitle');
-    const lobbyCodeTitle = document.getElementById('lobbyCodeTitle');
+const socket = io('http://localhost:3001');
 
+export function handleToggleisReadyToGame(data: { currentLobbyCode: string, currentPlayer: string }) {
+    socket.emit(c.TOGGLE_IS_READY_TO_GAME, data);
+}
 
-    const url = new URL(window.location.href);
-    const params = new URLSearchParams(url.search);
-    const currentLobbyCode = params.get('lobbyCode');
-    const currentPlayer = params.get('name');
+// TODO fix
+export function listenToInizia(navigate: (url: string) => void) {
 
-    lobbyCodeTitle.textContent = lobbyCodeTabTitle.textContent = currentLobbyCode;
+    socket.on('inizia', (data) => {
+        const queryParams = new URLSearchParams({ lobbyCode: data.lobbyCode, playerName: data.playerName });
+        navigate(`/lobby?${queryParams.toString()}`);
+    });
+}
 
+export function listenToRenderLobby(callback: (data: { game: any }) => void) {
+    socket.on(c.RENDER_LOBBY, callback);
+}
+
+export function emitRequestRenderLobby(currentLobbyCode: string) {
     socket.emit(c.REQUEST_RENDER_LOBBY, currentLobbyCode);
-
-    socket.on(c.RENDER_LOBBY, (game) => {
-        playersTable.innerHTML = '';
-        game.players.forEach(player => {
-            const row = document.createElement('tr');
-            // 
-            const name = document.createElement('td');
-            name.textContent = player;
-            //
-            row.classList.add(game.isReadyToGame[player] ? 'color-ok' : 'color-ko');
-            row.appendChild(name);
-            playersTable.appendChild(row);
-
-        });
-    });
-
-    toggleisReadyToGame.addEventListener('click', () => {
-        const data = {
-            lobbyCode: currentLobbyCode,
-            playerName: currentPlayer,
-        };
-        socket.emit(c.TOGGLE_IS_READY_TO_GAME, data);
-    });
-
-    socket.on('inizia', function () {
-        window.location.href = `/game.html/?lobbyCode=${currentLobbyCode}&name=${currentPlayer}`;
-    });
-});
+}

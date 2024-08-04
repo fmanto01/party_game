@@ -1,5 +1,26 @@
+import React, { useState, useEffect } from 'react';
+import { handleToggleisReadyToGame, listenToInizia, listenToRenderLobby, emitRequestRenderLobby } from '../ts/lobby.ts'
+import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-function Lobby() {
+const Lobby: React.FC = () => {
+
+  const [game, setGame] = useState<any[]>([]);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const lobbyCode = queryParams.get('lobbyCode') || '';
+  const playerName = queryParams.get('playerName') || '';
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    emitRequestRenderLobby(lobbyCode);
+    listenToRenderLobby(({ game }) => {
+      setGame(game);
+    });
+    listenToInizia(navigate);
+  }, [lobbyCode, navigate]);
+
   return (
     <div className="container mt-5">
       <div className="text-center mb-4">
@@ -20,12 +41,19 @@ function Lobby() {
             </tr>
           </thead>
           <tbody id="playersTable">
-
+            {game.players.map((player) => (
+              <tr className={game.isReadyToGame[player] ? 'color-ok' : 'color-ko'} >
+                <td>player</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
       <div className="text-center mt-4">
-        <button id="toggleisReadyToGame" className="btn btn-primary">Toggle ready</button>
+        <button id="toggleisReadyToGame" className="btn btn-primary"
+          onClick={() => handleToggleisReadyToGame({ currentLobbyCode: lobbyCode, currentPlayer: playerName })}>
+          Toggle ready
+        </button>
       </div>
     </div>
   );
