@@ -1,25 +1,24 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { handleToggleisReadyToGame, listenToInizia, listenToRenderLobby, emitRequestRenderLobby } from '../ts/lobby.ts'
-import { useLocation } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
 
 const Lobby: React.FC = () => {
 
-  const [game, setGame] = useState<any[]>([]);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const lobbyCode = queryParams.get('lobbyCode') || '';
-  const playerName = queryParams.get('playerName') || '';
+  const [game, setGame] = useState<any[]>([]);
+  const [lobbyCode, setlobbyCode] = useState<string>(queryParams.get('lobbyCode') || '')
+  const [playerName, setplayerName] = useState<string>(queryParams.get('playerName') || '')
   const navigate = useNavigate();
 
-
   useEffect(() => {
+    console.log(lobbyCode);
     emitRequestRenderLobby(lobbyCode);
     listenToRenderLobby(({ game }) => {
       setGame(game);
     });
     listenToInizia(navigate);
-  }, [lobbyCode, navigate]);
+  }, [lobbyCode, navigate, game]);
 
   return (
     <div className="container mt-5">

@@ -99,13 +99,9 @@ export function setupSocket(io: any, questions: string[]) {
         console.log('Game Over: no more questions.');
         console.log('Risultati finali:');
 
-
-
         thisGame.players.forEach((player: string) => {
           console.log(`${player}: ${thisGame.playerScores[player]} punti`);
         });
-
-
 
         io.to(data.lobbyCode).emit(c.GAME_OVER);
         io.to(data.lobbyCode).emit(c.FINAL_RESULTS, thisGame.playerScores);
@@ -114,7 +110,8 @@ export function setupSocket(io: any, questions: string[]) {
 
     socket.on(c.REQUEST_RENDER_LOBBY, (code: string) => {
       const thisGame = gameManager.getGame(code);
-      socket.join(code);
+      // socket.join(code);
+      console.log(`ti invio render ${thisGame}`);
       io.to(code).emit(c.RENDER_LOBBY, thisGame);
     });
 

@@ -14,7 +14,6 @@ function generateLobbyCode() {
 }
 
 export function updateLobbies() {
-  console.log('Updating lobbies...');
   socket.emit(c.REQUEST_RENDER_LOBBIES);
 }
 
@@ -32,7 +31,6 @@ export function listenToRenderLobbies(callback: (data: { lobbies: any[] }) => vo
 
 export function listen(navigate: Function) {
   socket.on(c.PLAYER_CAN_JOIN, (data) => {
-    console.log(data);
     if (data.canJoin) {
       const queryParams = new URLSearchParams({ lobbyCode: data.lobbyCode, playerName: data.playerName });
       navigate(`/lobby?${queryParams.toString()}`);
