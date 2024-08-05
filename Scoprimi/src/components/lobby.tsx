@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { handleToggleisReadyToGame, listenToInizia, listenToRenderLobby, emitRequestRenderLobby } from '../ts/lobby.ts'
 
-
 interface Game {
   lobbyCode: string;
   players: string[];
@@ -21,9 +20,9 @@ const Lobby: React.FC = () => {
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const [game, setGame] = useState<Game>();
-  const lobbyCode = queryParams.get('lobbyCode') || ''
-  const playerName = queryParams.get('playerName') || ''
+  const [game, setGame] = useState<Game | undefined>(undefined);
+  const lobbyCode = queryParams.get('lobbyCode') || '';
+  const playerName = queryParams.get('playerName') || '';
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,10 +34,14 @@ const Lobby: React.FC = () => {
     listenToInizia(navigate);
   }, [lobbyCode, navigate, game]);
 
+  if (!game) {
+    return <div>Loading...</div>; // You can replace this with a more sophisticated loading indicator
+  }
+
   return (
     <div className="container mt-5">
       <div className="text-center mb-4">
-        <h1 id="lobbyCodeTitle"></h1>
+        <h1 id="lobbyCodeTitle">{game.lobbyCode}</h1>
       </div>
       <div className="form-group">
         <label htmlFor="numQuestions">Number of Questions:</label>
@@ -56,8 +59,8 @@ const Lobby: React.FC = () => {
           </thead>
           <tbody id="playersTable">
             {game.players.map((player) => (
-              <tr className={game.isReadyToGame[player] ? 'color-ok' : 'color-ko'} >
-                <td>player</td>
+              <tr key={player} className={game.isReadyToGame[player] ? 'color-ok' : 'color-ko'}>
+                <td>{player}</td>
               </tr>
             ))}
           </tbody>
