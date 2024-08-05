@@ -2,13 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { handleToggleisReadyToGame, listenToInizia, listenToRenderLobby, emitRequestRenderLobby } from '../ts/lobby.ts'
 
+
+interface Game {
+  lobbyCode: string;
+  players: string[];
+  numOfVoters: number;
+  currentQuestionIndex: number;
+  numQuestions: number;
+  selectedQuestions: string[];
+  iterator: Iterator<string>;
+  votes: { [key: string]: number };
+  playerScores: { [key: string]: number };
+  readyForNextQuestion: { [key: string]: boolean };
+  isReadyToGame: { [key: string]: boolean };
+}
+
 const Lobby: React.FC = () => {
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const [game, setGame] = useState<any[]>([]);
-  const [lobbyCode, setlobbyCode] = useState<string>(queryParams.get('lobbyCode') || '')
-  const [playerName, setplayerName] = useState<string>(queryParams.get('playerName') || '')
+  const [game, setGame] = useState<Game>();
+  const lobbyCode = queryParams.get('lobbyCode') || ''
+  const playerName = queryParams.get('playerName') || ''
   const navigate = useNavigate();
 
   useEffect(() => {
