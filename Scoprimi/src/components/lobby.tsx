@@ -26,13 +26,12 @@ const Lobby: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(lobbyCode);
     emitRequestRenderLobby(lobbyCode);
     listenToRenderLobby(({ game }) => {
       setGame(game);
     });
     listenToInizia(navigate);
-  }, [lobbyCode, navigate, game]);
+  }, [lobbyCode, navigate]);
 
   if (!game) {
     return <div>Loading...</div>; // You can replace this with a more sophisticated loading indicator

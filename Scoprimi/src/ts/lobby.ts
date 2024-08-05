@@ -17,9 +17,14 @@ export function listenToInizia(navigate: (url: string) => void) {
 }
 
 export function listenToRenderLobby(callback: (data: { game: any }) => void) {
-    socket.on(c.RENDER_LOBBY, callback);
+    console.log('stai ricevendo il render fratello');
+    socket.on(c.RENDER_LOBBY, (data) => {
+        console.log('Received data:', data); // Log the data received from the socket
+        callback(data); // Call the provided callback with the received data
+    });
 }
 
 export function emitRequestRenderLobby(currentLobbyCode: string) {
+    console.log('te quiero render');
     socket.emit(c.REQUEST_RENDER_LOBBY, currentLobbyCode);
 }

@@ -20,6 +20,9 @@ function shuffle(array: string[]) {
 
 export function setupSocket(io: any, questions: string[]) {
   io.on(c.CONNECTION, (socket: any) => {
+
+    console.log(`client connected: ${socket.id}`);
+
     socket.on(c.CREATE_LOBBY, ([code, numQuestionsParam]: [string, number]) => {
       console.log('Ho ricevuto questo dato: ', code, ' - ', numQuestionsParam);
       lobbyCode.push(code);
