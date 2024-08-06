@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { handleToggleisReadyToGame, listenToInizia, emitRequestRenderLobby } from '../ts/lobby.ts'
+import { handleToggleisReadyToGame, emitRequestRenderLobby } from '../ts/lobby.ts'
 import * as c from '../../../server/src/socketConsts.js';
 import { socket } from '../ts/socketInit.ts';
 
@@ -34,8 +34,8 @@ const Lobby: React.FC = () => {
       console.log('Received data:', data);
       setGame(data);
     });
-    socket.on(c.INIZIA, () => {
-      const queryParams = new URLSearchParams({ lobbyCode: lobbyCode, playerName: playerName });
+    socket.on(c.INIZIA, (data) => {
+      const queryParams = new URLSearchParams({ lobbyCode: data.lobbyCode, playerName: data.playerName });
       navigate(`/game?${queryParams.toString()}`);
     });
   }, [lobbyCode, navigate, playerName]);

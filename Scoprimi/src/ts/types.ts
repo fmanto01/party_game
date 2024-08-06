@@ -1,4 +1,3 @@
-// types.ts
 export interface QuestionData {
     question: string;
     players: string[];

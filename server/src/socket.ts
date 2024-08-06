@@ -66,7 +66,7 @@ export function setupSocket(io: any, questions: string[]) {
       if (!thisGame.isAllPlayersReadyToGame()) {
         return;
       }
-      io.to(data.lobbyCode).emit(c.INIZIA);
+      io.to(data.lobbyCode).emit(c.INIZIA, data);
     });
 
     socket.on(c.VOTE, (data: { lobbyCode: string; voter: string, vote: string }) => {
