@@ -1,6 +1,3 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
 name: Node.js CI
 
 on:
@@ -11,8 +8,7 @@ on:
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
+    runs-on: [ubuntu-latest, windows-latest]
 
     strategy:
       matrix:
@@ -27,28 +23,26 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
-    - name: Client install
+    - name: Install Client dependencies
       working-directory: ./Scoprimi
       run: npm ci
 
-    - name: Server install
+    - name: Install Server dependencies
       working-directory: ./Server
       run: npm ci
-    
-    - name: Client install
+
+    - name: Build Client
       working-directory: ./Scoprimi
       run: npm run build --if-present
 
-    - name: Server install
+    - name: Build Server
       working-directory: ./Server
       run: npm run build --if-present
 
-    - name: Client install
+    - name: Lint Client
       working-directory: ./Scoprimi
-      run: npx eslint
+      run: npx eslint .
 
-    - name: Server install
+    - name: Lint Server
       working-directory: ./Server
-      run: npx eslint
-      
-      
+      run: npx eslint .
