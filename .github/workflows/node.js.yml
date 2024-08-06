@@ -22,27 +22,13 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        cache-dependency-path: |
+          Server/package-lock.json
+          Scoprimi/package-lock.json
 
-    - name: Install Client dependencies
-      working-directory: ./Scoprimi
-      run: npm ci
+    
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npx eslint
 
-    - name: Install Server dependencies
-      working-directory: ./Server
-      run: npm ci
-
-    - name: Build Client
-      working-directory: ./Scoprimi
-      run: npm run build --if-present
-
-    - name: Build Server
-      working-directory: ./Server
-      run: npm run build --if-present
-
-    - name: Lint Client
-      working-directory: ./Scoprimi
-      run: npx eslint .
-
-    - name: Lint Server
-      working-directory: ./Server
-      run: npx eslint .
+    
