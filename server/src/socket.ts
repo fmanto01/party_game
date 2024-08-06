@@ -20,6 +20,9 @@ function shuffle(array: string[]) {
 
 export function setupSocket(io: any, questions: string[]) {
   io.on(c.CONNECTION, (socket: any) => {
+
+    console.log(`client connected: ${socket.id}`);
+
     socket.on(c.CREATE_LOBBY, ([code, numQuestionsParam]: [string, number]) => {
       console.log('Ho ricevuto questo dato: ', code, ' - ', numQuestionsParam);
       lobbyCode.push(code);
@@ -53,7 +56,7 @@ export function setupSocket(io: any, questions: string[]) {
 
     socket.on(c.REQUEST_RENDER_LOBBIES, () => {
       const lobbies = gameManager.listGames();
-      io.to(socket.id).emit(c.RENDER_LOBBIES, { lobbies });
+      io.emit(c.RENDER_LOBBIES, { lobbies });
     });
 
     socket.on(c.TOGGLE_IS_READY_TO_GAME, (data: { lobbyCode: string; playerName: string }) => {
@@ -99,13 +102,9 @@ export function setupSocket(io: any, questions: string[]) {
         console.log('Game Over: no more questions.');
         console.log('Risultati finali:');
 
-
-
         thisGame.players.forEach((player: string) => {
           console.log(`${player}: ${thisGame.playerScores[player]} punti`);
         });
-
-
 
         io.to(data.lobbyCode).emit(c.GAME_OVER);
         io.to(data.lobbyCode).emit(c.FINAL_RESULTS, thisGame.playerScores);
@@ -114,7 +113,8 @@ export function setupSocket(io: any, questions: string[]) {
 
     socket.on(c.REQUEST_RENDER_LOBBY, (code: string) => {
       const thisGame = gameManager.getGame(code);
-      socket.join(code);
+      // socket.join(code);
+      console.log(`ti invio render ${thisGame}`);
       io.to(code).emit(c.RENDER_LOBBY, thisGame);
     });
 

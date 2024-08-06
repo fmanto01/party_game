@@ -1,30 +1,53 @@
 import React, { useState, useEffect } from 'react';
-import { handleToggleisReadyToGame, listenToInizia, listenToRenderLobby, emitRequestRenderLobby } from '../ts/lobby.ts'
-import { useLocation } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { handleToggleisReadyToGame, emitRequestRenderLobby } from '../ts/lobby.ts'
+import * as c from '../../../server/src/socketConsts.js';
+import { socket } from '../ts/socketInit.ts';
+
+interface Game {
+  lobbyCode: string;
+  players: string[];
+  numOfVoters: number;
+  currentQuestionIndex: number;
+  numQuestions: number;
+  selectedQuestions: string[];
+  iterator: Iterator<string>;
+  votes: { [key: string]: number };
+  playerScores: { [key: string]: number };
+  readyForNextQuestion: { [key: string]: boolean };
+  isReadyToGame: { [key: string]: boolean };
+}
+
 
 const Lobby: React.FC = () => {
 
-  const [game, setGame] = useState<any[]>([]);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+  const [game, setGame] = useState<Game | undefined>(undefined);
   const lobbyCode = queryParams.get('lobbyCode') || '';
   const playerName = queryParams.get('playerName') || '';
   const navigate = useNavigate();
 
-
   useEffect(() => {
     emitRequestRenderLobby(lobbyCode);
-    listenToRenderLobby(({ game }) => {
-      setGame(game);
+    socket.on(c.RENDER_LOBBY, (data) => {
+      console.log('Received data:', data);
+      setGame(data);
     });
-    listenToInizia(navigate);
-  }, [lobbyCode, navigate]);
+    socket.on(c.INIZIA, () => {
+      const queryParams = new URLSearchParams({ lobbyCode, playerName });
+      navigate(`/game?${queryParams.toString()}`);
+    });
+  }, [lobbyCode, navigate, playerName]);
+
+  if (!game) {
+    return <div>Loading...</div>; // You can replace this with a more sophisticated loading indicator
+  }
 
   return (
     <div className="container mt-5">
       <div className="text-center mb-4">
-        <h1 id="lobbyCodeTitle"></h1>
+        <h1 id="lobbyCodeTitle">{game.lobbyCode}</h1>
       </div>
       <div className="form-group">
         <label htmlFor="numQuestions">Number of Questions:</label>
@@ -42,8 +65,8 @@ const Lobby: React.FC = () => {
           </thead>
           <tbody id="playersTable">
             {game.players.map((player) => (
-              <tr className={game.isReadyToGame[player] ? 'color-ok' : 'color-ko'} >
-                <td>player</td>
+              <tr key={player} className={game.isReadyToGame[player] ? 'color-ok' : 'color-ko'}>
+                <td>{player}</td>
               </tr>
             ))}
           </tbody>
@@ -51,7 +74,7 @@ const Lobby: React.FC = () => {
       </div>
       <div className="text-center mt-4">
         <button id="toggleisReadyToGame" className="btn btn-primary"
-          onClick={() => handleToggleisReadyToGame({ currentLobbyCode: lobbyCode, currentPlayer: playerName })}>
+          onClick={() => handleToggleisReadyToGame({ lobbyCode: lobbyCode, playerName: playerName })}>
           Toggle ready
         </button>
       </div>
