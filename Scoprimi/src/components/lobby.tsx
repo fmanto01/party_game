@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { handleToggleisReadyToGame, listenToInizia, listenToRenderLobby, emitRequestRenderLobby } from '../ts/lobby.ts'
+import { handleToggleisReadyToGame, listenToInizia, emitRequestRenderLobby } from '../ts/lobby.ts'
+import * as c from '../../../server/src/socketConsts.js';
+import { socket } from '../ts/socketInit.ts';
 
 interface Game {
   lobbyCode: string;
@@ -16,6 +18,7 @@ interface Game {
   isReadyToGame: { [key: string]: boolean };
 }
 
+
 const Lobby: React.FC = () => {
 
   const location = useLocation();
@@ -27,11 +30,15 @@ const Lobby: React.FC = () => {
 
   useEffect(() => {
     emitRequestRenderLobby(lobbyCode);
-    listenToRenderLobby(({ game }) => {
-      setGame(game);
+    socket.on(c.RENDER_LOBBY, (data) => {
+      console.log('Received data:', data);
+      setGame(data);
     });
-    listenToInizia(navigate);
-  }, [lobbyCode, navigate]);
+    socket.on(c.INIZIA, () => {
+      const queryParams = new URLSearchParams({ lobbyCode: lobbyCode, playerName: playerName });
+      navigate(`/game?${queryParams.toString()}`);
+    });
+  }, [lobbyCode, navigate, playerName]);
 
   if (!game) {
     return <div>Loading...</div>; // You can replace this with a more sophisticated loading indicator
@@ -67,7 +74,7 @@ const Lobby: React.FC = () => {
       </div>
       <div className="text-center mt-4">
         <button id="toggleisReadyToGame" className="btn btn-primary"
-          onClick={() => handleToggleisReadyToGame({ currentLobbyCode: lobbyCode, currentPlayer: playerName })}>
+          onClick={() => handleToggleisReadyToGame({ lobbyCode: lobbyCode, playerName: playerName })}>
           Toggle ready
         </button>
       </div>
