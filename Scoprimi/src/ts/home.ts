@@ -1,4 +1,4 @@
-import * as c from '../../../server/src/socketConsts.js'; // Assicurati che il percorso sia corretto
+import * as c from '../../../server/src/socketConsts.js';
 import { socket } from './socketInit.js';
 
 
@@ -15,7 +15,6 @@ export function updateLobbies() {
   socket.emit(c.REQUEST_RENDER_LOBBIES);
 }
 
-// 
 
 export function handleCreateGame(numQuestions: number) {
   const code = generateLobbyCode();

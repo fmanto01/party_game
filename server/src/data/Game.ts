@@ -17,13 +17,14 @@ export class Game {
     this.players = [];
     this.numOfVoters = 0;
     this.currentQuestionIndex = 0;
-    this.numQuestions = numQuestions >= 5 ? numQuestions : 5; // Default value
+    this.numQuestions = numQuestions >= 5 ? numQuestions : 5;
     this.selectedQuestions = [];
     this.iterator = this.createIterator();
-    this.votes = {}; // For tracking votes
-    this.playerScores = {}; // For tracking player scores
-    this.readyForNextQuestion = {}; // Track readiness for next question
-    this.isReadyToGame = {}; // Track readiness to start the game
+    // Player denormalizzato
+    this.votes = {};
+    this.playerScores = {};
+    this.readyForNextQuestion = {};
+    this.isReadyToGame = {};
   }
 
   calculateScores(): string {

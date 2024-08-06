@@ -40,8 +40,9 @@ const Lobby: React.FC = () => {
     });
   }, [lobbyCode, navigate, playerName]);
 
+  // TODO load page
   if (!game) {
-    return <div>Loading...</div>; // You can replace this with a more sophisticated loading indicator
+    return <div>Loading...</div>;
   }
 
   return (

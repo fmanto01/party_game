@@ -1,4 +1,3 @@
-// Home.tsx
 import React, { useState, useEffect } from 'react';
 import { handleCreateGame, updateLobbies, listenToRenderLobbies, handleJoinGame, listen } from '../ts/home.ts'; // Assicurati che il percorso sia corretto
 import { useNavigate } from 'react-router-dom';

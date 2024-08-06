@@ -4,7 +4,7 @@ import { GameManager } from './data/GameManager.js';
 const gameManager = new GameManager();
 let lobbyCode: string[] = [];
 
-// Funzione per mescolare un array
+
 function shuffle(array: string[]) {
   if (!Array.isArray(array)) {
     console.error('shuffle: input is not an array', array);
@@ -86,9 +86,6 @@ export function setupSocket(io: any, questions: string[]) {
       const thisGame = gameManager.getGame(data.lobbyCode);
       thisGame.setReadyForNextQuestion(data.playerName);
 
-      // TODO check, non dovrebbe piu servire una volta finito
-      // if (data.rejoin) { socket.join(data.lobbyCode); }
-
       if (!thisGame.isAllPlayersReady()) {
         return;
       }
@@ -113,7 +110,6 @@ export function setupSocket(io: any, questions: string[]) {
 
     socket.on(c.REQUEST_RENDER_LOBBY, (code: string) => {
       const thisGame = gameManager.getGame(code);
-      // socket.join(code);
       console.log(`ti invio render ${thisGame}`);
       io.to(code).emit(c.RENDER_LOBBY, thisGame);
     });
