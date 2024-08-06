@@ -1,4 +1,4 @@
-import * as c from '../../../server/src/socketConsts.js';
+import * as c from '../../../Server/src/socketConsts.js';
 import { socket } from './socketInit.js';
 
 export function handleToggleisReadyToGame(data: { lobbyCode: string, playerName: string }) {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 
-import * as c from '../../../server/src/socketConsts';
+import * as c from '../../../Server/src/socketConsts';
 import { QuestionData, ResultsData, FinalResultsData } from '../ts/types';
 import { socket } from '../ts/socketInit';
 

@@ -27,7 +27,7 @@
   },
   "include": [
     "src",
-    "../server/",
+    "../Server",
     "public",
   ]
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { handleToggleisReadyToGame, emitRequestRenderLobby } from '../ts/lobby.ts'
-import * as c from '../../../server/src/socketConsts.js';
+import * as c from '../../../Server/src/socketConsts.js';
 import { socket } from '../ts/socketInit.ts';
 
 interface Game {
