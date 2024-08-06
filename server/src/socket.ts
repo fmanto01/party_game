@@ -56,7 +56,7 @@ export function setupSocket(io: any, questions: string[]) {
 
     socket.on(c.REQUEST_RENDER_LOBBIES, () => {
       const lobbies = gameManager.listGames();
-      io.to(socket.id).emit(c.RENDER_LOBBIES, { lobbies });
+      io.emit(c.RENDER_LOBBIES, { lobbies });
     });
 
     socket.on(c.TOGGLE_IS_READY_TO_GAME, (data: { lobbyCode: string; playerName: string }) => {
@@ -66,7 +66,7 @@ export function setupSocket(io: any, questions: string[]) {
       if (!thisGame.isAllPlayersReadyToGame()) {
         return;
       }
-      io.to(data.lobbyCode).emit(c.INIZIA, data);
+      io.to(data.lobbyCode).emit(c.INIZIA);
     });
 
     socket.on(c.VOTE, (data: { lobbyCode: string; voter: string, vote: string }) => {
