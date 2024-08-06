@@ -1,0 +1,28 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc && cp src/questions.json dist/questions.json",
+    "start": "npm run build && nodemon dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.8.0",
+    "@stylistic/eslint-plugin-js": "^2.6.1",
+    "@types/express": "^4.17.21",
+    "eslint": "^9.8.0",
+    "globals": "^15.8.0",
+    "nodemon": "^3.1.4",
+    "typescript": "^5.5.4"
+  }
+}

@@ -1,6 +1,8 @@
-import { Game } from './Game.mjs';
+import { Game } from './Game.js';
 
 export class GameManager {
+  public games: { [key: string]: Game } = {};
+
   constructor() {
     this.games = {}; // A map of lobby codes to game instances
   }
@@ -17,12 +19,12 @@ export class GameManager {
   }
 
   // Method to get a game by lobby code
-  getGame(lobbyCode) {
+  getGame(lobbyCode: string) {
     return this.games[lobbyCode] || null;
   }
 
   // Method to delete a game
-  deleteGame(lobbyCode) {
+  deleteGame(lobbyCode: string) {
     if (this.games[lobbyCode]) {
       delete this.games[lobbyCode];
     } else {
