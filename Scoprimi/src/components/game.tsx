@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
-import io, { Socket } from 'socket.io-client';
+
 import * as c from '../../../server/src/socketConsts';
 import { QuestionData, ResultsData, FinalResultsData } from '../ts/types';
+import { socket } from '../ts/socketInit';
 
 const Game: React.FC = () => {
   const [timer, setTimer] = useState<number>(10);
@@ -13,12 +14,9 @@ const Game: React.FC = () => {
   const [finalResults, setFinalResults] = useState<FinalResultsData | null>(null);
   const [clicked, setClicked] = useState<boolean>(false);
 
-  const socketRef = useRef<Socket | null>(null);
   const timerRef = useRef<number | null>(null);
 
   useEffect(() => {
-    const socket = io();
-    socketRef.current = socket;
 
     const url = new URL(window.location.href);
     const params = new URLSearchParams(url.search);
@@ -72,7 +70,7 @@ const Game: React.FC = () => {
         if (prev <= 1) {
           clearInterval(timerRef.current!);
           if (!clicked) {
-            socketRef.current?.emit(c.VOTE, { lobbyCode: '', voter: '', vote: '' });
+            socket.emit(c.VOTE, { lobbyCode: '', voter: '', vote: '' });
           }
           return 0;
         }
@@ -94,11 +92,11 @@ const Game: React.FC = () => {
       return;
     }
     setClicked(true);
-    socketRef.current?.emit(c.VOTE, { lobbyCode: '', voter: '', vote: player });
+    socket.emit(c.VOTE, { lobbyCode: '', voter: '', vote: player });
   };
 
   const handleNextQuestion = () => {
-    socketRef.current?.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode: '', playerName: '', rejoin: false });
+    socket.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode: '', playerName: '', rejoin: false });
   };
 
   return (

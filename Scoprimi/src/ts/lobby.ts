@@ -1,13 +1,10 @@
 import * as c from '../../../server/src/socketConsts.js';
-import { io } from 'socket.io-client';
-
-const socket = io('http://localhost:3001');
+import { socket } from './socketInit.js';
 
 export function handleToggleisReadyToGame(data: { currentLobbyCode: string, currentPlayer: string }) {
-    socket.emit(c.TOGGLE_IS_READY_TO_GAME, data);
+  socket.emit(c.TOGGLE_IS_READY_TO_GAME, data);
 }
 
-// TODO fix
 export function listenToInizia(navigate: (url: string) => void) {
 
     socket.on('inizia', (data) => {

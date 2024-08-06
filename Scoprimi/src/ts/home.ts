@@ -1,8 +1,6 @@
-// home.ts
-import { io } from 'socket.io-client';
 import * as c from '../../../server/src/socketConsts.js'; // Assicurati che il percorso sia corretto
+import { socket } from './socketInit.js';
 
-const socket = io('http://localhost:3001');
 
 function generateLobbyCode() {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
