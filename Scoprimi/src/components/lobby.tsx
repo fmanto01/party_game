@@ -34,8 +34,8 @@ const Lobby: React.FC = () => {
       console.log('Received data:', data);
       setGame(data);
     });
-    socket.on(c.INIZIA, (data) => {
-      const queryParams = new URLSearchParams({ lobbyCode: data.lobbyCode, playerName: data.playerName });
+    socket.on(c.INIZIA, () => {
+      const queryParams = new URLSearchParams({ lobbyCode, playerName });
       navigate(`/game?${queryParams.toString()}`);
     });
   }, [lobbyCode, navigate, playerName]);
