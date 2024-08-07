@@ -46,7 +46,7 @@ const Home: React.FC = () => {
         const queryParams = new URLSearchParams({ lobbyCode: data.lobbyCode, playerName: data.playerName });
         navigate(`/lobby?${queryParams.toString()}`);
       } else {
-        alert('Sei gia in questa lobby')
+        alert('Sei gia in questa lobby');
       }
     });
   }, [navigate]);

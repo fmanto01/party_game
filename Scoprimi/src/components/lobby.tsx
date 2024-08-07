@@ -83,6 +83,6 @@ const Lobby: React.FC = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Lobby;
