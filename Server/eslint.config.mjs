@@ -5,7 +5,7 @@ import stylisticJs from '@stylistic/eslint-plugin-js';
 
 export default [
   { languageOptions: { globals: { ...globals.browser, ...globals.node, io: 'readonly' } } },
-  { ignores: ['dist']},
+  { ignores: ['dist'] },
   {
     plugins: {
       '@stylistic/js': stylisticJs,
