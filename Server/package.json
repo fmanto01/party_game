@@ -1,7 +1,7 @@
 {
   "name": "server",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "0.2.0",
+  "main": "index.ts",
   "type": "module",
   "scripts": {
     "build": "tsc && cp src/questions.json dist/questions.json",

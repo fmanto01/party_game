@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { handleToggleisReadyToGame, emitRequestRenderLobby } from '../ts/lobby.ts'
 import * as c from '../../../Server/src/socketConsts.js';
 import { socket } from '../ts/socketInit.ts';
 
@@ -18,6 +17,9 @@ interface Game {
   isReadyToGame: { [key: string]: boolean };
 }
 
+function handleToggleisReadyToGame(data: { lobbyCode: string, playerName: string }) {
+  socket.emit(c.TOGGLE_IS_READY_TO_GAME, data);
+}
 
 const Lobby: React.FC = () => {
 
@@ -29,7 +31,7 @@ const Lobby: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    emitRequestRenderLobby(lobbyCode);
+    socket.emit(c.REQUEST_RENDER_LOBBY, lobbyCode);
     socket.on(c.RENDER_LOBBY, (data) => {
       console.log('Received data:', data);
       setGame(data);

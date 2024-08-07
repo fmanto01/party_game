@@ -1,6 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { handleCreateGame, updateLobbies, listenToRenderLobbies, handleJoinGame, listen } from '../ts/home.ts'; // Assicurati che il percorso sia corretto
 import { useNavigate } from 'react-router-dom';
+import * as c from '../../../Server/src/socketConsts.js';
+import { socket } from '../ts/socketInit.ts';
+
+function generateLobbyCode() {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let code = '';
+  for (let i = 0; i < 6; i++) {
+    code += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return code;
+}
+
+function handleCreateGame(numQuestions: number) {
+  const code = generateLobbyCode();
+  socket.emit(c.CREATE_LOBBY, [code, numQuestions]);
+}
 
 const Home: React.FC = () => {
   const [lobbies, setLobbies] = useState<any[]>([]);
@@ -8,13 +23,34 @@ const Home: React.FC = () => {
   const [numQuestions, setNumQuestions] = useState<number>(5);
   const navigate = useNavigate();
 
+  function handleJoinGame(lobbyCode: string, playerName: string) {
+    if (playerName === '') {
+      alert('Inserisci un nome utente');
+      return;
+    }
+    const data = {
+      lobbyCode: lobbyCode,
+      playerName: playerName,
+    };
+    socket.emit(c.REQUEST_TO_JOIN_LOBBY, data);
+  }
+
   useEffect(() => {
-    updateLobbies();
-    listenToRenderLobbies(({ lobbies }) => {
+    socket.emit(c.REQUEST_RENDER_LOBBIES);
+    socket.on(c.RENDER_LOBBIES, ({ lobbies }) => {
       setLobbies(lobbies);
     });
-    listen(navigate);
+
+    socket.on(c.PLAYER_CAN_JOIN, (data) => {
+      if (data.canJoin) {
+        const queryParams = new URLSearchParams({ lobbyCode: data.lobbyCode, playerName: data.playerName });
+        navigate(`/lobby?${queryParams.toString()}`);
+      } else {
+        alert('Sei gia in questa lobby')
+      }
+    });
   }, [navigate]);
+
 
   return (
     <div className="container mt-5">
