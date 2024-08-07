@@ -8,12 +8,12 @@ In questo gioco un gruppo di persone si connette ad una lobby e gli vengono prop
 
 Server
 ```
-cd .\Server
+cd Server/
 npm start
 ```
 
 Client - Scoprimi
 ```
-cd .\Scoprimi
+cd Scoprimi/
 npm run dev
 ```
