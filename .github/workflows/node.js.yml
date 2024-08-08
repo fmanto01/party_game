@@ -8,12 +8,13 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-
     strategy:
       matrix:
+        os: [ubuntu-latest, windows-latest]
         node-version: [20.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v4
@@ -37,9 +38,15 @@ jobs:
       working-directory: ./Scoprimi
       run: npm run build --if-present
 
-    - name: Build Server
+    - name: Build Server Linux
+      if: runner.os == 'Linux'
       working-directory: ./Server
-      run: npm run build --if-present
+      run: npm run build-linux --if-present
+
+    - name: Build Server Windows
+      if: runner.os == 'Windows'
+      working-directory: ./Server
+      run: npm run build-windows --if-present
 
     - name: Lint Client
       working-directory: ./Scoprimi
