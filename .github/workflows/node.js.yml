@@ -47,6 +47,7 @@ jobs:
       if: runner.os == 'Windows'
       working-directory: ./Server
       run: npm run build-windows --if-present
+      shell: pwsh
 
     - name: Lint Client
       working-directory: ./Scoprimi
