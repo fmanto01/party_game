@@ -73,7 +73,8 @@ export function setupSocket(io: any, questions: string[]) {
       console.log('Ho ricevuto il voto ', data);
       const thisGame = gameManager.getGame(data.lobbyCode);
 
-      thisGame.castVote(data.voter, data.vote);
+      if (data.vote in thisGame.players)
+        thisGame.castVote(data.voter, data.vote);
 
       if (thisGame.isAllPlayersVoter()) {
         const resultMessage = thisGame.calculateScores();
