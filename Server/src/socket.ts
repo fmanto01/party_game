@@ -7,7 +7,6 @@ let lobbyCode: string[] = [];
 
 function shuffle(array: string[]) {
   if (!Array.isArray(array)) {
-    console.error('shuffle: input is not an array', array);
     return [];
   }
   for (let i = array.length - 1; i > 0; i--) {
@@ -73,7 +72,7 @@ export function setupSocket(io: any, questions: string[]) {
       console.log('Ho ricevuto il voto ', data);
       const thisGame = gameManager.getGame(data.lobbyCode);
 
-      if (data.vote in thisGame.players)
+      if (thisGame.players.includes(data.vote))
         thisGame.castVote(data.voter, data.vote);
 
       if (thisGame.isAllPlayersVoter()) {
@@ -106,12 +105,12 @@ export function setupSocket(io: any, questions: string[]) {
 
         io.to(data.lobbyCode).emit(c.GAME_OVER);
         io.to(data.lobbyCode).emit(c.FINAL_RESULTS, thisGame.playerScores);
+        gameManager.deleteGame(thisGame.lobbyCode);
       }
     });
 
     socket.on(c.REQUEST_RENDER_LOBBY, (code: string) => {
       const thisGame = gameManager.getGame(code);
-      console.log(`ti invio render ${thisGame}`);
       io.to(code).emit(c.RENDER_LOBBY, thisGame);
     });
 
