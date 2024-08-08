@@ -8,7 +8,7 @@ export class GameManager {
   }
 
   // Method to create a new game
-  createGame(lobbyCode, numQuestionsParam) {
+  createGame(lobbyCode: string, numQuestionsParam: number) {
     if (!this.games[lobbyCode]) {
       this.games[lobbyCode] = new Game(lobbyCode, numQuestionsParam);
       return this.games[lobbyCode];

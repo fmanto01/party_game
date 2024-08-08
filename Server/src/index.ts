@@ -1,5 +1,6 @@
 import express from 'express';
-import { Server } from 'socket.io';
+import { Request } from "express";
+import { Server, ServerOptions } from 'socket.io';
 import { createServer } from 'node:http';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -8,15 +9,16 @@ import { readFile } from 'node:fs/promises';
 import cors from 'cors';
 
 const app = express();
-app.use(cors());
+app.use(cors<Request>());
+
 const server = createServer(app);
+
 const io = new Server(server, {
   cors: {
     origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
     methods: ['GET', 'POST'],
   },
-});
-
+} as Partial<ServerOptions>);
 
 async function init() {
   try {
@@ -29,10 +31,10 @@ async function init() {
     setupSocket(io, questions);
 
     server.listen(3001, () => {
-      console.log('Server is running on http://localhost:3000');
+      console.log('Server is running on http://localhost:3001');
     });
   } catch (err) {
-    console.error('Errore nella lettura del file delle domande:', err);
+    console.error('Error reading the questions file:', err);
   }
 }
 
