@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useRef } from 'react';
-
+import React, { useEffect, useState } from 'react';
 import * as c from '../../../Server/src/socketConsts';
 import { QuestionData, FinalResultsData } from '../ts/types';
 import { socket } from '../ts/socketInit';
+import Timer from './timer';
 
 const Game: React.FC = () => {
-  const [timer, setTimer] = useState<number>(10);
   const [question, setQuestion] = useState<string>('');
   const [players, setPlayers] = useState<string[]>([]);
   const [resultMessage, setResultMessage] = useState<string>('');
@@ -14,33 +13,28 @@ const Game: React.FC = () => {
   const [finalResults, setFinalResults] = useState<FinalResultsData>();
 
   const [clicked, setClicked] = useState<boolean>(false);
+  const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
+
   const url = new URL(window.location.href);
   const params = new URLSearchParams(url.search);
   const lobbyCode = params.get('lobbyCode') || '';
   const playerName = params.get('playerName') || '';
 
-  const timerRef = useRef<number>(10);
-
   useEffect(() => {
-
     socket.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode, playerName });
 
     socket.on(c.SEND_QUESTION, ({ question, players }: QuestionData) => {
       setClicked(false);
-      startTimer(10);
+      setIsTimerActive(true);
       setQuestion(question);
       setPlayers(players);
       setShowResults(false);
     });
 
-
     socket.on(c.SHOW_RESULTS, (data: { resultMessage: string }) => {
       setResultMessage(data.resultMessage);
       setShowResults(true);
-    });
-
-    socket.on(c.RESULT_MESSAGE, (message: string) => {
-      setResultMessage(message);
+      setIsTimerActive(false);
     });
 
     socket.on(c.GAME_OVER, () => {
@@ -54,24 +48,14 @@ const Game: React.FC = () => {
       setFinalResults(playerScores);
     });
 
-  }, []);
-
-  const startTimer = (duration: number) => {
-    setTimer(duration);
-    timerRef.current = window.setInterval(() => {
-      setTimer((prev) => {
-        if (prev <= 1) {
-          clearInterval(timerRef.current!);
-          if (!clicked) {
-            socket.emit(c.VOTE, { lobbyCode: lobbyCode, voter: playerName, vote: '' });
-            clearInterval(timerRef.current!);
-          }
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-  };
+    return () => {
+      socket.off(c.SEND_QUESTION);
+      socket.off(c.SHOW_RESULTS);
+      socket.off(c.RESULT_MESSAGE);
+      socket.off(c.GAME_OVER);
+      socket.off(c.FINAL_RESULTS);
+    };
+  }, [lobbyCode, playerName]);
 
   const handleVote = (player: string) => {
     if (clicked) {
@@ -79,22 +63,29 @@ const Game: React.FC = () => {
       return;
     }
     setClicked(true);
-    clearInterval(timerRef.current!);
-    socket.emit(c.VOTE, { lobbyCode: lobbyCode, voter: playerName, vote: player });
+    setIsTimerActive(false);
+    socket.emit(c.VOTE, { lobbyCode, voter: playerName, vote: player });
   };
 
   const handleNextQuestion = () => {
-    socket.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode: lobbyCode, playerName: playerName });
+    socket.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode, playerName });
+  };
+
+  const handleTimeUp = () => {
+    if (!clicked) {
+      socket.emit(c.VOTE, { lobbyCode, voter: playerName, vote: '' });
+    }
+    setIsTimerActive(false);
   };
 
   return (
     <div className="container mt-5">
       <div className="top-container text-center mt-3">
-        {!gameOver &&
+        {!gameOver && (
           <div id="timerContainer">
-            <h3>⌛: <span id="timer">{timer}</span> secondi</h3>
+            <Timer duration={10} onTimeUp={handleTimeUp} isActive={isTimerActive} />
           </div>
-        }
+        )}
         <div id="questionContainer" className="mt-3">
           <h2 id="question">{question}</h2>
         </div>
