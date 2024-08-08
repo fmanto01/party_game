@@ -40,6 +40,11 @@ const Lobby: React.FC = () => {
       const queryParams = new URLSearchParams({ lobbyCode, playerName });
       navigate(`/game?${queryParams.toString()}`);
     });
+
+    return () => {
+      socket.off(c.RENDER_LOBBY);
+      socket.off(c.INIZIA);
+    };
   }, [lobbyCode, navigate, playerName]);
 
   // TODO load page

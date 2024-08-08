@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as c from '../../../Server/src/socketConsts.js';
 import { socket } from '../ts/socketInit.ts';
+import { Game } from '../../../Server/src/data/Game.ts';
 
 function generateLobbyCode() {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -18,7 +19,7 @@ function handleCreateGame(numQuestions: number) {
 }
 
 const Home: React.FC = () => {
-  const [lobbies, setLobbies] = useState<any[]>([]);
+  const [lobbies, setLobbies] = useState<Game[]>([]);
   const [playerName, setPlayerName] = useState<string>('');
   const [numQuestions, setNumQuestions] = useState<number>(5);
   const navigate = useNavigate();
@@ -49,6 +50,11 @@ const Home: React.FC = () => {
         alert('Sei gia in questa lobby');
       }
     });
+
+    return () => {
+      socket.off(c.RENDER_LOBBIES);
+      socket.off(c.PLAYER_CAN_JOIN);
+    };
   }, [navigate]);
 
 
