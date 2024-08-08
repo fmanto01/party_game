@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build-linux": "tsc && cp src/questions.json dist/questions.json",
-    "build-windows": "tsc && Copy-Item src/questions.json dist/questions.json",
+    "build-windows": "tsc && powershell -Command \"Copy-Item src/questions.json -Destination dist/questions.json\"",
     "start": "npm run build && nodemon dist/index.js"
   },
   "keywords": [],
