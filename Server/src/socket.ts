@@ -1,8 +1,10 @@
 import * as c from './socketConsts.js';
 import { GameManager } from './data/GameManager.js';
+import { Game } from './data/Game.js';
 
 const gameManager = new GameManager();
 let lobbyCode: string[] = [];
+let UIDtoLobby: { [key: string]: string } = {};
 
 
 function shuffle(array: string[]) {
@@ -16,6 +18,13 @@ function shuffle(array: string[]) {
   return array;
 }
 
+function removeEndGameUIDs(lobbyCode: string) {
+  for (const UID in UIDtoLobby) {
+    if (UIDtoLobby[UID] === lobbyCode) {
+      delete UIDtoLobby[UID];
+    }
+  }
+}
 
 export function setupSocket(io: any, questions: string[]) {
   io.on(c.CONNECTION, (socket: any) => {
@@ -32,10 +41,11 @@ export function setupSocket(io: any, questions: string[]) {
       socket.emit(c.RENDER_LOBBIES, { lobbies });
     });
 
-    socket.on(c.REQUEST_TO_JOIN_LOBBY, (data: { lobbyCode: string; playerName: string }) => {
+    socket.on(c.REQUEST_TO_JOIN_LOBBY, (data: { lobbyCode: string; playerName: string, uid: string }) => {
       if (lobbyCode.includes(data.lobbyCode)) {
         const code = data.lobbyCode;
         const game = gameManager.getGame(code);
+        const uid = data.uid;
 
         if (game.players.includes(data.playerName)) {
           console.log(`Player with name ${data.playerName} already exists in lobby ${data.lobbyCode}`);
@@ -45,6 +55,7 @@ export function setupSocket(io: any, questions: string[]) {
 
         console.log(`${data.playerName} just joined the lobby`);
         game.addPlayer(data.playerName);
+        UIDtoLobby[uid] = code;
         socket.join(code);
         socket.emit(c.PLAYER_CAN_JOIN, { canJoin: true, lobbyCode: code, playerName: data.playerName });
       } else {
@@ -59,6 +70,7 @@ export function setupSocket(io: any, questions: string[]) {
     });
 
     socket.on(c.TOGGLE_IS_READY_TO_GAME, (data: { lobbyCode: string; playerName: string }) => {
+      console.log('Toggle');
       const thisGame = gameManager.getGame(data.lobbyCode);
       thisGame.toogleIsReadyToGame(data.playerName);
       io.emit(c.RENDER_LOBBY, thisGame);
@@ -105,14 +117,23 @@ export function setupSocket(io: any, questions: string[]) {
 
         io.to(data.lobbyCode).emit(c.GAME_OVER);
         io.to(data.lobbyCode).emit(c.FINAL_RESULTS, thisGame.playerScores);
+        removeEndGameUIDs(thisGame.lobbyCode);
         gameManager.deleteGame(thisGame.lobbyCode);
       }
     });
 
-    socket.on(c.REQUEST_RENDER_LOBBY, (code: string) => {
-      const thisGame = gameManager.getGame(code);
-      io.to(code).emit(c.RENDER_LOBBY, thisGame);
+    socket.on(c.REQUEST_RENDER_LOBBY, (lobbyCode: string, callback: (thisGame: Game) => void) => {
+      console.log('Received REQUEST_RENDER_LOBBY for lobbyCode:', lobbyCode);
+      const thisGame = gameManager.getGame(lobbyCode);
+      if (thisGame) {
+        callback(thisGame); // Rispondi con i dati del gioco
+      }
     });
+
+    socket.on(c.JOIN_ROOM, (uid: string) => {
+      console.log(UIDtoLobby[uid]);
+      socket.join(UIDtoLobby[uid]);
+    })
 
     socket.on(c.DISCONNECT, () => {
       console.log('Client disconnected:', socket.id);

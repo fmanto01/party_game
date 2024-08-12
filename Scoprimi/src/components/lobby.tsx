@@ -31,9 +31,11 @@ const Lobby: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    socket.emit(c.REQUEST_RENDER_LOBBY, lobbyCode);
-    socket.on(c.RENDER_LOBBY, (data) => {
+    socket.emit(c.REQUEST_RENDER_LOBBY, lobbyCode, (data: Game) => {
       console.log('Received data:', data);
+      setGame(data);
+    });
+    socket.on(c.RENDER_LOBBY, (data: Game) => {
       setGame(data);
     });
     socket.on(c.INIZIA, () => {
@@ -42,7 +44,6 @@ const Lobby: React.FC = () => {
     });
 
     return () => {
-      socket.off(c.RENDER_LOBBY);
       socket.off(c.INIZIA);
     };
   }, [lobbyCode, navigate, playerName]);
