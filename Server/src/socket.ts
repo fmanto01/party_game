@@ -29,6 +29,15 @@ function removeEndGameUIDs(lobbyCode: string) {
 export function setupSocket(io: any, questions: string[]) {
   io.on(c.CONNECTION, (socket: any) => {
 
+
+    console.log('a user connected');
+
+    // You can print the rooms on some event or periodically
+    setInterval(() => {
+      const rooms = io.sockets.adapter.rooms;
+      console.log('Rooms:', rooms);
+    }, 5000); // every 5 seconds
+
     console.log(`client connected: ${socket.id}`);
 
     socket.on(c.CREATE_LOBBY, ([code, numQuestionsParam]: [string, number]) => {
@@ -37,8 +46,7 @@ export function setupSocket(io: any, questions: string[]) {
       gameManager.createGame(code, numQuestionsParam);
       gameManager.getGame(code).selectedQuestions = shuffle(questions).slice(0, numQuestionsParam);
       const lobbies = gameManager.listGames();
-      console.log(lobbyCode);
-      socket.emit(c.RENDER_LOBBIES, { lobbies });
+      io.emit(c.RENDER_LOBBIES, { lobbies });
     });
 
     socket.on(c.REQUEST_TO_JOIN_LOBBY, (data: { lobbyCode: string; playerName: string, uid: string }) => {
@@ -58,22 +66,22 @@ export function setupSocket(io: any, questions: string[]) {
         UIDtoLobby[uid] = code;
         socket.join(code);
         socket.emit(c.PLAYER_CAN_JOIN, { canJoin: true, lobbyCode: code, playerName: data.playerName });
-      } else {
-        console.log('A client tried to join a non-existing lobby');
-        socket.emit(c.ERROR, 'Codice lobby non esistente');
+        socket.broadcast.to(code).emit(c.RENDER_LOBBY, game);
+        const lobbies = gameManager.listGames();
+        io.emit(c.RENDER_LOBBIES, { lobbies });
       }
     });
 
     socket.on(c.REQUEST_RENDER_LOBBIES, () => {
       const lobbies = gameManager.listGames();
-      io.emit(c.RENDER_LOBBIES, { lobbies });
+      socket.emit(c.RENDER_LOBBIES, { lobbies });
     });
 
     socket.on(c.TOGGLE_IS_READY_TO_GAME, (data: { lobbyCode: string; playerName: string }) => {
       console.log('Toggle');
       const thisGame = gameManager.getGame(data.lobbyCode);
       thisGame.toogleIsReadyToGame(data.playerName);
-      io.emit(c.RENDER_LOBBY, thisGame);
+      io.to(data.lobbyCode).emit(c.RENDER_LOBBY, thisGame);
       if (!thisGame.isAllPlayersReadyToGame()) {
         return;
       }
@@ -127,7 +135,7 @@ export function setupSocket(io: any, questions: string[]) {
       console.log('Received REQUEST_RENDER_LOBBY for lobbyCode:', lobbyCode);
       const thisGame = gameManager.getGame(lobbyCode);
       if (thisGame) {
-        callback(thisGame); // Rispondi con i dati del gioco
+        callback(thisGame);
       }
     });
 

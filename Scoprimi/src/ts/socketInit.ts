@@ -8,8 +8,11 @@ let UID = sessionStorage.getItem('UID');
 if (!UID) {
   UID = uuidv4();
   sessionStorage.setItem('UID', UID);
+} else {
+  console.log('pieno');
+  console.log(UID);
+  socket.emit(c.JOIN_ROOM, UID);
 }
-console.log(UID);
-socket.emit(c.JOIN_ROOM, UID);
+
 
 export { socket, UID };
