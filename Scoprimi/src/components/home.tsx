@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import * as c from '../../../Server/src/socketConsts.js';
 import { socket } from '../ts/socketInit.ts';
 import { Game } from '../../../Server/src/data/Game.ts';
+import LobbyList from './LobbyList.tsx';
+import CreateGameForm from './CreateGameForm.tsx';
+import PlayerNameInput from './PlayerNameInput.tsx';
 
 function generateLobbyCode() {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -13,16 +16,16 @@ function generateLobbyCode() {
   return code;
 }
 
-function handleCreateGame(numQuestions: number) {
-  const code = generateLobbyCode();
-  socket.emit(c.CREATE_LOBBY, [code, numQuestions]);
-}
-
 const Home: React.FC = () => {
   const [lobbies, setLobbies] = useState<Game[]>([]);
   const [playerName, setPlayerName] = useState<string>('');
   const [numQuestions, setNumQuestions] = useState<number>(5);
   const navigate = useNavigate();
+
+  function handleCreateGame() {
+    const code = generateLobbyCode();
+    socket.emit(c.CREATE_LOBBY, [code, numQuestions]);
+  }
 
   function handleJoinGame(lobbyCode: string, playerName: string) {
     if (playerName === '') {
@@ -57,66 +60,22 @@ const Home: React.FC = () => {
     };
   }, [navigate]);
 
-
   return (
     <div className="container mt-5">
       <h1 className="text-center">Nome Gioco</h1>
-      <div className="text-center mt-4">
-        <button id="createGameBtn" className="btn btn-primary" onClick={() => handleCreateGame(numQuestions)}>
-          Crea una Partita
-        </button>
-      </div>
-      <div className="text-center mt-4">
-        <label htmlFor="numQuestions">Numero domande:</label>
-        <input
-          type="number"
-          id="numQuestions"
-          min="5"
-          value={numQuestions}
-          onChange={(e) => setNumQuestions(parseInt(e.target.value))}
-          className="form-control w-25 mx-auto"
-        />
-      </div>
+      <CreateGameForm
+        numQuestions={numQuestions}
+        onNumQuestionsChange={setNumQuestions}
+        onCreateGame={handleCreateGame}
+      />
       <div className="row justify-content-center mt-4">
         <div className="col-md-6">
-          <div className="form-group">
-            <input
-              type="text"
-              id="playerNameInput"
-              className="form-control mb-3"
-              placeholder="Inserisci il tuo nome"
-              value={playerName}
-              onChange={(e) => setPlayerName(e.target.value)}
-            />
-          </div>
+          <PlayerNameInput playerName={playerName} onPlayerNameChange={setPlayerName} />
         </div>
       </div>
       <div className="mt-5">
         <h2>Lobby attive</h2>
-        <table id="lobbiesList" className="table table-bordered">
-          <thead>
-            <tr>
-              <th>Codice Lobby</th>
-              <th>Num Giocatori</th>
-              <th>Azioni</th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* qua ci finisono le lobby */}
-            {lobbies.map((lobby) => (
-              <tr key={lobby.lobbyCode}>
-                <td>{lobby.lobbyCode}</td>
-                <td>{lobby.players.length}</td>
-                <td>
-                  <button className="btn btn-success" onClick={() => handleJoinGame(lobby.lobbyCode, playerName)}>
-                    Join
-                  </button>
-                </td>
-              </tr>
-            ))}
-            {/* qua ci finisono le lobby */}
-          </tbody>
-        </table>
+        <LobbyList lobbies={lobbies} onJoin={handleJoinGame} playerName={playerName} />
       </div>
     </div>
   );
