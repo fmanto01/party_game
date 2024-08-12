@@ -84,10 +84,11 @@ export function setupSocket(io: any, questions: string[]) {
       console.log('Ho ricevuto il voto ', data);
       const thisGame = gameManager.getGame(data.lobbyCode);
 
-      if (thisGame.players.includes(data.vote))
+      if (thisGame.players.includes(data.vote) || data.vote === '')
         thisGame.castVote(data.voter, data.vote);
 
-      if (thisGame.isAllPlayersVoter()) {
+      if (thisGame.didAllPlayersVote()) {
+        console.log('Tutti hanno votato');
         const resultMessage = thisGame.calculateScores();
         const players = thisGame.players;
         io.to(data.lobbyCode).emit(c.SHOW_RESULTS, { resultMessage, players });

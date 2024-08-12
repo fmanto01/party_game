@@ -17,7 +17,8 @@ const Timer: React.FC<TimerProps> = ({ duration, onTimeUp, isActive }) => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
           clearInterval(timerRef.current!);
-          onTimeUp();
+          // Usa `setTimeout` per eseguire `onTimeUp` fuori dal ciclo di rendering
+          setTimeout(onTimeUp, 0);
           return 0;
         }
         return prev - 1;
