@@ -28,17 +28,22 @@ export class Game {
   }
 
   calculateScores(): string {
-    const maxVotes = Math.max(...Object.values(this.votes));
-    const winners = Object.keys(this.votes).filter(player => this.votes[player] === maxVotes);
+    const validVotes = Object.keys(this.votes).filter(player => this.votes[player] > 0 && player !== '');
+    const maxVotes = validVotes.length > 0 ? Math.max(...Object.values(this.votes)) : 0;
+    const winners = validVotes.filter(player => this.votes[player] === maxVotes);
 
     let resultMessage: string;
-    if (winners.length > 1) {
+
+    if (validVotes.length === 0 || winners.length > 1) {
+      // Se tutti i voti sono vuoti o c'è un pareggio
       resultMessage = 'Pareggio! Nessun punto assegnato';
     } else {
+      // Se c'è un vincitore
       const winner = winners[0];
       this.playerScores[winner] += 1;
       resultMessage = `+ 1 punto a chi ha scelto ${winner}`;
     }
+
     this.resetVoters();
     return resultMessage;
   }
@@ -100,7 +105,7 @@ export class Game {
     this.numOfVoters++;
   }
 
-  isAllPlayersVoter(): boolean {
+  didAllPlayersVote(): boolean {
     return this.numOfVoters === this.players.length;
   }
 

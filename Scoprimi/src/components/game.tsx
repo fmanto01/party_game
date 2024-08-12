@@ -3,6 +3,10 @@ import * as c from '../../../Server/src/socketConsts';
 import { QuestionData, FinalResultsData } from '../ts/types';
 import { socket } from '../ts/socketInit';
 import Timer from './timer';
+import Question from './Question';
+import PlayerList from './PlayerList';
+import Results from './Results';
+import FinalResults from './FinalResults';
 
 const Game: React.FC = () => {
   const [question, setQuestion] = useState<string>('');
@@ -82,65 +86,20 @@ const Game: React.FC = () => {
     <div className="container mt-5">
       <div className="top-container text-center mt-3">
         {!gameOver && (
-          <div id="timerContainer">
+          <>
             <Timer duration={10} onTimeUp={handleTimeUp} isActive={isTimerActive} />
-          </div>
+            <Question question={question} />
+          </>
         )}
-        <div id="questionContainer" className="mt-3">
-          <h2 id="question">{question}</h2>
-        </div>
       </div>
-      <div id="playersContainer" className="text-center mt-5">
-        {players.map(player => (
-          <button
-            key={player}
-            className="btn btn-primary m-2 player-button"
-            onClick={() => handleVote(player)}
-          >
-            {player}
-          </button>
-        ))}
-      </div>
+      {!gameOver && (
+        <PlayerList players={players} onVote={handleVote} disabled={clicked} />
+      )}
       {showResults && (
-        <div id="resultsContainer" className="text-center mt-3">
-          <div id="resultMessageContainer">
-            <h3 id="resultMessage">{resultMessage}</h3>
-          </div>
-          <div className="d-flex justify-content-center align-items-center">
-            <button id="nextQuestionBtn" className="btn btn-primary mt-3" onClick={handleNextQuestion}>
-              Prosegui al prossimo turno
-            </button>
-          </div>
-        </div>
+        <Results resultMessage={resultMessage} onNextQuestion={handleNextQuestion} />
       )}
       {gameOver && finalResults && (
-        <div id="gameOverMessage" className="text-center mt-5">
-          <h2>Classifica</h2>
-          <div id="finalResultsContainer">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Posizione</th>
-                  <th>Giocatore</th>
-                  <th>Punti</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Object.entries(finalResults)
-                  .sort((a, b) => b[1] - a[1])
-                  .map(([player, score], index) => (
-                    <tr key={player}>
-                      <td>
-                        {index + 1} {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : ''}
-                      </td>
-                      <td>{player}</td>
-                      <td>{score}</td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <FinalResults finalResults={finalResults} />
       )}
     </div>
   );
