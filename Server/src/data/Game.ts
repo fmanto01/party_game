@@ -1,6 +1,7 @@
 export class Game {
 
   public lobbyCode: string;
+  public isGameStarted: boolean;
   public players: string[];
   public numOfVoters: number;
   public currentQuestionIndex: number;
@@ -11,10 +12,10 @@ export class Game {
   public playerScores: { [key: string]: number };
   public readyForNextQuestion: { [key: string]: boolean };
   public isReadyToGame: { [key: string]: boolean };
-  public isGameStarted: boolean;
 
   constructor(lobbyCode: string, numQuestions: number) {
     this.lobbyCode = lobbyCode;
+    this.isGameStarted = false;
     this.players = [];
     this.numOfVoters = 0;
     this.currentQuestionIndex = 0;

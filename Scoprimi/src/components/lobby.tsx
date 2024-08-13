@@ -35,14 +35,13 @@ const Lobby: React.FC = () => {
     socket.emit(c.REQUEST_RENDER_LOBBY, currentLobby, (data: Game) => {
       console.log('Received data:', data);
       setGame(data);
-      setIsReady(data.isReadyToGame[currentPlayer!]); // Initialize isReady based on server data
+      setIsReady(data.isReadyToGame[currentPlayer!]);
     });
     socket.on(c.RENDER_LOBBY, (data: Game) => {
       setGame(data);
-      setIsReady(data.isReadyToGame[currentPlayer!]); // Update isReady when game state updates
+      setIsReady(data.isReadyToGame[currentPlayer!]);
     });
     socket.on(c.INIZIA, () => {
-      // Update the game state to indicate it has started
       setGame((prevGame) => prevGame ? { ...prevGame, isGameStarted: true } : undefined);
       navigate('/game?');
     });

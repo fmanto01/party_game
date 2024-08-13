@@ -77,6 +77,9 @@ export function setupSocket(io: any, questions: string[]) {
       if (!thisGame.isAllPlayersReadyToGame()) {
         return;
       }
+      thisGame.isGameStarted = true;
+      const lobbies = gameManager.listGames();
+      io.emit(c.RENDER_LOBBIES, { lobbies });
       console.log(`inizio ${data.lobbyCode}`);
       io.to(data.lobbyCode).emit(c.INIZIA);
     });
