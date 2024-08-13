@@ -11,6 +11,7 @@ export class Game {
   public playerScores: { [key: string]: number };
   public readyForNextQuestion: { [key: string]: boolean };
   public isReadyToGame: { [key: string]: boolean };
+  public isGameStarted: boolean;
 
   constructor(lobbyCode: string, numQuestions: number) {
     this.lobbyCode = lobbyCode;

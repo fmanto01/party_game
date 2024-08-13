@@ -15,6 +15,7 @@ interface Game {
   playerScores: { [key: string]: number };
   readyForNextQuestion: { [key: string]: boolean };
   isReadyToGame: { [key: string]: boolean };
+  isGameStarted: boolean;
 }
 
 function handleToggleisReadyToGame(data: { lobbyCode: string, playerName: string }) {
@@ -27,6 +28,7 @@ const Lobby: React.FC = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const [game, setGame] = useState<Game | undefined>(undefined);
+  const [isReady, setIsReady] = useState<boolean>(false);
   const lobbyCode = queryParams.get('lobbyCode') || '';
   const playerName = queryParams.get('playerName') || '';
   const navigate = useNavigate();
@@ -35,11 +37,15 @@ const Lobby: React.FC = () => {
     socket.emit(c.REQUEST_RENDER_LOBBY, lobbyCode, (data: Game) => {
       console.log('Received data:', data);
       setGame(data);
+      setIsReady(data.isReadyToGame[playerName]); // Initialize isReady based on server data
     });
     socket.on(c.RENDER_LOBBY, (data: Game) => {
       setGame(data);
+      setIsReady(data.isReadyToGame[playerName]); // Update isReady when game state updates
     });
     socket.on(c.INIZIA, () => {
+      // Update the game state to indicate it has started
+      setGame((prevGame) => prevGame ? { ...prevGame, isGameStarted: true } : undefined);
       const queryParams = new URLSearchParams({ lobbyCode, playerName });
       navigate(`/game?${queryParams.toString()}`);
     });
@@ -48,6 +54,12 @@ const Lobby: React.FC = () => {
       socket.off(c.INIZIA);
     };
   }, [lobbyCode, navigate, playerName]);
+
+  const toggleReady = () => {
+    const newReadyState = !isReady;
+    setIsReady(newReadyState);
+    handleToggleisReadyToGame({ lobbyCode: lobbyCode, playerName: playerName });
+  };
 
   // TODO load page
   if (!game) {
@@ -58,10 +70,6 @@ const Lobby: React.FC = () => {
     <div className="container mt-5">
       <div className="text-center mb-4">
         <h1 id="lobbyCodeTitle">{game.lobbyCode}</h1>
-      </div>
-      <div className="form-group">
-        <label htmlFor="numQuestions">Number of Questions:</label>
-        <input type="number" min="5" className="form-control" id="numQuestions" placeholder="Number of Questions" />
       </div>
 
       <hr />
@@ -83,9 +91,12 @@ const Lobby: React.FC = () => {
         </table>
       </div>
       <div className="text-center mt-4">
-        <button id="toggleisReadyToGame" className="btn btn-primary"
-          onClick={() => handleToggleisReadyToGame({ lobbyCode: lobbyCode, playerName: playerName })}>
-          Toggle ready
+        <button
+          id="toggleisReadyToGame"
+          className={`btn ${isReady ? 'btn-success' : 'btn-secondary'}`}
+          onClick={toggleReady}
+        >
+          {isReady ? 'Ready' : 'Not Ready'}
         </button>
       </div>
     </div>
