@@ -12,7 +12,8 @@ const LobbyList: React.FC<LobbyListProps> = ({ lobbies, onJoin, playerName }) =>
       <tr>
         <th>Codice Lobby</th>
         <th>Num Giocatori</th>
-        <th>Azioni</th>
+        <th>Status</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -20,10 +21,13 @@ const LobbyList: React.FC<LobbyListProps> = ({ lobbies, onJoin, playerName }) =>
         <tr key={lobby.lobbyCode}>
           <td>{lobby.lobbyCode}</td>
           <td>{lobby.players.length}</td>
+          <td>{lobby.isGameStarted ? 'Iniziato' : 'In attesa'}</td>
           <td>
-            <button className="btn btn-success" onClick={() => onJoin(lobby.lobbyCode, playerName)}>
-              Join
-            </button>
+            {!lobby.isGameStarted && (
+              <button className="btn btn-success" onClick={() => onJoin(lobby.lobbyCode, playerName)}>
+                Join
+              </button>
+            )}
           </td>
         </tr>
       ))}

@@ -11,7 +11,7 @@ const Results: React.FC<ResultsProps> = ({ resultMessage, onNextQuestion }) => (
       <h3 id="resultMessage">{resultMessage}</h3>
     </div>
     <div className="d-flex justify-content-center align-items-center">
-      <button id="nextQuestionBtn" className="btn btn-primary mt-3" onClick={onNextQuestion}>
+      <button id="nextQuestionBtn" className="btn btn-primary mt-3 w-100" onClick={onNextQuestion}>
         Prosegui al prossimo turno
       </button>
     </div>
