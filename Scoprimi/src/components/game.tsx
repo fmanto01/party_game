@@ -7,6 +7,7 @@ import Question from './Question';
 import PlayerList from './PlayerList';
 import Results from './Results';
 import FinalResults from './FinalResults';
+import { useSession } from '../contexts/SessionContext';
 
 const Game: React.FC = () => {
   const [question, setQuestion] = useState<string>('');
@@ -19,13 +20,10 @@ const Game: React.FC = () => {
   const [clicked, setClicked] = useState<boolean>(false);
   const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
 
-  const url = new URL(window.location.href);
-  const params = new URLSearchParams(url.search);
-  const lobbyCode = params.get('lobbyCode') || '';
-  const playerName = params.get('playerName') || '';
+  const { currentLobby, currentPlayer } = useSession();
 
   useEffect(() => {
-    socket.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode, playerName });
+    socket.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode: currentLobby, playerName: currentPlayer });
 
     socket.on(c.SEND_QUESTION, ({ question, players }: QuestionData) => {
       setClicked(false);
@@ -59,7 +57,7 @@ const Game: React.FC = () => {
       socket.off(c.GAME_OVER);
       socket.off(c.FINAL_RESULTS);
     };
-  }, [lobbyCode, playerName]);
+  }, [currentLobby, currentPlayer]);
 
   const handleVote = (player: string) => {
     if (clicked) {
@@ -68,16 +66,16 @@ const Game: React.FC = () => {
     }
     setClicked(true);
     setIsTimerActive(false);
-    socket.emit(c.VOTE, { lobbyCode, voter: playerName, vote: player });
+    socket.emit(c.VOTE, { lobbyCode: currentLobby, voter: currentPlayer, vote: player });
   };
 
   const handleNextQuestion = () => {
-    socket.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode, playerName });
+    socket.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode: currentLobby, playerName: currentPlayer });
   };
 
   const handleTimeUp = () => {
     if (!clicked) {
-      socket.emit(c.VOTE, { lobbyCode, voter: playerName, vote: '' });
+      socket.emit(c.VOTE, { lobbyCode: currentLobby, voter: currentPlayer, vote: '' });
     }
     setIsTimerActive(false);
   };

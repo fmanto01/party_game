@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import * as c from '../../../Server/src/socketConsts.js';
 import { socket } from '../ts/socketInit.ts';
+import { useSession } from '../contexts/SessionContext.tsx';
 
 interface Game {
   lobbyCode: string;
@@ -25,16 +26,13 @@ function handleToggleisReadyToGame(data: { lobbyCode: string, playerName: string
 
 const Lobby: React.FC = () => {
 
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
   const [game, setGame] = useState<Game | undefined>(undefined);
+  const { currentLobby, currentPlayer } = useSession();
   const [isReady, setIsReady] = useState<boolean>(false);
-  const lobbyCode = queryParams.get('lobbyCode') || '';
-  const playerName = queryParams.get('playerName') || '';
   const navigate = useNavigate();
 
   useEffect(() => {
-    socket.emit(c.REQUEST_RENDER_LOBBY, lobbyCode, (data: Game) => {
+    socket.emit(c.REQUEST_RENDER_LOBBY, currentLobby, (data: Game) => {
       console.log('Received data:', data);
       setGame(data);
       setIsReady(data.isReadyToGame[playerName]); // Initialize isReady based on server data
@@ -43,17 +41,16 @@ const Lobby: React.FC = () => {
       setGame(data);
       setIsReady(data.isReadyToGame[playerName]); // Update isReady when game state updates
     });
-    socket.on(c.INIZIA, () => {
+    socket.on(c.INIZIA, () => {      
       // Update the game state to indicate it has started
       setGame((prevGame) => prevGame ? { ...prevGame, isGameStarted: true } : undefined);
-      const queryParams = new URLSearchParams({ lobbyCode, playerName });
-      navigate(`/game?${queryParams.toString()}`);
+      navigate('/game?');
     });
 
     return () => {
       socket.off(c.INIZIA);
     };
-  }, [lobbyCode, navigate, playerName]);
+  }, [currentLobby, navigate, currentPlayer]);
 
   const toggleReady = () => {
     const newReadyState = !isReady;
@@ -91,11 +88,9 @@ const Lobby: React.FC = () => {
         </table>
       </div>
       <div className="text-center mt-4">
-        <button
-          id="toggleisReadyToGame"
+        <button id="toggleisReadyToGame" className="btn btn-primary"
+          onClick={() => handleToggleisReadyToGame({ lobbyCode: currentLobby!, playerName: currentPlayer! })}>
           className={`btn ${isReady ? 'btn-success' : 'btn-secondary'}`}
-          onClick={toggleReady}
-        >
           {isReady ? 'Ready' : 'Not Ready'}
         </button>
       </div>
