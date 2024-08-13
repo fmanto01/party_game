@@ -29,10 +29,6 @@ function removeEndGameUIDs(lobbyCode: string) {
 export function setupSocket(io: any, questions: string[]) {
   io.on(c.CONNECTION, (socket: any) => {
 
-    setInterval(() => {
-      console.log(UIDtoLobby);
-    }, 3000);
-
     console.log(`client connected: ${socket.id}`);
 
     socket.on(c.CREATE_LOBBY, ([code, numQuestionsParam]: [string, number]) => {
