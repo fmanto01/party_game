@@ -35,13 +35,13 @@ const Lobby: React.FC = () => {
     socket.emit(c.REQUEST_RENDER_LOBBY, currentLobby, (data: Game) => {
       console.log('Received data:', data);
       setGame(data);
-      setIsReady(data.isReadyToGame[playerName]); // Initialize isReady based on server data
+      setIsReady(data.isReadyToGame[currentPlayer!]); // Initialize isReady based on server data
     });
     socket.on(c.RENDER_LOBBY, (data: Game) => {
       setGame(data);
-      setIsReady(data.isReadyToGame[playerName]); // Update isReady when game state updates
+      setIsReady(data.isReadyToGame[currentPlayer!]); // Update isReady when game state updates
     });
-    socket.on(c.INIZIA, () => {      
+    socket.on(c.INIZIA, () => {
       // Update the game state to indicate it has started
       setGame((prevGame) => prevGame ? { ...prevGame, isGameStarted: true } : undefined);
       navigate('/game?');
@@ -55,7 +55,7 @@ const Lobby: React.FC = () => {
   const toggleReady = () => {
     const newReadyState = !isReady;
     setIsReady(newReadyState);
-    handleToggleisReadyToGame({ lobbyCode: lobbyCode, playerName: playerName });
+    handleToggleisReadyToGame({ lobbyCode: currentLobby!, playerName: currentPlayer! });
   };
 
   // TODO load page
@@ -88,9 +88,10 @@ const Lobby: React.FC = () => {
         </table>
       </div>
       <div className="text-center mt-4">
-        <button id="toggleisReadyToGame" className="btn btn-primary"
-          onClick={() => handleToggleisReadyToGame({ lobbyCode: currentLobby!, playerName: currentPlayer! })}>
+        <button
+          id="toggleisReadyToGame"
           className={`btn ${isReady ? 'btn-success' : 'btn-secondary'}`}
+          onClick={() => toggleReady()}>
           {isReady ? 'Ready' : 'Not Ready'}
         </button>
       </div>

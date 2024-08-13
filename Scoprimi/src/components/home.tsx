@@ -29,7 +29,7 @@ const Home: React.FC = () => {
   }
 
   function handleJoinGame(lobbyCode: string) {
-    if (currentPlayer === '') {
+    if (currentPlayer === '' || currentPlayer === undefined) {
       alert('Inserisci un nome utente');
       return;
     }
@@ -51,7 +51,6 @@ const Home: React.FC = () => {
     socket.on(c.PLAYER_CAN_JOIN, (data) => {
       if (data.canJoin) {
         setCurrentLobby(data.lobbyCode);
-        // const queryParams = new URLSearchParams({ lobbyCode: data.lobbyCode, playerName: data.playerName });
         navigate('/lobby');
       } else {
         alert('Sei già in questa lobby');
