@@ -18,6 +18,7 @@ interface Game {
 }
 
 function handleToggleisReadyToGame(data: { lobbyCode: string, playerName: string }) {
+  console.log('handleLobbycode ', data.lobbyCode);
   socket.emit(c.TOGGLE_IS_READY_TO_GAME, data);
 }
 

@@ -28,16 +28,6 @@ function removeEndGameUIDs(lobbyCode: string) {
 
 export function setupSocket(io: any, questions: string[]) {
   io.on(c.CONNECTION, (socket: any) => {
-
-
-    console.log('a user connected');
-
-    // You can print the rooms on some event or periodically
-    setInterval(() => {
-      const rooms = io.sockets.adapter.rooms;
-      console.log('Rooms:', rooms);
-    }, 5000); // every 5 seconds
-
     console.log(`client connected: ${socket.id}`);
 
     socket.on(c.CREATE_LOBBY, ([code, numQuestionsParam]: [string, number]) => {
@@ -52,6 +42,7 @@ export function setupSocket(io: any, questions: string[]) {
     socket.on(c.REQUEST_TO_JOIN_LOBBY, (data: { lobbyCode: string; playerName: string, uid: string }) => {
       if (lobbyCode.includes(data.lobbyCode)) {
         const code = data.lobbyCode;
+        console.log('sto joinando la lobby', code);
         const game = gameManager.getGame(code);
         const uid = data.uid;
 
@@ -66,7 +57,7 @@ export function setupSocket(io: any, questions: string[]) {
         UIDtoLobby[uid] = code;
         socket.join(code);
         socket.emit(c.PLAYER_CAN_JOIN, { canJoin: true, lobbyCode: code, playerName: data.playerName });
-        socket.broadcast.to(code).emit(c.RENDER_LOBBY, game);
+        io.to(code).emit(c.RENDER_LOBBY, game);
         const lobbies = gameManager.listGames();
         io.emit(c.RENDER_LOBBIES, { lobbies });
       }
@@ -78,13 +69,14 @@ export function setupSocket(io: any, questions: string[]) {
     });
 
     socket.on(c.TOGGLE_IS_READY_TO_GAME, (data: { lobbyCode: string; playerName: string }) => {
-      console.log('Toggle');
+      console.log('Toggle', lobbyCode);
       const thisGame = gameManager.getGame(data.lobbyCode);
       thisGame.toogleIsReadyToGame(data.playerName);
-      io.to(data.lobbyCode).emit(c.RENDER_LOBBY, thisGame);
+      // io.to(data.lobbyCode).emit(c.RENDER_LOBBY, thisGame);
       if (!thisGame.isAllPlayersReadyToGame()) {
         return;
       }
+      console.log(`inizio ${lobbyCode}`);
       io.to(data.lobbyCode).emit(c.INIZIA);
     });
 
@@ -133,6 +125,7 @@ export function setupSocket(io: any, questions: string[]) {
 
     socket.on(c.REQUEST_RENDER_LOBBY, (lobbyCode: string, callback: (thisGame: Game) => void) => {
       console.log('Received REQUEST_RENDER_LOBBY for lobbyCode:', lobbyCode);
+      console.log('Received REQUEST_RENDER_LOBBY :', callback);
       const thisGame = gameManager.getGame(lobbyCode);
       if (thisGame) {
         callback(thisGame);
