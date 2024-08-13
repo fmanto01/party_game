@@ -2,13 +2,16 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './components/home.tsx';
 import Lobby from './components/lobby.tsx';
 import Game from './components/game.tsx';
+import { SessionProvider } from './contexts/LobbyContext.tsx';
 
 const App = () => (
   <Router>
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/lobby" element={<Lobby />} />
-      <Route path="/game" element={<Game />} />
+      <SessionProvider>
+        <Route path="/" element={<Home />} />
+        <Route path="/lobby" element={<Lobby />} />
+        <Route path="/game" element={<Game />} />
+      </SessionProvider>
     </Routes>
   </Router>
 );
