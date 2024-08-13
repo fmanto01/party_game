@@ -51,8 +51,8 @@ const Home: React.FC = () => {
     socket.on(c.PLAYER_CAN_JOIN, (data) => {
       if (data.canJoin) {
         setCurrentLobby(data.lobbyCode);
-        const queryParams = new URLSearchParams({ lobbyCode: data.lobbyCode, playerName: data.playerName });
-        navigate(`/lobby?${queryParams.toString()}`);
+        // const queryParams = new URLSearchParams({ lobbyCode: data.lobbyCode, playerName: data.playerName });
+        navigate('/lobby');
       } else {
         alert('Sei già in questa lobby');
       }

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import * as c from '../../../Server/src/socketConsts.js';
 import { socket } from '../ts/socketInit.ts';
+import { useSession } from '../contexts/SessionContext.tsx';
 
 interface Game {
   lobbyCode: string;
@@ -24,15 +25,12 @@ function handleToggleisReadyToGame(data: { lobbyCode: string, playerName: string
 
 const Lobby: React.FC = () => {
 
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
   const [game, setGame] = useState<Game | undefined>(undefined);
-  const lobbyCode = queryParams.get('lobbyCode') || '';
-  const playerName = queryParams.get('playerName') || '';
+  const { currentLobby, currentPlayer } = useSession();
   const navigate = useNavigate();
 
   useEffect(() => {
-    socket.emit(c.REQUEST_RENDER_LOBBY, lobbyCode, (data: Game) => {
+    socket.emit(c.REQUEST_RENDER_LOBBY, currentLobby, (data: Game) => {
       console.log('Received data:', data);
       setGame(data);
     });
@@ -40,14 +38,13 @@ const Lobby: React.FC = () => {
       setGame(data);
     });
     socket.on(c.INIZIA, () => {
-      const queryParams = new URLSearchParams({ lobbyCode, playerName });
-      navigate(`/game?${queryParams.toString()}`);
+      navigate('/game?');
     });
 
     return () => {
       socket.off(c.INIZIA);
     };
-  }, [lobbyCode, navigate, playerName]);
+  }, [currentLobby, navigate, currentPlayer]);
 
   // TODO load page
   if (!game) {
@@ -84,7 +81,7 @@ const Lobby: React.FC = () => {
       </div>
       <div className="text-center mt-4">
         <button id="toggleisReadyToGame" className="btn btn-primary"
-          onClick={() => handleToggleisReadyToGame({ lobbyCode: lobbyCode, playerName: playerName })}>
+          onClick={() => handleToggleisReadyToGame({ lobbyCode: currentLobby!, playerName: currentPlayer! })}>
           Toggle ready
         </button>
       </div>
