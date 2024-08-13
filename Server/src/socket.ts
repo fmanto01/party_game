@@ -3,7 +3,7 @@ import { GameManager } from './data/GameManager.js';
 import { Game } from './data/Game.js';
 
 const gameManager = new GameManager();
-let lobbyCode: string[] = [];
+let allLobbiesCode: string[] = [];
 let UIDtoLobby: { [key: string]: string } = {};
 
 
@@ -33,17 +33,17 @@ export function setupSocket(io: any, questions: string[]) {
 
     socket.on(c.CREATE_LOBBY, ([code, numQuestionsParam]: [string, number]) => {
       console.log('Ho ricevuto questo dato: ', code, ' - ', numQuestionsParam);
-      lobbyCode.push(code);
+      allLobbiesCode.push(code);
       gameManager.createGame(code, numQuestionsParam);
       gameManager.getGame(code).selectedQuestions = shuffle(questions).slice(0, numQuestionsParam);
       const lobbies = gameManager.listGames();
-      console.log(lobbyCode);
-      socket.emit(c.RENDER_LOBBIES, { lobbies });
+      io.emit(c.RENDER_LOBBIES, { lobbies });
     });
 
     socket.on(c.REQUEST_TO_JOIN_LOBBY, (data: { lobbyCode: string; playerName: string, uid: string }) => {
-      if (lobbyCode.includes(data.lobbyCode)) {
+      if (allLobbiesCode.includes(data.lobbyCode)) {
         const code = data.lobbyCode;
+        console.log('sto joinando la lobby', code);
         const game = gameManager.getGame(code);
         const uid = data.uid;
 
@@ -58,25 +58,26 @@ export function setupSocket(io: any, questions: string[]) {
         UIDtoLobby[uid] = code;
         socket.join(code);
         socket.emit(c.PLAYER_CAN_JOIN, { canJoin: true, lobbyCode: code, playerName: data.playerName });
-      } else {
-        console.log('A client tried to join a non-existing lobby');
-        socket.emit(c.ERROR, 'Codice lobby non esistente');
+        io.to(code).emit(c.RENDER_LOBBY, game);
+        const lobbies = gameManager.listGames();
+        io.emit(c.RENDER_LOBBIES, { lobbies });
       }
     });
 
     socket.on(c.REQUEST_RENDER_LOBBIES, () => {
       const lobbies = gameManager.listGames();
-      io.emit(c.RENDER_LOBBIES, { lobbies });
+      socket.emit(c.RENDER_LOBBIES, { lobbies });
     });
 
     socket.on(c.TOGGLE_IS_READY_TO_GAME, (data: { lobbyCode: string; playerName: string }) => {
-      console.log('Toggle');
+      console.log('Toggle', data.lobbyCode);
       const thisGame = gameManager.getGame(data.lobbyCode);
       thisGame.toogleIsReadyToGame(data.playerName);
-      io.emit(c.RENDER_LOBBY, thisGame);
+      // io.to(data.lobbyCode).emit(c.RENDER_LOBBY, thisGame);
       if (!thisGame.isAllPlayersReadyToGame()) {
         return;
       }
+      console.log(`inizio ${data.lobbyCode}`);
       io.to(data.lobbyCode).emit(c.INIZIA);
     });
 
@@ -107,7 +108,7 @@ export function setupSocket(io: any, questions: string[]) {
       if (!done) {
         thisGame.resetReadyForNextQuestion(); // Reset readiness for the next round
         const players = thisGame.players;
-        io.to(lobbyCode).emit(c.SEND_QUESTION, { question, players });
+        io.to(data.lobbyCode).emit(c.SEND_QUESTION, { question, players });
       } else {
         console.log('Game Over: no more questions.');
         console.log('Risultati finali:');
@@ -125,9 +126,10 @@ export function setupSocket(io: any, questions: string[]) {
 
     socket.on(c.REQUEST_RENDER_LOBBY, (lobbyCode: string, callback: (thisGame: Game) => void) => {
       console.log('Received REQUEST_RENDER_LOBBY for lobbyCode:', lobbyCode);
+      console.log('Received REQUEST_RENDER_LOBBY :', callback);
       const thisGame = gameManager.getGame(lobbyCode);
       if (thisGame) {
-        callback(thisGame); // Rispondi con i dati del gioco
+        callback(thisGame);
       }
     });
 

@@ -43,6 +43,7 @@ const Home: React.FC = () => {
   useEffect(() => {
     socket.emit(c.REQUEST_RENDER_LOBBIES);
     socket.on(c.RENDER_LOBBIES, ({ lobbies }) => {
+      console.log(lobbies);
       setLobbies(lobbies);
     });
 
