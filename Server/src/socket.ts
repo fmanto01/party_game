@@ -3,7 +3,7 @@ import { GameManager } from './data/GameManager.js';
 import { Game } from './data/Game.js';
 
 const gameManager = new GameManager();
-let lobbyCode: string[] = [];
+let allLobbiesCode: string[] = [];
 let UIDtoLobby: { [key: string]: string } = {};
 
 
@@ -28,11 +28,16 @@ function removeEndGameUIDs(lobbyCode: string) {
 
 export function setupSocket(io: any, questions: string[]) {
   io.on(c.CONNECTION, (socket: any) => {
+
+    setInterval(() => {
+      console.log(UIDtoLobby);
+    }, 3000);
+
     console.log(`client connected: ${socket.id}`);
 
     socket.on(c.CREATE_LOBBY, ([code, numQuestionsParam]: [string, number]) => {
       console.log('Ho ricevuto questo dato: ', code, ' - ', numQuestionsParam);
-      lobbyCode.push(code);
+      allLobbiesCode.push(code);
       gameManager.createGame(code, numQuestionsParam);
       gameManager.getGame(code).selectedQuestions = shuffle(questions).slice(0, numQuestionsParam);
       const lobbies = gameManager.listGames();
@@ -40,7 +45,7 @@ export function setupSocket(io: any, questions: string[]) {
     });
 
     socket.on(c.REQUEST_TO_JOIN_LOBBY, (data: { lobbyCode: string; playerName: string, uid: string }) => {
-      if (lobbyCode.includes(data.lobbyCode)) {
+      if (allLobbiesCode.includes(data.lobbyCode)) {
         const code = data.lobbyCode;
         console.log('sto joinando la lobby', code);
         const game = gameManager.getGame(code);
@@ -69,14 +74,14 @@ export function setupSocket(io: any, questions: string[]) {
     });
 
     socket.on(c.TOGGLE_IS_READY_TO_GAME, (data: { lobbyCode: string; playerName: string }) => {
-      console.log('Toggle', lobbyCode);
+      console.log('Toggle', data.lobbyCode);
       const thisGame = gameManager.getGame(data.lobbyCode);
       thisGame.toogleIsReadyToGame(data.playerName);
       // io.to(data.lobbyCode).emit(c.RENDER_LOBBY, thisGame);
       if (!thisGame.isAllPlayersReadyToGame()) {
         return;
       }
-      console.log(`inizio ${lobbyCode}`);
+      console.log(`inizio ${data.lobbyCode}`);
       io.to(data.lobbyCode).emit(c.INIZIA);
     });
 
@@ -107,7 +112,7 @@ export function setupSocket(io: any, questions: string[]) {
       if (!done) {
         thisGame.resetReadyForNextQuestion(); // Reset readiness for the next round
         const players = thisGame.players;
-        io.to(lobbyCode).emit(c.SEND_QUESTION, { question, players });
+        io.to(data.lobbyCode).emit(c.SEND_QUESTION, { question, players });
       } else {
         console.log('Game Over: no more questions.');
         console.log('Risultati finali:');
