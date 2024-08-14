@@ -124,6 +124,7 @@ export function setupSocket(io: any, questions: string[]) {
         io.to(data.lobbyCode).emit(c.FINAL_RESULTS, thisGame.playerScores);
         removeEndGameUIDs(thisGame.lobbyCode);
         gameManager.deleteGame(thisGame.lobbyCode);
+        // TODO togliere i player dal socket
       }
     });
 
