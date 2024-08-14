@@ -58,6 +58,12 @@ const Lobby: React.FC = () => {
     handleToggleisReadyToGame({ lobbyCode: currentLobby!, playerName: currentPlayer! });
   };
 
+  const goBackToLobbyList = () => {
+    console.log('Remove from lobby: ', currentPlayer, ' ', currentLobby);
+    socket.emit(c.EXIT_LOBBY, { currentPlayer, currentLobby });
+    navigate('/');
+  }
+
   // TODO load page
   if (!game) {
     return <div>Loading...</div>;
@@ -93,6 +99,12 @@ const Lobby: React.FC = () => {
           className={`btn ${isReady ? 'btn-success' : 'btn-secondary'}`}
           onClick={() => toggleReady()}>
           {isReady ? 'Ready' : 'Not Ready'}
+        </button>
+      </div>
+      <div className="text-center mt-4">
+        <button
+          onClick={() => goBackToLobbyList()}
+          className="btn btn-primary">Indietro
         </button>
       </div>
     </div>

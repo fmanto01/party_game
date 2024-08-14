@@ -141,5 +141,16 @@ export function setupSocket(io: any, questions: string[]) {
     socket.on(c.DISCONNECT, () => {
       console.log('Client disconnected:', socket.id);
     });
+
+    socket.on(c.EXIT_LOBBY, (data) => {
+      console.log(`Removing ${data.currentPlayer} from lobby ${data.currentLobby}`);
+      const thisGame = gameManager.getGame(data.currentLobby);
+      thisGame.removePlayer(data.currentPlayer);
+      const lobbies = gameManager.listGames();
+      console.log(thisGame.players);
+      io.emit(c.RENDER_LOBBIES, { lobbies });
+      //TODO
+    });
+
   });
 }
