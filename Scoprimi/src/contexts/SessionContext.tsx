@@ -1,4 +1,4 @@
-import { createContext, useState, useContext, ReactNode } from 'react';
+import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 
 interface SessionContextProps {
   currentLobby: string | undefined;
@@ -25,6 +25,33 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
 
   // Stato del player
   const [currentPlayer, setCurrentPlayer] = useState<string | undefined>(undefined);
+
+  // salvo player nella sessione locale
+  useEffect(() => {
+    if (currentPlayer) {
+      console.log('cambio player');
+      sessionStorage.setItem('currentPlayer', currentPlayer);
+    }
+  }, [currentPlayer]);
+
+  // salvo lobby nella sessione locale
+  useEffect(() => {
+    if (currentLobby) {
+      console.log('cambio lobby');
+      sessionStorage.setItem('currentLobby', currentLobby);
+    }
+  }, [currentLobby]);
+
+  // Ristabilire il contesto con i valori salvati in sessionStorage
+  useEffect(() => {
+    const savedPlayer = sessionStorage.getItem('currentPlayer');
+    const savedLobby = sessionStorage.getItem('currentLobby');
+    console.log(savedLobby, savedPlayer);
+    if (savedLobby && savedPlayer) {
+      setCurrentLobby(savedLobby);
+      setCurrentPlayer(savedPlayer);
+    }
+  }, []);
 
   return (
     <SessionContext.Provider
