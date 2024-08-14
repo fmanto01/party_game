@@ -62,7 +62,7 @@ const Lobby: React.FC = () => {
     console.log('Remove from lobby: ', currentPlayer, ' ', currentLobby);
     socket.emit(c.EXIT_LOBBY, { currentPlayer, currentLobby });
     navigate('/');
-  }
+  };
 
   // TODO load page
   if (!game) {

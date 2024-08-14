@@ -142,7 +142,7 @@ export function setupSocket(io: any, questions: string[]) {
       console.log('Client disconnected:', socket.id);
     });
 
-    socket.on(c.EXIT_LOBBY, (data) => {
+    socket.on(c.EXIT_LOBBY, (data: { currentPlayer: string; currentLobby: string; }) => {
       console.log(`Removing ${data.currentPlayer} from lobby ${data.currentLobby}`);
       const thisGame = gameManager.getGame(data.currentLobby);
       thisGame.removePlayer(data.currentPlayer);
