@@ -28,37 +28,43 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
   // Stato del player
   const [currentPlayer, setCurrentPlayer] = useState<string | undefined>(undefined);
 
-  // salvo player nella sessione locale
-  useEffect(() => {
-    if (currentPlayer) {
-      sessionStorage.setItem('currentPlayer', currentPlayer);
-    } else {
-      sessionStorage.removeItem('currentPlayer');
-    }
-  }, [currentPlayer]);
+  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
 
-  // salvo lobby nella sessione locale
-  useEffect(() => {
-    if (currentLobby) {
-      console.log('cambio lobby');
-      sessionStorage.setItem('currentLobby', currentLobby);
-    } else {
-      sessionStorage.removeItem('currentLobby');
-    }
-  }, [currentLobby]);
-
-  // Ristabilire il contesto con i valori salvati in sessionStorage
   useEffect(() => {
     const savedPlayer = sessionStorage.getItem('currentPlayer');
     const savedLobby = sessionStorage.getItem('currentLobby');
     console.log(savedLobby, savedPlayer);
-    // TODO penso possa rompersi ( non so bene come )
+
     if (savedLobby && savedPlayer) {
       setCurrentLobby(savedLobby);
       setCurrentPlayer(savedPlayer);
       socket.emit(JOIN_ROOM, { playerName: savedPlayer, lobbyCode: savedLobby });
     }
+
+    setInitialLoadComplete(true);
   }, []);
+
+  useEffect(() => {
+    if (initialLoadComplete) {
+      if (currentPlayer) {
+        sessionStorage.setItem('currentPlayer', currentPlayer);
+      } else {
+        sessionStorage.removeItem('currentPlayer');
+      }
+    }
+  }, [currentPlayer, initialLoadComplete]);
+
+  useEffect(() => {
+    if (initialLoadComplete) {
+      if (currentLobby) {
+        console.log('cambio lobby');
+        sessionStorage.setItem('currentLobby', currentLobby);
+      } else {
+        sessionStorage.removeItem('currentLobby');
+      }
+    }
+  }, [currentLobby, initialLoadComplete]);
+
 
   return (
     <SessionContext.Provider

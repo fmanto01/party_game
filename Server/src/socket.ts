@@ -21,7 +21,34 @@ function shuffle(array: string[]) {
 export function setupSocket(io: any, questions: string[]) {
   io.on(c.CONNECTION, (socket: any) => {
 
-    console.log(`client connected: ${socket.id}`);
+    console.log(`Client connected: ${socket.id}`);
+
+    socket.on(c.DISCONNECT, () => {
+      console.log('Client disconnected:', socket.id);
+
+      for (const lobbyCode of allLobbiesCode) {
+        const game = gameManager.getGame(lobbyCode);
+        const playerName = game.players.find(pname => game.playerSocketIds[pname] === socket.id);
+
+        if (playerName) {
+          console.log(`Removing ${playerName} from lobby ${lobbyCode}`);
+          game.removePlayer(playerName);
+          io.to(lobbyCode).emit(c.RENDER_LOBBY, game);
+          socket.leave(lobbyCode);
+
+          // Se la lobby è vuota, la elimino
+          if (game.players.length === 0) {
+            console.log(`Deleting empty lobby ${lobbyCode}`);
+            gameManager.deleteGame(lobbyCode);
+            allLobbiesCode = allLobbiesCode.filter(code => code !== lobbyCode);
+          }
+
+          const lobbies = gameManager.listGames();
+          io.emit(c.RENDER_LOBBIES, { lobbies });
+          break;
+        }
+      }
+    });
 
     socket.on(c.CREATE_LOBBY, ([code, numQuestionsParam]: [string, number]) => {
       console.log('Ho ricevuto questo dato: ', code, ' - ', numQuestionsParam);
@@ -45,7 +72,7 @@ export function setupSocket(io: any, questions: string[]) {
         }
 
         console.log(`${data.playerName} just joined the lobby`);
-        game.addPlayer(data.playerName);
+        game.addPlayer(data.playerName, socket.id);
         socket.join(code);
         socket.emit(c.PLAYER_CAN_JOIN, { canJoin: true, lobbyCode: code, playerName: data.playerName });
         io.to(code).emit(c.RENDER_LOBBY, game);
@@ -131,10 +158,6 @@ export function setupSocket(io: any, questions: string[]) {
     socket.on(c.LEAVE_ROOM, (data: { playerName: string, lobbyCode: string }) => {
       socket.leave(data.lobbyCode);
     })
-
-    socket.on(c.DISCONNECT, () => {
-      console.log('Client disconnected:', socket.id);
-    });
 
     socket.on(c.EXIT_LOBBY, (data: { currentPlayer: string; currentLobby: string; }) => {
       console.log(`Removing ${data.currentPlayer} from lobby ${data.currentLobby}`);
