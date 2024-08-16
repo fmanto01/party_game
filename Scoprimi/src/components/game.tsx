@@ -23,19 +23,20 @@ const Game: React.FC = () => {
   const { currentLobby, currentPlayer } = useSession();
 
   useEffect(() => {
-    const storedQUestion = localStorage.getItem('currentQuestion');
-    const storedPlayers = localStorage.getItem('players');
+    const storedQUestion = sessionStorage.getItem('currentQuestion');
+    const storedPlayers = sessionStorage.getItem('players');
 
     if (storedQUestion && storedPlayers) {
       setQuestion(storedQUestion);
       setPlayers(JSON.parse(storedPlayers));
+      setIsTimerActive(true);
     } else {
       socket.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode: currentLobby, playerName: currentPlayer });
     }
 
     socket.on(c.SEND_QUESTION, ({ question, players }: QuestionData) => {
-      localStorage.setItem('currentQuestion', question);
-      localStorage.setItem('players', JSON.stringify(players));
+      sessionStorage.setItem('currentQuestion', question);
+      sessionStorage.setItem('players', JSON.stringify(players));
       setClicked(false);
       setIsTimerActive(true);
       setQuestion(question);

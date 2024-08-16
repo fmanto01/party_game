@@ -11,7 +11,7 @@ const Timer: React.FC<TimerProps> = ({ duration, onTimeUp, isActive }) => {
   const timerRef = useRef<number | null>(null);
 
   const startTimer = useCallback(() => {
-    const storedTimeLeft = localStorage.getItem('timeLeft');
+    const storedTimeLeft = sessionStorage.getItem('timeLeft');
     if (storedTimeLeft) {
       setTimeLeft(parseInt(storedTimeLeft, 10));
     } else {
@@ -23,10 +23,10 @@ const Timer: React.FC<TimerProps> = ({ duration, onTimeUp, isActive }) => {
         if (prev <= 1) {
           clearInterval(timerRef.current!);
           setTimeout(onTimeUp, 0);
-          localStorage.removeItem('timeLeft');
+          sessionStorage.removeItem('timeLeft');
           return 0;
         }
-        localStorage.setItem('timeLeft', (prev - 1).toString());
+        sessionStorage.setItem('timeLeft', (prev - 1).toString());
         return prev - 1;
       });
     }, 1 * 1000);
