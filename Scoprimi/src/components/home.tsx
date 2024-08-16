@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as c from '../../../Server/src/socketConsts.js';
-import { socket, UID } from '../ts/socketInit.ts';
+import { socket } from '../ts/socketInit.ts';
 import { Game } from '../../../Server/src/data/Game.ts';
 import LobbyList from './LobbyList.tsx';
 import CreateGameForm from './CreateGameForm.tsx';
@@ -36,7 +36,6 @@ const Home: React.FC = () => {
     const data = {
       lobbyCode: lobbyCode,
       playerName: currentPlayer,
-      uid: UID,
     };
     socket.emit(c.REQUEST_TO_JOIN_LOBBY, data);
   }

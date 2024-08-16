@@ -1,3 +1,5 @@
+import { socket } from '../ts/socketInit';
+import { JOIN_ROOM } from '../../../Server/src/socketConsts';
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 
 interface SessionContextProps {
@@ -29,7 +31,6 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
   // salvo player nella sessione locale
   useEffect(() => {
     if (currentPlayer) {
-      console.log('cambio player');
       sessionStorage.setItem('currentPlayer', currentPlayer);
     }
   }, [currentPlayer]);
@@ -50,6 +51,7 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
     if (savedLobby && savedPlayer) {
       setCurrentLobby(savedLobby);
       setCurrentPlayer(savedPlayer);
+      socket.emit(JOIN_ROOM, { playerName: savedPlayer, lobbyCode: savedLobby });
     }
   }, []);
 

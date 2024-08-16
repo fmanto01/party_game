@@ -4,7 +4,6 @@ import { Game } from './data/Game.js';
 
 const gameManager = new GameManager();
 let allLobbiesCode: string[] = [];
-let UIDtoLobby: { [key: string]: string } = {};
 
 
 function shuffle(array: string[]) {
@@ -18,13 +17,6 @@ function shuffle(array: string[]) {
   return array;
 }
 
-function removeEndGameUIDs(lobbyCode: string) {
-  for (const UID in UIDtoLobby) {
-    if (UIDtoLobby[UID] === lobbyCode) {
-      delete UIDtoLobby[UID];
-    }
-  }
-}
 
 export function setupSocket(io: any, questions: string[]) {
   io.on(c.CONNECTION, (socket: any) => {
@@ -40,12 +32,11 @@ export function setupSocket(io: any, questions: string[]) {
       io.emit(c.RENDER_LOBBIES, { lobbies });
     });
 
-    socket.on(c.REQUEST_TO_JOIN_LOBBY, (data: { lobbyCode: string; playerName: string, uid: string }) => {
+    socket.on(c.REQUEST_TO_JOIN_LOBBY, (data: { lobbyCode: string; playerName: string }) => {
       if (allLobbiesCode.includes(data.lobbyCode)) {
         const code = data.lobbyCode;
         console.log('sto joinando la lobby', code);
         const game = gameManager.getGame(code);
-        const uid = data.uid;
 
         if (game.players.includes(data.playerName)) {
           console.log(`Player with name ${data.playerName} already exists in lobby ${data.lobbyCode}`);
@@ -55,7 +46,6 @@ export function setupSocket(io: any, questions: string[]) {
 
         console.log(`${data.playerName} just joined the lobby`);
         game.addPlayer(data.playerName);
-        UIDtoLobby[uid] = code;
         socket.join(code);
         socket.emit(c.PLAYER_CAN_JOIN, { canJoin: true, lobbyCode: code, playerName: data.playerName });
         io.to(code).emit(c.RENDER_LOBBY, game);
@@ -122,7 +112,6 @@ export function setupSocket(io: any, questions: string[]) {
 
         io.to(data.lobbyCode).emit(c.GAME_OVER);
         io.to(data.lobbyCode).emit(c.FINAL_RESULTS, thisGame.playerScores);
-        removeEndGameUIDs(thisGame.lobbyCode);
         gameManager.deleteGame(thisGame.lobbyCode);
         // TODO togliere i player dal socket
       }
@@ -137,9 +126,8 @@ export function setupSocket(io: any, questions: string[]) {
       }
     });
 
-    socket.on(c.JOIN_ROOM, (uid: string) => {
-      console.log(UIDtoLobby[uid]);
-      socket.join(UIDtoLobby[uid]);
+    socket.on(c.JOIN_ROOM, (data: { playerName: string, lobbyCode: string }) => {
+      socket.join(data.lobbyCode);
     })
 
     socket.on(c.DISCONNECT, () => {
