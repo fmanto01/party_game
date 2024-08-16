@@ -35,15 +35,15 @@ export function setupSocket(io: any, questions: string[]) {
           io.to(lobbyCode).emit(c.RENDER_LOBBY, game);
           socket.leave(lobbyCode);
 
-          // Se la lobby è vuota, la elimino
-          if (game.players.length === 0) {
-            console.log(`Deleting empty lobby ${lobbyCode}`);
-            gameManager.deleteGame(lobbyCode);
-          }
+          // // Se la lobby è vuota, la elimino
+          // if (game.players.length === 0) {
+          //   console.log(`Deleting empty lobby ${lobbyCode}`);
+          //   gameManager.deleteGame(lobbyCode);
+          // }
 
-          const lobbies = gameManager.listGames();
-          io.emit(c.RENDER_LOBBIES, { lobbies });
-          break;
+          // const lobbies = gameManager.listGames();
+          // io.emit(c.RENDER_LOBBIES, { lobbies });
+          // break;
         }
       }
     });
@@ -150,6 +150,8 @@ export function setupSocket(io: any, questions: string[]) {
 
     socket.on(c.JOIN_ROOM, (data: { playerName: string, lobbyCode: string }) => {
       socket.join(data.lobbyCode);
+      const thisGame = gameManager.getGame(data.lobbyCode);
+      thisGame.addPlayer(data.playerName, socket.id);
     })
 
     socket.on(c.LEAVE_ROOM, (data: { playerName: string, lobbyCode: string }) => {
