@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Home from './components/home.tsx';
-import Lobby from './components/lobby.tsx';
-import Game from './components/game.tsx';
+import Home from './components/Home.tsx';
+import Lobby from './components/Lobby.tsx';
+import Game from './components/Game.tsx';
 import { SessionProvider } from './contexts/SessionContext.tsx';
 import ProtectedRoute from './components/ProtectedRoutes.tsx';
 import ErrorPage from './components/ErrorPage.tsx';

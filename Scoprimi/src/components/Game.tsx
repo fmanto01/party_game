@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import * as c from '../../../Server/src/socketConsts';
 import { QuestionData, FinalResultsData } from '../ts/types';
 import { socket } from '../ts/socketInit';
-import Timer from './timer';
+import Timer from './Timer';
 import Question from './Question';
 import PlayerList from './PlayerList';
 import Results from './Results';
@@ -23,9 +23,20 @@ const Game: React.FC = () => {
   const { currentLobby, currentPlayer } = useSession();
 
   useEffect(() => {
-    socket.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode: currentLobby, playerName: currentPlayer });
+    const storedQUestion = sessionStorage.getItem('currentQuestion');
+    const storedPlayers = sessionStorage.getItem('players');
+
+    if (storedQUestion && storedPlayers) {
+      setQuestion(storedQUestion);
+      setPlayers(JSON.parse(storedPlayers));
+      setIsTimerActive(true);
+    } else {
+      socket.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode: currentLobby, playerName: currentPlayer });
+    }
 
     socket.on(c.SEND_QUESTION, ({ question, players }: QuestionData) => {
+      sessionStorage.setItem('currentQuestion', question);
+      sessionStorage.setItem('players', JSON.stringify(players));
       setClicked(false);
       setIsTimerActive(true);
       setQuestion(question);
@@ -63,6 +74,7 @@ const Game: React.FC = () => {
     }
     setClicked(true);
     setIsTimerActive(false);
+    sessionStorage.removeItem('timeLeft');
     socket.emit(c.VOTE, { lobbyCode: currentLobby, voter: currentPlayer, vote: player });
   };
 
