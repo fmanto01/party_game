@@ -141,7 +141,6 @@ export function setupSocket(io: any, questions: string[]) {
 
     socket.on(c.REQUEST_RENDER_LOBBY, (lobbyCode: string, callback: (thisGame: Game) => void) => {
       console.log('Received REQUEST_RENDER_LOBBY for lobbyCode:', lobbyCode);
-      console.log('Received REQUEST_RENDER_LOBBY :', callback);
       const thisGame = gameManager.getGame(lobbyCode);
       if (thisGame) {
         callback(thisGame);
