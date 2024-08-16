@@ -32,6 +32,8 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (currentPlayer) {
       sessionStorage.setItem('currentPlayer', currentPlayer);
+    } else {
+      sessionStorage.removeItem('currentPlayer');
     }
   }, [currentPlayer]);
 
@@ -40,6 +42,8 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
     if (currentLobby) {
       console.log('cambio lobby');
       sessionStorage.setItem('currentLobby', currentLobby);
+    } else {
+      sessionStorage.removeItem('currentLobby');
     }
   }, [currentLobby]);
 
@@ -48,6 +52,7 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
     const savedPlayer = sessionStorage.getItem('currentPlayer');
     const savedLobby = sessionStorage.getItem('currentLobby');
     console.log(savedLobby, savedPlayer);
+    // TODO penso possa rompersi ( non so bene come )
     if (savedLobby && savedPlayer) {
       setCurrentLobby(savedLobby);
       setCurrentPlayer(savedPlayer);

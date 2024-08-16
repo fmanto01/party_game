@@ -27,7 +27,7 @@ function handleToggleisReadyToGame(data: { lobbyCode: string, playerName: string
 const Lobby: React.FC = () => {
 
   const [game, setGame] = useState<Game | undefined>(undefined);
-  const { currentLobby, currentPlayer } = useSession();
+  const { currentLobby, currentPlayer, setCurrentLobby } = useSession();
   const [isReady, setIsReady] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -60,6 +60,7 @@ const Lobby: React.FC = () => {
   const goBackToLobbyList = () => {
     console.log('Remove from lobby: ', currentPlayer, ' ', currentLobby);
     socket.emit(c.EXIT_LOBBY, { currentPlayer, currentLobby });
+    setCurrentLobby(undefined);
     navigate('/');
   };
 
