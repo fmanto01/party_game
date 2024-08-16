@@ -3,7 +3,6 @@ import { GameManager } from './data/GameManager.js';
 import { Game } from './data/Game.js';
 
 const gameManager = new GameManager();
-let allLobbiesCode: string[] = [];
 
 
 function shuffle(array: string[]) {
@@ -26,7 +25,7 @@ export function setupSocket(io: any, questions: string[]) {
     socket.on(c.DISCONNECT, () => {
       console.log('Client disconnected:', socket.id);
 
-      for (const lobbyCode of allLobbiesCode) {
+      for (const lobbyCode of gameManager.listLobbiesCode()) {
         const game = gameManager.getGame(lobbyCode);
         const playerName = game.players.find(pname => game.playerSocketIds[pname] === socket.id);
 
@@ -40,7 +39,6 @@ export function setupSocket(io: any, questions: string[]) {
           if (game.players.length === 0) {
             console.log(`Deleting empty lobby ${lobbyCode}`);
             gameManager.deleteGame(lobbyCode);
-            allLobbiesCode = allLobbiesCode.filter(code => code !== lobbyCode);
           }
 
           const lobbies = gameManager.listGames();
@@ -52,7 +50,6 @@ export function setupSocket(io: any, questions: string[]) {
 
     socket.on(c.CREATE_LOBBY, ([code, numQuestionsParam]: [string, number]) => {
       console.log('Ho ricevuto questo dato: ', code, ' - ', numQuestionsParam);
-      allLobbiesCode.push(code);
       gameManager.createGame(code, numQuestionsParam);
       gameManager.getGame(code).selectedQuestions = shuffle(questions).slice(0, numQuestionsParam);
       const lobbies = gameManager.listGames();
@@ -60,7 +57,7 @@ export function setupSocket(io: any, questions: string[]) {
     });
 
     socket.on(c.REQUEST_TO_JOIN_LOBBY, (data: { lobbyCode: string; playerName: string }) => {
-      if (allLobbiesCode.includes(data.lobbyCode)) {
+      if (gameManager.listLobbiesCode().includes(data.lobbyCode)) {
         const code = data.lobbyCode;
         console.log('sto joinando la lobby', code);
         const game = gameManager.getGame(code);
