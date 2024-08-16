@@ -8,6 +8,7 @@ export class Game {
   public numQuestions: number;
   public selectedQuestions: string[];
   public iterator: Iterator<string>;
+  public playerSocketIds: { [key: string]: string };
   public votes: { [key: string]: number };
   public playerScores: { [key: string]: number };
   public readyForNextQuestion: { [key: string]: boolean };
@@ -23,6 +24,7 @@ export class Game {
     this.selectedQuestions = [];
     this.iterator = this.createIterator();
     // Player denormalizzato
+    this.playerSocketIds = {}
     this.votes = {};
     this.playerScores = {};
     this.readyForNextQuestion = {};
@@ -55,13 +57,14 @@ export class Game {
     Object.keys(this.votes).forEach(player => this.votes[player] = 0);
   }
 
-  addPlayer(playerName: string): void {
+  addPlayer(playerName: string, socketId: string): void {
     if (!this.players.includes(playerName)) {
       this.players.push(playerName);
       this.playerScores[playerName] = 0; // Initialize score for new player
       this.readyForNextQuestion[playerName] = false; // Set readiness status
       this.votes[playerName] = 0;
       this.isReadyToGame[playerName] = false;
+      this.playerSocketIds[playerName] = socketId;
     }
   }
 
