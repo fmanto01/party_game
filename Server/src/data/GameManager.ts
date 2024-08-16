@@ -36,4 +36,9 @@ export class GameManager {
   listGames() {
     return Object.values(this.games);
   }
+
+  // Method to list all lobbies code
+  listLobbiesCode() {
+    return Object.keys(this.games);
+  }
 }
