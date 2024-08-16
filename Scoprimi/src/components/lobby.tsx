@@ -27,7 +27,7 @@ function handleToggleisReadyToGame(data: { lobbyCode: string, playerName: string
 const Lobby: React.FC = () => {
 
   const [game, setGame] = useState<Game | undefined>(undefined);
-  const { currentLobby, currentPlayer } = useSession();
+  const { currentLobby, currentPlayer, setCurrentLobby } = useSession();
   const [isReady, setIsReady] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -55,6 +55,13 @@ const Lobby: React.FC = () => {
     const newReadyState = !isReady;
     setIsReady(newReadyState);
     handleToggleisReadyToGame({ lobbyCode: currentLobby!, playerName: currentPlayer! });
+  };
+
+  const goBackToLobbyList = () => {
+    console.log('Remove from lobby: ', currentPlayer, ' ', currentLobby);
+    socket.emit(c.EXIT_LOBBY, { currentPlayer, currentLobby });
+    setCurrentLobby(undefined);
+    navigate('/');
   };
 
   // TODO load page
@@ -92,6 +99,12 @@ const Lobby: React.FC = () => {
           className={`btn ${isReady ? 'btn-success' : 'btn-secondary'}`}
           onClick={() => toggleReady()}>
           {isReady ? 'Ready' : 'Not Ready'}
+        </button>
+      </div>
+      <div className="text-center mt-4">
+        <button
+          onClick={() => goBackToLobbyList()}
+          className="btn btn-primary">Indietro
         </button>
       </div>
     </div>
