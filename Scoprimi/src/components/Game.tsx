@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import * as c from '../../../Server/src/socketConsts';
 import { QuestionData, FinalResultsData } from '../ts/types';
 import { socket } from '../ts/socketInit';
-import Timer from './timer';
+import Timer from './Timer';
 import Question from './Question';
 import PlayerList from './PlayerList';
 import Results from './Results';
