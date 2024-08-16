@@ -74,6 +74,7 @@ const Game: React.FC = () => {
     }
     setClicked(true);
     setIsTimerActive(false);
+    sessionStorage.removeItem('timeLeft');
     socket.emit(c.VOTE, { lobbyCode: currentLobby, voter: currentPlayer, vote: player });
   };
 
