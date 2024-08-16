@@ -112,10 +112,6 @@ export function setupSocket(io: any, questions: string[]) {
 
         io.to(data.lobbyCode).emit(c.GAME_OVER, thisGame.playerScores);
         gameManager.deleteGame(thisGame.lobbyCode);
-        // eliminare la room, si potrebbe fare semplice.
-        // tuttavia con un numero piu ampio di players in mente preferisco farlo ripassando per i client
-        // e da client lancio il disconnettersi.
-        io.to(data.lobbyCode).emit(c.FORCE, thisGame.playerScores);
       }
     });
 
@@ -132,6 +128,10 @@ export function setupSocket(io: any, questions: string[]) {
       socket.join(data.lobbyCode);
     })
 
+    socket.on(c.LEAVE_ROOM, (data: { playerName: string, lobbyCode: string }) => {
+      socket.leave(data.lobbyCode);
+    })
+
     socket.on(c.DISCONNECT, () => {
       console.log('Client disconnected:', socket.id);
     });
@@ -142,6 +142,7 @@ export function setupSocket(io: any, questions: string[]) {
       thisGame.removePlayer(data.currentPlayer);
       const lobbies = gameManager.listGames();
       console.log(thisGame.players);
+      socket.leave(data.currentLobby);
       io.emit(c.RENDER_LOBBIES, { lobbies });
     });
 

@@ -45,6 +45,7 @@ const Game: React.FC = () => {
       setPlayers([]);
       setShowResults(false);
       setFinalResults(playerScores);
+      socket.emit(c.LEAVE_ROOM, { playerName: currentPlayer, LobbyCode: currentLobby });
     });
 
     return () => {
