@@ -110,10 +110,12 @@ export function setupSocket(io: any, questions: string[]) {
           console.log(`${player}: ${thisGame.playerScores[player]} punti`);
         });
 
-        io.to(data.lobbyCode).emit(c.GAME_OVER);
-        io.to(data.lobbyCode).emit(c.FINAL_RESULTS, thisGame.playerScores);
+        io.to(data.lobbyCode).emit(c.GAME_OVER, thisGame.playerScores);
         gameManager.deleteGame(thisGame.lobbyCode);
-        // TODO togliere i player dal socket
+        // eliminare la room, si potrebbe fare semplice.
+        // tuttavia con un numero piu ampio di players in mente preferisco farlo ripassando per i client
+        // e da client lancio il disconnettersi.
+        io.to(data.lobbyCode).emit(c.FORCE, thisGame.playerScores);
       }
     });
 
@@ -141,7 +143,6 @@ export function setupSocket(io: any, questions: string[]) {
       const lobbies = gameManager.listGames();
       console.log(thisGame.players);
       io.emit(c.RENDER_LOBBIES, { lobbies });
-      //TODO
     });
 
   });

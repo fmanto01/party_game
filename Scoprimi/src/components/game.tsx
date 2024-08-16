@@ -39,14 +39,11 @@ const Game: React.FC = () => {
       setIsTimerActive(false);
     });
 
-    socket.on(c.GAME_OVER, () => {
+    socket.on(c.GAME_OVER, (playerScores: FinalResultsData) => {
       setGameOver(true);
       setQuestion('');
       setPlayers([]);
       setShowResults(false);
-    });
-
-    socket.on(c.FINAL_RESULTS, (playerScores: FinalResultsData) => {
       setFinalResults(playerScores);
     });
 
@@ -55,7 +52,6 @@ const Game: React.FC = () => {
       socket.off(c.SHOW_RESULTS);
       socket.off(c.RESULT_MESSAGE);
       socket.off(c.GAME_OVER);
-      socket.off(c.FINAL_RESULTS);
     };
   }, [currentLobby, currentPlayer]);
 

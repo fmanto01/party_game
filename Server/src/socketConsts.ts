@@ -8,7 +8,6 @@ export const SHOW_RESULTS: string = 'showResults';
 export const RESULT_MESSAGE: string = 'resultMessage';
 export const READY_FOR_NEXT_QUESTION: string = 'readyForNextQuestion';
 export const GAME_OVER: string = 'gameOver';
-export const FINAL_RESULTS: string = 'finalResults';
 export const NEXT_QUESTION: string = 'nextQuestion';
 export const CONNECTION: string = 'connection';
 export const ERROR: string = 'error';
