@@ -32,6 +32,9 @@ const Lobby: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+
+    document.title = `Lobby - ${currentLobby}`;
+
     socket.emit(c.REQUEST_RENDER_LOBBY, currentLobby, (data: Game) => {
       console.log('Received data:', data);
       setGame(data);
@@ -43,7 +46,7 @@ const Lobby: React.FC = () => {
     });
     socket.on(c.INIZIA, () => {
       setGame((prevGame) => prevGame ? { ...prevGame, isGameStarted: true } : undefined);
-      navigate('/game?');
+      navigate('/game');
     });
 
     return () => {

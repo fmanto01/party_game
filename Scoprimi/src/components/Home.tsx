@@ -41,6 +41,10 @@ const Home: React.FC = () => {
   }
 
   useEffect(() => {
+    document.title = 'ScopriMi';
+  });
+
+  useEffect(() => {
     socket.emit(c.REQUEST_RENDER_LOBBIES);
     socket.on(c.RENDER_LOBBIES, ({ lobbies }) => {
       console.log(lobbies);
@@ -64,7 +68,7 @@ const Home: React.FC = () => {
 
   return (
     <div className="container mt-5">
-      <h1 className="text-center">Nome Gioco</h1>
+      <h1 className="text-center">ScopriMi</h1>
       <CreateGameForm
         numQuestions={numQuestions}
         onNumQuestionsChange={setNumQuestions}
