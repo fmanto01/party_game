@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import * as c from '../../../Server/src/socketConsts';
-import { QuestionData, FinalResultsData } from '../ts/types';
-import { socket } from '../ts/socketInit';
+import * as c from '../../../../Server/src/socketConsts';
+import { QuestionData, FinalResultsData } from '../../ts/types';
+import { socket } from '../../ts/socketInit';
 import Timer from './Timer';
 import Question from './Question';
 import PlayerList from './PlayerList';
 import Results from './Results';
-import { useSession } from '../contexts/SessionContext';
+import { useSession } from '../../contexts/SessionContext';
 
 const Game: React.FC = () => {
   const [question, setQuestion] = useState<string>('');
