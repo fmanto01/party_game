@@ -1,5 +1,5 @@
 import React from 'react';
-import { FinalResultsData } from '../ts/types';
+import { FinalResultsData } from '../../ts/types';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const FinalResults: React.FC = () => {

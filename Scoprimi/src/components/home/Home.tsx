@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import * as c from '../../../Server/src/socketConsts.js';
-import { socket } from '../ts/socketInit.ts';
-import { Game } from '../../../Server/src/data/Game.ts';
+import * as c from '../../../../Server/src/socketConsts.js';
+import { socket } from '../../ts/socketInit.ts';
+import { Game } from '../../../../Server/src/data/Game.ts';
 import LobbyList from './LobbyList.tsx';
 import CreateGameForm from './CreateGameForm.tsx';
 import PlayerNameInput from './PlayerNameInput.tsx';
-import { useSession } from '../contexts/SessionContext.tsx';
+import { useSession } from '../../contexts/SessionContext.tsx';
 
 function generateLobbyCode() {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';

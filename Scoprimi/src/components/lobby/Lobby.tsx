@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import * as c from '../../../Server/src/socketConsts.js';
-import { socket } from '../ts/socketInit.ts';
-import { useSession } from '../contexts/SessionContext.tsx';
+import * as c from '../../../../Server/src/socketConsts.js';
+import { socket } from '../../ts/socketInit.ts';
+import { useSession } from '../../contexts/SessionContext.tsx';
 
 interface Game {
   lobbyCode: string;
