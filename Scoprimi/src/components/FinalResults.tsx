@@ -1,18 +1,28 @@
 import React from 'react';
 import { FinalResultsData } from '../ts/types';
-import { useLocation } from 'react-router-dom';
-
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const FinalResults: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { finalResults } = location.state as { finalResults: FinalResultsData };
-  console.log(finalResults);
+
+  // Verifica se finalResults è definito
+  if (!finalResults) {
+    return <div className="text-center mt-5">Nessun risultato disponibile.</div>;
+  }
+
+  // Funzione per tornare alla home
+  const handleBackToHome = () => {
+    navigate('/');
+  };
+
   return (
-    < div id="gameOverMessage" className="text-center mt-5" >
-      <h2>Classifica</h2>
-      <div id="finalResultsContainer">
-        <table className="table">
-          <thead>
+    <div id="gameOverMessage" className="container mt-5">
+      <h2 className="text-primary mb-4">Classifica</h2>
+      <div id="finalResultsContainer" className="table-responsive mb-4">
+        <table className="table table-bordered table-striped table-hover">
+          <thead className="thead-dark">
             <tr>
               <th>Posizione</th>
               <th>Giocatore</th>
@@ -21,7 +31,7 @@ const FinalResults: React.FC = () => {
           </thead>
           <tbody>
             {Object.entries(finalResults)
-              .sort((a, b) => b[1] - a[1])
+              .sort((a, b) => b[1] - a[1]) // Ordina per punteggio decrescente
               .map(([player, score], index) => (
                 <tr key={player}>
                   <td>
@@ -34,7 +44,16 @@ const FinalResults: React.FC = () => {
           </tbody>
         </table>
       </div>
-    </div >);
+      <div className="text-center">
+        <button
+          className="btn btn-primary"
+          onClick={handleBackToHome}
+        >
+          Torna alla Home
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default FinalResults;

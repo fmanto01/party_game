@@ -60,6 +60,8 @@ const Game: React.FC = () => {
       socket.emit(c.LEAVE_ROOM, { playerName: currentPlayer, LobbyCode: currentLobby });
 
       // Naviga alla pagina dei risultati finali
+      sessionStorage.removeItem('currentQuestion');
+      sessionStorage.removeItem('players');
       navigate('/final-results', { state: { finalResults: playerScores } });
     });
 
@@ -109,7 +111,6 @@ const Game: React.FC = () => {
       {showResults && (
         <Results resultMessage={resultMessage} onNextQuestion={handleNextQuestion} />
       )}
-      {/* Commenta o rimuovi il rendering dei risultati finali qui */}
     </div>
   );
 };
