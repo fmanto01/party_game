@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as c from '../../../Server/src/socketConsts';
 import { QuestionData, FinalResultsData } from '../ts/types';
 import { socket } from '../ts/socketInit';
@@ -6,7 +7,6 @@ import Timer from './Timer';
 import Question from './Question';
 import PlayerList from './PlayerList';
 import Results from './Results';
-import FinalResults from './FinalResults';
 import { useSession } from '../contexts/SessionContext';
 
 const Game: React.FC = () => {
@@ -15,19 +15,19 @@ const Game: React.FC = () => {
   const [resultMessage, setResultMessage] = useState<string>('');
   const [showResults, setShowResults] = useState<boolean>(false);
   const [gameOver, setGameOver] = useState<boolean>(false);
-  const [finalResults, setFinalResults] = useState<FinalResultsData>();
 
   const [clicked, setClicked] = useState<boolean>(false);
   const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
 
-  const { currentLobby, currentPlayer } = useSession();
+  const { currentLobby, currentPlayer, setCurrentPlayer, setCurrentLobby } = useSession();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const storedQUestion = sessionStorage.getItem('currentQuestion');
+    const storedQuestion = sessionStorage.getItem('currentQuestion');
     const storedPlayers = sessionStorage.getItem('players');
 
-    if (storedQUestion && storedPlayers) {
-      setQuestion(storedQUestion);
+    if (storedQuestion && storedPlayers) {
+      setQuestion(storedQuestion);
       setPlayers(JSON.parse(storedPlayers));
       setIsTimerActive(true);
     } else {
@@ -55,8 +55,12 @@ const Game: React.FC = () => {
       setQuestion('');
       setPlayers([]);
       setShowResults(false);
-      setFinalResults(playerScores);
+      setCurrentPlayer(undefined);
+      setCurrentLobby(undefined);
       socket.emit(c.LEAVE_ROOM, { playerName: currentPlayer, LobbyCode: currentLobby });
+
+      // Naviga alla pagina dei risultati finali
+      navigate('/final-results', { state: { finalResults: playerScores } });
     });
 
     return () => {
@@ -65,7 +69,7 @@ const Game: React.FC = () => {
       socket.off(c.RESULT_MESSAGE);
       socket.off(c.GAME_OVER);
     };
-  }, [currentLobby, currentPlayer]);
+  }, [currentLobby, currentPlayer, setCurrentLobby, setCurrentPlayer, navigate]);
 
   const handleVote = (player: string) => {
     if (clicked) {
@@ -105,9 +109,7 @@ const Game: React.FC = () => {
       {showResults && (
         <Results resultMessage={resultMessage} onNextQuestion={handleNextQuestion} />
       )}
-      {gameOver && finalResults && (
-        <FinalResults finalResults={finalResults} />
-      )}
+      {/* Commenta o rimuovi il rendering dei risultati finali qui */}
     </div>
   );
 };

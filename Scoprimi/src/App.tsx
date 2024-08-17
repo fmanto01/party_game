@@ -5,6 +5,7 @@ import Game from './components/Game.tsx';
 import { SessionProvider } from './contexts/SessionContext.tsx';
 import ProtectedRoute from './components/ProtectedRoutes.tsx';
 import ErrorPage from './components/ErrorPage.tsx';
+import FinalResults from './components/FinalResults.tsx';
 
 
 const App = () => (
@@ -18,6 +19,7 @@ const App = () => (
         <Route
           path="/game" element={<ProtectedRoute component={Game} />}
         />
+        <Route path="/final-results" element={<FinalResults />} />
         <Route path="/error" element={<ErrorPage />} />
       </Routes>
     </Router>

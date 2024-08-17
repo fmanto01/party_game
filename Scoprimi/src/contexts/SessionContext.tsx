@@ -7,7 +7,7 @@ interface SessionContextProps {
   setCurrentLobby: (lobby: string | undefined) => void;
   isInLobby: () => boolean;
   currentPlayer: string | undefined;
-  setCurrentPlayer: (name: string) => void;
+  setCurrentPlayer: (name: string | undefined) => void;
 }
 
 const SessionContext = createContext<SessionContextProps | undefined>(undefined);
