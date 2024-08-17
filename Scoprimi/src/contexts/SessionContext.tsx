@@ -8,6 +8,8 @@ interface SessionContextProps {
   isInLobby: () => boolean;
   currentPlayer: string | undefined;
   setCurrentPlayer: (name: string | undefined) => void;
+  currentPlayerImage: string | undefined;
+  setCurrentPlayerImage: (image: string | undefined) => void;
 }
 
 const SessionContext = createContext<SessionContextProps | undefined>(undefined);
@@ -27,18 +29,25 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
 
   // Stato del player
   const [currentPlayer, setCurrentPlayer] = useState<string | undefined>(undefined);
+  const [currentPlayerImage, setCurrentPlayerImage] = useState<string | undefined>(undefined);
 
+  // stato per load sul refresh
   const [initialLoadComplete, setInitialLoadComplete] = useState(false);
 
   useEffect(() => {
     const savedPlayer = sessionStorage.getItem('currentPlayer');
+    const savedPlayerImage = sessionStorage.getItem('currentPlayerImage');
     const savedLobby = sessionStorage.getItem('currentLobby');
     console.log(savedLobby, savedPlayer);
 
-    if (savedLobby && savedPlayer) {
+    if (savedLobby && savedPlayer && savedPlayerImage) {
       setCurrentLobby(savedLobby);
       setCurrentPlayer(savedPlayer);
-      socket.emit(JOIN_ROOM, { playerName: savedPlayer, lobbyCode: savedLobby });
+      setCurrentPlayerImage(savedPlayerImage);
+      socket.emit(JOIN_ROOM, { playerName: savedPlayer, lobbyCode: savedLobby, image: savedPlayerImage });
+    } else if (savedLobby && savedPlayer) {
+      setCurrentLobby(savedLobby);
+      setCurrentPlayer(savedPlayer);
     }
 
     setInitialLoadComplete(true);
@@ -56,8 +65,17 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (initialLoadComplete) {
+      if (currentPlayerImage) {
+        sessionStorage.setItem('currentPlayerImage', currentPlayerImage);
+      } else {
+        sessionStorage.removeItem('currentPlayerImage');
+      }
+    }
+  }, [currentPlayerImage, initialLoadComplete]);
+
+  useEffect(() => {
+    if (initialLoadComplete) {
       if (currentLobby) {
-        console.log('cambio lobby');
         sessionStorage.setItem('currentLobby', currentLobby);
       } else {
         sessionStorage.removeItem('currentLobby');
@@ -74,6 +92,8 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
         isInLobby,
         currentPlayer,
         setCurrentPlayer,
+        currentPlayerImage,
+        setCurrentPlayerImage,
       }}
     >
       {children}
