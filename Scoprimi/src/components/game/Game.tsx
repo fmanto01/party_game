@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as c from '../../../../Server/src/socketConsts';
-import { QuestionData, FinalResultsData } from '../../ts/types';
+import { QuestionData, PlayerImages, PlayerScores, FinalResultData } from '../../ts/types';
 import { socket } from '../../ts/socketInit';
 import Timer from './Timer';
 import Question from './Question';
@@ -50,18 +50,24 @@ const Game: React.FC = () => {
       setIsTimerActive(false);
     });
 
-    socket.on(c.GAME_OVER, (playerScores: FinalResultsData) => {
+    socket.on(c.GAME_OVER, (playerScores: PlayerScores, playerImages: PlayerImages) => {
       setGameOver(true);
       setQuestion('');
       setPlayers([]);
       setShowResults(false);
-      setCurrentPlayer(undefined);
       socket.emit(c.LEAVE_ROOM, { playerName: currentPlayer, LobbyCode: currentLobby });
 
       // Naviga alla pagina dei risultati finali
       sessionStorage.removeItem('currentQuestion');
       sessionStorage.removeItem('players');
-      navigate('/final-results', { state: { finalResults: playerScores } });
+      const finalResults: FinalResultData = {};
+      Object.keys(playerScores).forEach(playerName => {
+        finalResults[playerName] = {
+          score: playerScores[playerName],
+          image: playerImages[playerName],
+        };
+      });
+      navigate('/final-results', { state: { finalResults } });
     });
 
     return () => {
