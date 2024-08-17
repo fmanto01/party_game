@@ -5,7 +5,6 @@ import { socket } from '../../ts/socketInit.ts';
 import { Game } from '../../../../Server/src/data/Game.ts';
 import LobbyList from './LobbyList.tsx';
 import CreateGameForm from './CreateGameForm.tsx';
-import PlayerNameInput from './PlayerNameInput.tsx';
 import { useSession } from '../../contexts/SessionContext.tsx';
 
 function generateLobbyCode() {
@@ -18,7 +17,7 @@ function generateLobbyCode() {
 }
 
 const Home: React.FC = () => {
-  const { currentPlayer, setCurrentPlayer: setPlayerName, setCurrentLobby } = useSession();
+  const { currentPlayer, setCurrentLobby } = useSession();
   const [lobbies, setLobbies] = useState<Game[]>([]);
   const [numQuestions, setNumQuestions] = useState<number>(5);
   const navigate = useNavigate();
@@ -76,7 +75,6 @@ const Home: React.FC = () => {
       />
       <div className="row justify-content-center mt-4">
         <div className="col-md-6">
-          <PlayerNameInput playerName={currentPlayer || ''} onPlayerNameChange={setPlayerName} />
         </div>
       </div>
       <div className="mt-5">
