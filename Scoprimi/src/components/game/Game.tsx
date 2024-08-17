@@ -19,7 +19,7 @@ const Game: React.FC = () => {
   const [clicked, setClicked] = useState<boolean>(false);
   const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
 
-  const { currentLobby, currentPlayer, setCurrentPlayer, setCurrentLobby } = useSession();
+  const { currentLobby, currentPlayer, setCurrentPlayer } = useSession();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,7 +56,6 @@ const Game: React.FC = () => {
       setPlayers([]);
       setShowResults(false);
       setCurrentPlayer(undefined);
-      setCurrentLobby(undefined);
       socket.emit(c.LEAVE_ROOM, { playerName: currentPlayer, LobbyCode: currentLobby });
 
       // Naviga alla pagina dei risultati finali
@@ -71,7 +70,7 @@ const Game: React.FC = () => {
       socket.off(c.RESULT_MESSAGE);
       socket.off(c.GAME_OVER);
     };
-  }, [currentLobby, currentPlayer, setCurrentLobby, setCurrentPlayer, navigate]);
+  }, [currentLobby, currentPlayer, setCurrentPlayer, navigate]);
 
   const handleVote = (player: string) => {
     if (clicked) {

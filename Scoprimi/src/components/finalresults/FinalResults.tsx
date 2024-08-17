@@ -22,20 +22,20 @@ const FinalResults: React.FC = () => {
       <h2 className="text-primary mb-4">Classifica</h2>
       <div id="finalResultsContainer" className="table-responsive mb-4">
         <table className="table table-bordered table-striped table-hover">
-          <thead className="thead-dark">
-            <tr>
-              <th>Posizione</th>
-              <th>Giocatore</th>
-              <th>Punti</th>
-            </tr>
-          </thead>
           <tbody>
             {Object.entries(finalResults)
-              .sort((a, b) => b[1] - a[1]) // Ordina per punteggio decrescente
-              .map(([player, score], index) => (
+              .sort(([, a], [, b]) => b.score - a.score) // Ordina per punteggio decrescente
+              .map(([player, { score, image }], index) => (
                 <tr key={player}>
                   <td>
                     {index + 1} {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : ''}
+                  </td>
+                  <td>
+                    <img
+                      src={image}
+                      alt={`${player} avatar`}
+                      style={{ width: '50px', height: '50px', borderRadius: '50%' }}
+                    />
                   </td>
                   <td>{player}</td>
                   <td>{score}</td>
@@ -45,10 +45,7 @@ const FinalResults: React.FC = () => {
         </table>
       </div>
       <div className="text-center">
-        <button
-          className="btn btn-primary"
-          onClick={handleBackToHome}
-        >
+        <button className="btn btn-primary" onClick={handleBackToHome}>
           Torna alla Home
         </button>
       </div>

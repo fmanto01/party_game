@@ -4,6 +4,11 @@ export interface QuestionData {
 }
 
 
+export interface PlayerResults {
+  score: number;
+  image: string;
+}
+
 export interface FinalResultsData {
-  [player: string]: number;
+  [player: string]: PlayerResults;
 }
