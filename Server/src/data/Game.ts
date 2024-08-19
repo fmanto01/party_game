@@ -13,6 +13,7 @@ export class Game {
   public playerScores: { [key: string]: number };
   public readyForNextQuestion: { [key: string]: boolean };
   public isReadyToGame: { [key: string]: boolean };
+  public images: { [key: string]: string };
 
   constructor(lobbyCode: string, numQuestions: number) {
     this.lobbyCode = lobbyCode;
@@ -29,6 +30,7 @@ export class Game {
     this.playerScores = {};
     this.readyForNextQuestion = {};
     this.isReadyToGame = {};
+    this.images = {};
   }
 
   calculateScores(): string {
@@ -57,7 +59,7 @@ export class Game {
     Object.keys(this.votes).forEach(player => this.votes[player] = 0);
   }
 
-  addPlayer(playerName: string, socketId: string): void {
+  addPlayer(playerName: string, socketId: string, image: string): void {
     if (!this.players.includes(playerName)) {
       this.players.push(playerName);
       this.playerScores[playerName] = 0; // Initialize score for new player
@@ -65,6 +67,7 @@ export class Game {
       this.votes[playerName] = 0;
       this.isReadyToGame[playerName] = false;
       this.playerSocketIds[playerName] = socketId;
+      this.images[playerName] = image;
     }
   }
 

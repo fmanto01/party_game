@@ -5,7 +5,6 @@ import { socket } from '../../ts/socketInit.ts';
 import { Game } from '../../../../Server/src/data/Game.ts';
 import LobbyList from './LobbyList.tsx';
 import CreateGameForm from './CreateGameForm.tsx';
-import PlayerNameInput from './PlayerNameInput.tsx';
 import { useSession } from '../../contexts/SessionContext.tsx';
 
 function generateLobbyCode() {
@@ -18,7 +17,7 @@ function generateLobbyCode() {
 }
 
 const Home: React.FC = () => {
-  const { currentPlayer, setCurrentPlayer: setPlayerName, setCurrentLobby } = useSession();
+  const { currentPlayer, setCurrentLobby, isSetPlayer } = useSession();
   const [lobbies, setLobbies] = useState<Game[]>([]);
   const [numQuestions, setNumQuestions] = useState<number>(5);
   const navigate = useNavigate();
@@ -66,22 +65,33 @@ const Home: React.FC = () => {
     };
   }, [navigate, setCurrentLobby]);
 
+  useEffect(() => {
+    if (!isSetPlayer) {
+      navigate('/login');
+    }
+  }, [isSetPlayer, navigate]);
+
   return (
-    <div className="container mt-5">
-      <h1 className="text-center">ScopriMi</h1>
-      <CreateGameForm
-        numQuestions={numQuestions}
-        onNumQuestionsChange={setNumQuestions}
-        onCreateGame={handleCreateGame}
-      />
-      <div className="row justify-content-center mt-4">
-        <div className="col-md-6">
-          <PlayerNameInput playerName={currentPlayer || ''} onPlayerNameChange={setPlayerName} />
-        </div>
+    <div>
+      {/* login */}
+      <div>
+        <button onClick={() => navigate('login')}>Login</button>
       </div>
-      <div className="mt-5">
-        <h2>Lobby attive</h2>
-        <LobbyList lobbies={lobbies} onJoin={handleJoinGame} playerName={currentPlayer || ''} />
+      <div className="container mt-5">
+        <h1 className="text-center">ScopriMi</h1>
+        <CreateGameForm
+          numQuestions={numQuestions}
+          onNumQuestionsChange={setNumQuestions}
+          onCreateGame={handleCreateGame}
+        />
+        <div className="row justify-content-center mt-4">
+          <div className="col-md-6">
+          </div>
+        </div>
+        <div className="mt-5">
+          <h2>Lobby attive</h2>
+          <LobbyList lobbies={lobbies} onJoin={handleJoinGame} playerName={currentPlayer || ''} />
+        </div>
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import { SessionProvider } from './contexts/SessionContext.tsx';
 import ProtectedRoute from './components/ProtectedRoutes.tsx';
 import ErrorPage from './components/ErrorPage.tsx';
 import FinalResults from './components/finalresults/FinalResults.tsx';
+import Login from './components/login/Login.tsx';
 
 
 const App = () => (
@@ -13,6 +14,7 @@ const App = () => (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
         <Route
           path="/lobby" element={<ProtectedRoute component={Lobby} />}
         />

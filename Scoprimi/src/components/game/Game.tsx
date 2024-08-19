@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as c from '../../../../Server/src/socketConsts';
-import { QuestionData, FinalResultsData } from '../../ts/types';
+import { QuestionData, PlayerImages, PlayerScores, FinalResultData } from '../../ts/types';
 import { socket } from '../../ts/socketInit';
 import Timer from './Timer';
 import Question from './Question';
@@ -19,7 +19,7 @@ const Game: React.FC = () => {
   const [clicked, setClicked] = useState<boolean>(false);
   const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
 
-  const { currentLobby, currentPlayer, setCurrentPlayer, setCurrentLobby } = useSession();
+  const { currentLobby, currentPlayer, setCurrentPlayer } = useSession();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -50,19 +50,25 @@ const Game: React.FC = () => {
       setIsTimerActive(false);
     });
 
-    socket.on(c.GAME_OVER, (playerScores: FinalResultsData) => {
+    socket.on(c.GAME_OVER, (data: { playerScores: PlayerScores, playerImages: PlayerImages }) => {
       setGameOver(true);
       setQuestion('');
       setPlayers([]);
       setShowResults(false);
-      setCurrentPlayer(undefined);
-      setCurrentLobby(undefined);
       socket.emit(c.LEAVE_ROOM, { playerName: currentPlayer, LobbyCode: currentLobby });
 
       // Naviga alla pagina dei risultati finali
       sessionStorage.removeItem('currentQuestion');
       sessionStorage.removeItem('players');
-      navigate('/final-results', { state: { finalResults: playerScores } });
+      const finalResults: FinalResultData = {};
+      Object.keys(data.playerScores).forEach(playerName => {
+        finalResults[playerName] = {
+          score: data.playerScores[playerName],
+          image: data.playerImages[playerName],
+        };
+      });
+      console.log(finalResults);
+      navigate('/final-results', { state: { finalResults } });
     });
 
     return () => {
@@ -71,7 +77,7 @@ const Game: React.FC = () => {
       socket.off(c.RESULT_MESSAGE);
       socket.off(c.GAME_OVER);
     };
-  }, [currentLobby, currentPlayer, setCurrentLobby, setCurrentPlayer, navigate]);
+  }, [currentLobby, currentPlayer, setCurrentPlayer, navigate]);
 
   const handleVote = (player: string) => {
     if (clicked) {
