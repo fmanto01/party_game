@@ -45,6 +45,8 @@ const Home: React.FC = () => {
     const filtered = lobbies.filter(lobby =>
       lobby.lobbyCode.toLowerCase().includes(lowercasedSearchTerm),
     );
+    console.log('filtered');
+    console.log(filtered);
     setFilteredLobbies(filtered);
   }
 
@@ -57,7 +59,6 @@ const Home: React.FC = () => {
     socket.on(c.RENDER_LOBBIES, ({ lobbies }) => {
       console.log(lobbies);
       setLobbies(lobbies);
-      setFilteredLobbies(lobbies); // Inizialmente mostra tutte le lobby
     });
 
     socket.on(c.PLAYER_CAN_JOIN, (data) => {
@@ -93,16 +94,15 @@ const Home: React.FC = () => {
           numQuestions={numQuestions}
           onNumQuestionsChange={setNumQuestions}
           onCreateGame={handleCreateGame}
-          onFilterLobbies={filterLobbies} // Passa la funzione di filtro
+          onFilterLobbies={filterLobbies}
         />
-
         <div className="row justify-content-center mt-4">
           <div className="col-md-6">
           </div>
         </div>
         <div className="mt-5">
           <h2>Lobby attive</h2>
-          <LobbyList lobbies={filteredLobbies} onJoin={handleJoinGame} playerName={currentPlayer || ''} />
+          <LobbyList lobbies={(filteredLobbies.length > 0) ? filteredLobbies : lobbies} onJoin={handleJoinGame} playerName={currentPlayer || ''} />
         </div>
       </div>
     </div>
