@@ -60,6 +60,7 @@ const Game: React.FC = () => {
       // Naviga alla pagina dei risultati finali
       sessionStorage.removeItem('currentQuestion');
       sessionStorage.removeItem('players');
+      sessionStorage.removeItem('currentLobby');
       const finalResults: FinalResultData = {};
       Object.keys(data.playerScores).forEach(playerName => {
         finalResults[playerName] = {
