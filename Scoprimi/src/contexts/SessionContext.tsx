@@ -38,15 +38,15 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
     const savedPlayer = sessionStorage.getItem('currentPlayer');
     const savedPlayerImage = sessionStorage.getItem('currentPlayerImage');
     const savedLobby = sessionStorage.getItem('currentLobby');
-    console.log(savedLobby, savedPlayer);
+    console.log(`lobby ${savedLobby} \nplauyer ${savedPlayer}\nimage ${savedPlayerImage}`);
 
     if (savedLobby && savedPlayer && savedPlayerImage) {
       setCurrentLobby(savedLobby);
       setCurrentPlayer(savedPlayer);
       setCurrentPlayerImage(savedPlayerImage);
       socket.emit(JOIN_ROOM, { playerName: savedPlayer, lobbyCode: savedLobby, image: savedPlayerImage });
-    } else if (savedLobby && savedPlayer) {
-      setCurrentLobby(savedLobby);
+    } else if (savedPlayerImage && savedPlayer) {
+      setCurrentPlayerImage(savedPlayerImage);
       setCurrentPlayer(savedPlayer);
     }
 
