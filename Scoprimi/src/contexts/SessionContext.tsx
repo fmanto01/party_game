@@ -5,9 +5,9 @@ import { createContext, useState, useContext, ReactNode, useEffect } from 'react
 interface SessionContextProps {
   currentLobby: string | undefined;
   setCurrentLobby: (lobby: string | undefined) => void;
-  isInLobby: () => boolean;
   currentPlayer: string | undefined;
   setCurrentPlayer: (name: string | undefined) => void;
+  isSetPlayer: boolean;
   currentPlayerImage: string | undefined;
   setCurrentPlayerImage: (image: string | undefined) => void;
 }
@@ -25,11 +25,11 @@ export const useSession = () => {
 export const SessionProvider = ({ children }: { children: ReactNode }) => {
   // Stato della lobby
   const [currentLobby, setCurrentLobby] = useState<string | undefined>(undefined);
-  const isInLobby = () => currentLobby !== undefined;
 
   // Stato del player
   const [currentPlayer, setCurrentPlayer] = useState<string | undefined>(undefined);
   const [currentPlayerImage, setCurrentPlayerImage] = useState<string | undefined>(undefined);
+  const [isSetPlayer, setIsSetPlayer] = useState<boolean>(false);
 
   // stato per load sul refresh
   const [initialLoadComplete, setInitialLoadComplete] = useState(false);
@@ -52,6 +52,18 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
 
     setInitialLoadComplete(true);
   }, []);
+
+  useEffect(() => {
+    if (initialLoadComplete) {
+      if (currentPlayer && currentPlayerImage) {
+        console.log('tutto ok');
+        setIsSetPlayer(true);
+      } else {
+        console.log('non ok');
+        setIsSetPlayer(false);
+      }
+    }
+  }, [initialLoadComplete, currentPlayer, currentPlayerImage]);
 
   useEffect(() => {
     if (initialLoadComplete) {
@@ -89,10 +101,10 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
       value={{
         currentLobby,
         setCurrentLobby,
-        isInLobby,
         currentPlayer,
         setCurrentPlayer,
         currentPlayerImage,
+        isSetPlayer,
         setCurrentPlayerImage,
       }}
     >

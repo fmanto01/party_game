@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { useSession } from '../../contexts/SessionContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,16 +9,15 @@ const images = [
 ];
 
 const Login: React.FC = () => {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const { currentPlayer, setCurrentPlayer } = useSession();
+  const { currentPlayer, setCurrentPlayer, currentPlayerImage, setCurrentPlayerImage } = useSession();
   const navigate = useNavigate();
 
   const handleImageSelect = (image: string) => {
-    setSelectedImage(image);
+    setCurrentPlayerImage(image);
   };
 
   const handleDoneClick = () => {
-    if (!selectedImage || !currentPlayer) {
+    if (!currentPlayerImage || !currentPlayer) {
       alert('Please select an image and enter a username.');
     }
     navigate('/');
@@ -36,7 +34,7 @@ const Login: React.FC = () => {
               key={index}
               src={image}
               alt={`Profile ${index + 1}`}
-              className={`img-thumbnail rounded-circle ${selectedImage === image ? 'border-primary' : ''}`}
+              className={`img-thumbnail rounded-circle ${currentPlayerImage === image ? 'border-primary' : ''}`}
               style={{
                 cursor: 'pointer',
                 width: '80px',

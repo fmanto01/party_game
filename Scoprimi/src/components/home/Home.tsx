@@ -17,7 +17,7 @@ function generateLobbyCode() {
 }
 
 const Home: React.FC = () => {
-  const { currentPlayer, setCurrentLobby } = useSession();
+  const { currentPlayer, setCurrentLobby, isSetPlayer } = useSession();
   const [lobbies, setLobbies] = useState<Game[]>([]);
   const [numQuestions, setNumQuestions] = useState<number>(5);
   const navigate = useNavigate();
@@ -64,6 +64,12 @@ const Home: React.FC = () => {
       socket.off(c.PLAYER_CAN_JOIN);
     };
   }, [navigate, setCurrentLobby]);
+
+  useEffect(() => {
+    if (!isSetPlayer) {
+      navigate('/login');
+    }
+  }, [isSetPlayer, navigate]);
 
   return (
     <div>
