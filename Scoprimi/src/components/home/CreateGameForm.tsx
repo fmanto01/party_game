@@ -4,17 +4,18 @@ interface CreateGameFormProps {
   numQuestions: number;
   onNumQuestionsChange: (numQuestions: number) => void;
   onCreateGame: () => void;
-  onFilterLobbies: (filter: string) => void; // Aggiungi questa prop per filtrare le lobby
+  onFilterLobbies: (filter: string) => void;
 }
 
 const CreateGameForm: React.FC<CreateGameFormProps> = ({ numQuestions, onNumQuestionsChange, onCreateGame, onFilterLobbies }) => {
   const [isShow, setIsShow] = useState<boolean>(false);
-  const [searchTerm, setSearchTerm] = useState<string>(''); // Stato per la ricerca
+  const [searchTerm, setSearchTerm] = useState<string>('');
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newSearchTerm = e.target.value;
+  const handleSearchChange = (newSearchTerm: string) => {
+    console.log('mewSeartchterm');
+    console.log(newSearchTerm);
     setSearchTerm(newSearchTerm);
-    onFilterLobbies(newSearchTerm); // Chiama la funzione di filtro
+    onFilterLobbies(newSearchTerm);
   };
 
   return (
@@ -39,7 +40,7 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({ numQuestions, onNumQues
           type="text"
           placeholder="Cerca per codice lobby"
           value={searchTerm}
-          onChange={handleSearchChange}
+          onChange={(e) => handleSearchChange(e.target.value)}
           className="form-control w-25 mx-auto mt-2"
         />
       )}

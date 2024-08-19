@@ -41,13 +41,18 @@ const Home: React.FC = () => {
   }
 
   function filterLobbies(searchTerm: string) {
-    const lowercasedSearchTerm = searchTerm.toLowerCase();
-    const filtered = lobbies.filter(lobby =>
-      lobby.lobbyCode.toLowerCase().includes(lowercasedSearchTerm),
-    );
-    console.log('filtered');
-    console.log(filtered);
-    setFilteredLobbies(filtered);
+    if (searchTerm === '') {
+      console.log('vuoto');
+      setFilteredLobbies([]);
+    } else {
+      const lowercasedSearchTerm = searchTerm.toLowerCase();
+      const filtered = lobbies.filter(lobby =>
+        lobby.lobbyCode.toLowerCase().includes(lowercasedSearchTerm),
+      );
+      console.log('filtered');
+      console.log(filtered);
+      setFilteredLobbies(filtered);
+    }
   }
 
   useEffect(() => {
@@ -84,7 +89,6 @@ const Home: React.FC = () => {
 
   return (
     <div>
-      {/* login */}
       <div>
         <button onClick={() => navigate('login')}>Login</button>
       </div>
