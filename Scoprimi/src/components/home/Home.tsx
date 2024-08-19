@@ -66,20 +66,26 @@ const Home: React.FC = () => {
   }, [navigate, setCurrentLobby]);
 
   return (
-    <div className="container mt-5">
-      <h1 className="text-center">ScopriMi</h1>
-      <CreateGameForm
-        numQuestions={numQuestions}
-        onNumQuestionsChange={setNumQuestions}
-        onCreateGame={handleCreateGame}
-      />
-      <div className="row justify-content-center mt-4">
-        <div className="col-md-6">
-        </div>
+    <div>
+      {/* login */}
+      <div>
+        <button onClick={() => navigate('login')}>Login</button>
       </div>
-      <div className="mt-5">
-        <h2>Lobby attive</h2>
-        <LobbyList lobbies={lobbies} onJoin={handleJoinGame} playerName={currentPlayer || ''} />
+      <div className="container mt-5">
+        <h1 className="text-center">ScopriMi</h1>
+        <CreateGameForm
+          numQuestions={numQuestions}
+          onNumQuestionsChange={setNumQuestions}
+          onCreateGame={handleCreateGame}
+        />
+        <div className="row justify-content-center mt-4">
+          <div className="col-md-6">
+          </div>
+        </div>
+        <div className="mt-5">
+          <h2>Lobby attive</h2>
+          <LobbyList lobbies={lobbies} onJoin={handleJoinGame} playerName={currentPlayer || ''} />
+        </div>
       </div>
     </div>
   );

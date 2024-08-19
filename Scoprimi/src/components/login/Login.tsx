@@ -19,12 +19,10 @@ const Login: React.FC = () => {
   };
 
   const handleDoneClick = () => {
-    if (selectedImage && currentPlayer) {
-      alert(`Username: ${currentPlayer}, Image: ${selectedImage}`);
-      navigate('/');
-    } else {
+    if (!selectedImage || !currentPlayer) {
       alert('Please select an image and enter a username.');
     }
+    navigate('/');
   };
 
   return (
