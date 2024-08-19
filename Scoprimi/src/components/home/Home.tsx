@@ -19,6 +19,7 @@ function generateLobbyCode() {
 const Home: React.FC = () => {
   const { currentPlayer, setCurrentLobby, isSetPlayer } = useSession();
   const [lobbies, setLobbies] = useState<Game[]>([]);
+  const [filteredLobbies, setFilteredLobbies] = useState<Game[]>([]);
   const [numQuestions, setNumQuestions] = useState<number>(5);
   const navigate = useNavigate();
 
@@ -37,6 +38,21 @@ const Home: React.FC = () => {
       playerName: currentPlayer,
     };
     socket.emit(c.REQUEST_TO_JOIN_LOBBY, data);
+  }
+
+  function filterLobbies(searchTerm: string) {
+    if (searchTerm === '') {
+      console.log('vuoto');
+      setFilteredLobbies([]);
+    } else {
+      const lowercasedSearchTerm = searchTerm.toLowerCase();
+      const filtered = lobbies.filter(lobby =>
+        lobby.lobbyCode.toLowerCase().includes(lowercasedSearchTerm),
+      );
+      console.log('filtered');
+      console.log(filtered);
+      setFilteredLobbies(filtered);
+    }
   }
 
   useEffect(() => {
@@ -73,7 +89,6 @@ const Home: React.FC = () => {
 
   return (
     <div>
-      {/* login */}
       <div>
         <button onClick={() => navigate('login')}>Login</button>
       </div>
@@ -83,6 +98,7 @@ const Home: React.FC = () => {
           numQuestions={numQuestions}
           onNumQuestionsChange={setNumQuestions}
           onCreateGame={handleCreateGame}
+          onFilterLobbies={filterLobbies}
         />
         <div className="row justify-content-center mt-4">
           <div className="col-md-6">
@@ -90,7 +106,7 @@ const Home: React.FC = () => {
         </div>
         <div className="mt-5">
           <h2>Lobby attive</h2>
-          <LobbyList lobbies={lobbies} onJoin={handleJoinGame} playerName={currentPlayer || ''} />
+          <LobbyList lobbies={(filteredLobbies.length > 0) ? filteredLobbies : lobbies} onJoin={handleJoinGame} playerName={currentPlayer || ''} />
         </div>
       </div>
     </div>
