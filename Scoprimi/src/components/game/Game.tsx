@@ -50,7 +50,7 @@ const Game: React.FC = () => {
       setIsTimerActive(false);
     });
 
-    socket.on(c.GAME_OVER, (playerScores: PlayerScores, playerImages: PlayerImages) => {
+    socket.on(c.GAME_OVER, (data: { playerScores: PlayerScores, playerImages: PlayerImages }) => {
       setGameOver(true);
       setQuestion('');
       setPlayers([]);
@@ -61,12 +61,13 @@ const Game: React.FC = () => {
       sessionStorage.removeItem('currentQuestion');
       sessionStorage.removeItem('players');
       const finalResults: FinalResultData = {};
-      Object.keys(playerScores).forEach(playerName => {
+      Object.keys(data.playerScores).forEach(playerName => {
         finalResults[playerName] = {
-          score: playerScores[playerName],
-          image: playerImages[playerName],
+          score: data.playerScores[playerName],
+          image: data.playerImages[playerName],
         };
       });
+      console.log(finalResults);
       navigate('/final-results', { state: { finalResults } });
     });
 

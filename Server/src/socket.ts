@@ -133,7 +133,7 @@ export function setupSocket(io: any, questions: string[]) {
           console.log(`${player}: ${thisGame.playerScores[player]} punti`);
         });
 
-        io.to(data.lobbyCode).emit(c.GAME_OVER, thisGame.playerScores);
+        io.to(data.lobbyCode).emit(c.GAME_OVER, { playerScores: thisGame.playerScores, playerImages: thisGame.images });
         gameManager.deleteGame(thisGame.lobbyCode);
       }
     });
