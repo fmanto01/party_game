@@ -39,9 +39,9 @@ jobs:
       - name: Install dependencies
         working-directory: ./Scoprimi
         run: npm ci
-      - name: Build
+      - name: Build Client
         working-directory: ./Scoprimi
-        run: npm run build
+        run: npm run build --if-present
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
