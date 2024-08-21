@@ -27,7 +27,8 @@
   },
   "include": [
     "src",
-    "../Server",
+    "../Server/src/data",
+    "../Server/src/socketConsts.ts",
     "public",
   ]
 }
