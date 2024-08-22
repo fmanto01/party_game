@@ -1,7 +1,7 @@
 import express from 'express';
 import { Request } from "express";
 import { Server, ServerOptions } from 'socket.io';
-import { createServer } from 'node:http';
+import { createServer } from 'node:https';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { setupSocket } from './socket.js';
@@ -13,6 +13,14 @@ app.use(cors<Request>());
 
 app.get('/test', (req, res) => {
   res.json({ message: 'Server is running!' });
+});
+
+// CORS settings for Express
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://fmanto01.github.io'); // Allow your specific origin
+  res.header('Access-Control-Allow-Methods', 'GET,POST');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
 });
 
 const server = createServer(app);
