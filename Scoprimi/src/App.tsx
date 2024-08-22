@@ -11,7 +11,7 @@ import Login from './components/login/Login.tsx';
 
 const App = () => (
   <SessionProvider>
-    <Router basename="/scoprimi">
+    <Router basename="/party_game">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
