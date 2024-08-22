@@ -2,9 +2,9 @@
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./src",
-    "module": "commonjs",
     "moduleResolution": "node",
-    "target": "es2017",
+    "target": "esnext",
+    "module": "esnext",
     "lib": [
       "es2017",
       "dom"
