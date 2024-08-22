@@ -15,7 +15,8 @@ const server = createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+    origin: ['http://localhost:5173', 'http://127.0.0.1:5173', 'https://fmanto01.github.io/party_game'],
+
     methods: ['GET', 'POST'],
   },
 } as Partial<ServerOptions>);
