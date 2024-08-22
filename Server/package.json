@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc && cpx \"src/questions.json\" dist/",
+    "run": "node dist/index.js",
     "start": "npm run build && nodemon dist/index.js"
   },
   "keywords": [],
