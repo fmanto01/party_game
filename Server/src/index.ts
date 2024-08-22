@@ -9,7 +9,28 @@ import { readFile } from 'node:fs/promises';
 import cors from 'cors';
 
 const app = express();
-app.use(cors<Request>());
+app.use(cors<Request>({
+  origin: ['http://localhost:5173', 'http://127.0.0.1:5173', 'https://fmanto01.github.io'],
+  methods: ['GET', 'POST'],
+  allowedHeaders: [
+    'Authorization', // Se usi l'autenticazione
+    'Content-Type',  // Per le richieste POST/PUT
+    'Accept',
+    'Accept-Encoding',
+    'Accept-Language',
+    'Origin',
+    'Referer',
+    'User-Agent',
+    'Sec-CH-UA',
+    'Sec-CH-UA-Mobile',
+    'Sec-CH-UA-Platform',
+    'Sec-Fetch-Dest',
+    'Sec-Fetch-Mode',
+    'Sec-Fetch-Site'
+  ],
+  credentials: true,  // Se hai bisogno di inviare cookies o token di autenticazione
+}));
+
 
 const server = createServer(app);
 
