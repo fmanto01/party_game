@@ -4,8 +4,8 @@
   "main": "index.ts",
   "type": "module",
   "scripts": {
-    "build": "tsc && cpx \"src/questions.json\" dist/",
-    "run": "node dist/index.js",
+    "build": "npm i && tsc && cpx \"src/questions.json\" dist/",
+    "server": "node dist/index.js",
     "start": "npm run build && nodemon dist/index.js"
   },
   "keywords": [],
