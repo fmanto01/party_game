@@ -1,34 +1,27 @@
 import express from 'express';
-import { Request } from "express";
 import { Server, ServerOptions } from 'socket.io';
 import { createServer } from 'node:https';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { setupSocket } from './socket.js';
 import { readFile } from 'node:fs/promises';
-import cors from 'cors';
 
+// Create an Express app
 const app = express();
-app.use(cors<Request>());
 
+// Serve a test endpoint
 app.get('/test', (req, res) => {
   res.json({ message: 'Server is running!' });
 });
 
-// CORS settings for Express
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://fmanto01.github.io'); // Allow your specific origin
-  res.header('Access-Control-Allow-Methods', 'GET,POST');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
 
+// Create an HTTPS server
 const server = createServer(app);
 
+// Configure Socket.IO with CORS settings
 const io = new Server(server, {
   cors: {
-    origin: ['http://localhost:5173', 'http://127.0.0.1:5173', 'https://fmanto01.github.io/'],
-
+    origin: ['http://localhost:5173', 'http://127.0.0.1:5173', 'https://fmanto01.github.io'],
     methods: ['GET', 'POST'],
   },
 } as Partial<ServerOptions>);
@@ -40,11 +33,12 @@ async function init() {
     const data = await readFile(join(__dirname, './questions.json'), 'utf8');
     const questions = JSON.parse(data);
 
-    // setup
+    // Set up Socket.IO with your questions data
     setupSocket(io, questions);
 
+    // Start the server
     server.listen(3001, () => {
-      console.log('Server is running on http://localhost:3001');
+      console.log('Server is running on https://localhost:3001');
     });
   } catch (err) {
     console.error('Error reading the questions file:', err);
