@@ -23,6 +23,8 @@ const io = new Server(server, {
   cors: {
     origin: ['http://localhost:5173', 'http://127.0.0.1:5173', 'https://fmanto01.github.io'],
     methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type'],
+    credentials: true,
   },
 } as Partial<ServerOptions>);
 
