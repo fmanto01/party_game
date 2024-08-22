@@ -2,11 +2,14 @@
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./src",
-    "module": "ESNext",
+    "module": "commonjs",
     "moduleResolution": "node",
-    "target": "ES6",
+    "target": "es2017",
+    "lib": [
+      "es2017",
+      "dom"
+    ],
     "esModuleInterop": true,
-    // "sourceMap": true
   },
   "include": [
     "src/**/*"
