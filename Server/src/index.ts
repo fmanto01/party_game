@@ -11,6 +11,10 @@ import cors from 'cors';
 const app = express();
 app.use(cors<Request>());
 
+app.get('/test', (req, res) => {
+  res.json({ message: 'Server is running!' });
+});
+
 const server = createServer(app);
 
 const io = new Server(server, {
