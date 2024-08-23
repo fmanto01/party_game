@@ -1,6 +1,6 @@
 import express from 'express';
 import { Request } from "express";
-import { Server, ServerOptions } from 'socket.io';
+import { Server } from 'socket.io';
 import { createServer } from 'node:http';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -20,7 +20,7 @@ app.get('/test', function (req, res) {
 
 // Da vedere, sto modificando il codice da cellulare (molto cool)
 
-const io = require('socket.io')(server, {
+const io = new Server(server, {
   cors: {
     origin: "https://fmanto01.github.io/party_game/",
     methods: ["GET", "POST"]
