@@ -18,7 +18,14 @@ app.get('/test', function (req, res) {
   res.json({ message: 'Ciao, sono nel server' });
 });
 
-const io = new Server(server);
+// Da vedere, sto modificando il codice da cellulare (molto cool)
+
+const io = require('socket.io')(server, {
+  cors: {
+    origin: "https://fmanto01.github.io/party_game/",
+    methods: ["GET", "POST"]
+  }
+});
 
 async function init() {
   try {
