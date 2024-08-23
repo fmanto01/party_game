@@ -18,12 +18,11 @@ app.get('/test', function (req, res) {
   res.json({ message: 'Ciao, sono nel server' });
 });
 
-// Da vedere, sto modificando il codice da cellulare (molto cool)
-
 const io = new Server(server, {
   cors: {
-    origin: "https://fmanto01.github.io/party_game/",
-    methods: ["GET", "POST"]
+    origin: ['http://localhost:5173', 'http://127.0.0.1:5173', 'https://fmanto01.github.io'],
+    methods: ['GET', 'POST'],
+    credentials: true
   }
 });
 
