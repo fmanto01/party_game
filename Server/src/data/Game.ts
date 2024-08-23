@@ -45,9 +45,12 @@ export class Game {
       resultMessage = 'Pareggio! Nessun punto assegnato';
     } else {
       // Se c'è un vincitore
-      const winner = winners[0];
-      this.playerScores[winner] += 1;
-      resultMessage = `+ 1 punto a chi ha scelto ${winner}`;
+      winners.forEach(winner => {
+        this.playerScores[winner] += 1;
+      });
+      // const winner = winners[0];
+
+      resultMessage = `+ 1 punto a chi ha scelto ${winners[0]}`;
     }
 
     this.resetVoters();
