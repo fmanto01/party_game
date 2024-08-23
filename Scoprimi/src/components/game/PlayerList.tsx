@@ -17,7 +17,7 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, onVote, disabled }) =>
           onClick={() => onVote(player)}
           disabled={disabled}
         >
-          {player}
+          <h5>{player}</h5>
         </button>
       ))}
     </div>

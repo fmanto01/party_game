@@ -6,7 +6,7 @@ interface QuestionProps {
 
 const Question: React.FC<QuestionProps> = ({ question }) => (
   <div id="questionContainer" className="mt-3 text-center">
-    <h3 id="question">{question}</h3>
+    <h4 id="question">{question}</h4>
   </div>
 );
 

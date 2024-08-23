@@ -13,7 +13,7 @@ const Timer: React.FC<TimerProps> = ({ duration, onTimeUp, isActive }) => {
   const startTimer = useCallback(() => {
     const storedTimeLeft = sessionStorage.getItem('timeLeft');
     if (storedTimeLeft) {
-      setTimeLeft(parseInt(storedTimeLeft, 10));
+      setTimeLeft(parseInt(storedTimeLeft, 25));
     } else {
       setTimeLeft(duration);
     }

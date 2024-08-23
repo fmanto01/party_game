@@ -107,8 +107,10 @@ const Game: React.FC = () => {
       <div className="top-container text-center mt-3">
         {!gameOver && (
           <>
-            <Timer duration={10} onTimeUp={handleTimeUp} isActive={isTimerActive} />
-            <Question question={question} />
+            <Timer duration={25} onTimeUp={handleTimeUp} isActive={isTimerActive} />
+            <div className="p-3 my-3 border rounded bg-primary text-white">
+              <Question question={question} />
+            </div>
           </>
         )}
       </div>
