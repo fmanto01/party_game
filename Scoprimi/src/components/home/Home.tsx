@@ -17,7 +17,7 @@ function generateLobbyCode() {
 }
 
 const Home: React.FC = () => {
-  const { currentPlayer, setCurrentLobby, isSetPlayer } = useSession();
+  const { currentPlayer, setCurrentLobby, currentPlayerImage, isSetPlayer } = useSession();
   const [lobbies, setLobbies] = useState<Game[]>([]);
   const [filteredLobbies, setFilteredLobbies] = useState<Game[]>([]);
   const [numQuestions, setNumQuestions] = useState<number>(5);
@@ -36,6 +36,7 @@ const Home: React.FC = () => {
     const data = {
       lobbyCode: lobbyCode,
       playerName: currentPlayer,
+      image: currentPlayerImage,
     };
     socket.emit(c.REQUEST_TO_JOIN_LOBBY, data);
   }
@@ -49,7 +50,6 @@ const Home: React.FC = () => {
       const filtered = lobbies.filter(lobby =>
         lobby.lobbyCode.toLowerCase().includes(lowercasedSearchTerm),
       );
-      console.log('filtered');
       console.log(filtered);
       setFilteredLobbies(filtered);
     }
