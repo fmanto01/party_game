@@ -14,6 +14,7 @@ export class Game {
   public readyForNextQuestion: { [key: string]: boolean };
   public isReadyToGame: { [key: string]: boolean };
   public images: { [key: string]: string };
+  public whatPlayersVoted: { [key: string]: string };
 
   constructor(lobbyCode: string, numQuestions: number) {
     this.lobbyCode = lobbyCode;
@@ -31,26 +32,47 @@ export class Game {
     this.readyForNextQuestion = {};
     this.isReadyToGame = {};
     this.images = {};
+    this.whatPlayersVoted = {};
   }
 
   calculateScores(): string {
-    const validVotes = Object.keys(this.votes).filter(player => this.votes[player] > 0 && player !== '');
-    const maxVotes = validVotes.length > 0 ? Math.max(...Object.values(this.votes)) : 0;
-    const winners = validVotes.filter(player => this.votes[player] === maxVotes);
-
+    const voteCounts = {};
     let resultMessage: string;
 
-    if (validVotes.length === 0 || winners.length > 1) {
-      // Se tutti i voti sono vuoti o c'è un pareggio
+    // Conta i voti
+    for (const voter in this.whatPlayersVoted) {
+      const votedPerson = this.whatPlayersVoted[voter];
+      if (voteCounts[votedPerson]) {
+        voteCounts[votedPerson]++;
+      } else {
+        voteCounts[votedPerson] = 1;
+      }
+    }
+
+    // Trova la persona con il maggior numero di voti
+    let mostVotedPerson = '';
+    let maxVotes = 0;
+    let isTie = false;
+
+    for (const person in voteCounts) {
+      if (voteCounts[person] > maxVotes) {
+        maxVotes = voteCounts[person];
+        mostVotedPerson = person;
+        isTie = false;
+      } else if (voteCounts[person] === maxVotes) {
+        isTie = true;
+      }
+    }
+
+    if (isTie) {
       resultMessage = 'Pareggio! Nessun punto assegnato';
     } else {
-      // Se c'è un vincitore
-      winners.forEach(winner => {
-        this.playerScores[winner] += 1;
-      });
-      // const winner = winners[0];
+      resultMessage = `+ 1 punto a chi ha scelto ${mostVotedPerson}\n`;
 
-      resultMessage = `+ 1 punto a chi ha scelto ${winners[0]}`;
+      for (const voter in this.whatPlayersVoted) {
+        if (this.whatPlayersVoted[voter] === mostVotedPerson)
+          this.playerScores[voter] += 1;
+      }
     }
 
     this.resetVoters();
@@ -105,6 +127,10 @@ export class Game {
   }
 
   castVote(playerName: string, vote: string): void {
+    this.whatPlayersVoted[playerName] = vote;
+
+    // Questo if non dovrebbe più servire ma non sono sicuro
+    // TODO: controllare
     if (this.players.includes(playerName)) {
       if (!this.votes[vote]) {
         this.votes[vote] = 0;

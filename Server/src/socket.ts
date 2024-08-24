@@ -3,7 +3,7 @@ import { GameManager } from './data/GameManager.js';
 import { Game } from './data/Game.js';
 
 const gameManager = new GameManager();
-
+let voteRecap: string = '';
 
 function shuffle(array: string[]) {
   if (!Array.isArray(array)) {
@@ -99,16 +99,17 @@ export function setupSocket(io: any, questions: string[]) {
 
     socket.on(c.VOTE, (data: { lobbyCode: string; voter: string, vote: string }) => {
       console.log('Ho ricevuto il voto ', data);
+      voteRecap += `\n${data.voter} ha votato ${data.vote}`;
       const thisGame = gameManager.getGame(data.lobbyCode);
 
       if (thisGame.players.includes(data.vote) || data.vote === '')
         thisGame.castVote(data.voter, data.vote);
 
       if (thisGame.didAllPlayersVote()) {
-        console.log('Tutti hanno votato');
         const resultMessage = thisGame.calculateScores();
         const players = thisGame.players;
-        io.to(data.lobbyCode).emit(c.SHOW_RESULTS, { resultMessage, players });
+        io.to(data.lobbyCode).emit(c.SHOW_RESULTS, { resultMessage, players, voteRecap });
+        voteRecap = '';
       }
     });
 

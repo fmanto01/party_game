@@ -90,7 +90,7 @@ const Home: React.FC = () => {
   return (
     <div>
       <div>
-        <button onClick={() => navigate('login')}>Login</button>
+        <button className="btn btn-primary" onClick={() => navigate('login')}>Login</button>
       </div>
       <div className="container mt-5">
         <h1 className="text-center">ScopriMi</h1>
