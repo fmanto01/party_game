@@ -21,7 +21,9 @@ const Timer: React.FC<TimerProps> = ({ duration, onTimeUp, isActive }) => {
     timerRef.current = window.setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
-          clearInterval(timerRef.current!);
+          if (timerRef.current !== null) {
+            clearInterval(timerRef.current);
+          }
           setTimeout(onTimeUp, 0);
           sessionStorage.removeItem('timeLeft');
           return 0;
