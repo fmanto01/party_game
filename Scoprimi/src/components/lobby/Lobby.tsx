@@ -61,7 +61,6 @@ const Lobby: React.FC = () => {
   };
 
   const goBackToLobbyList = () => {
-    console.log('Remove from lobby: ', currentPlayer, ' ', currentLobby);
     socket.emit(c.EXIT_LOBBY, { currentPlayer, currentLobby });
     setCurrentLobby(undefined);
     navigate('/');

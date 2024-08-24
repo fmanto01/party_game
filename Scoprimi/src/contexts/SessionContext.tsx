@@ -38,7 +38,6 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
     const savedPlayer = sessionStorage.getItem('currentPlayer');
     const savedPlayerImage = sessionStorage.getItem('currentPlayerImage');
     const savedLobby = sessionStorage.getItem('currentLobby');
-    console.log(`lobby ${savedLobby} \nplauyer ${savedPlayer}\nimage ${savedPlayerImage}`);
 
     if (savedLobby && savedPlayer && savedPlayerImage) {
       setCurrentLobby(savedLobby);
@@ -56,10 +55,8 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (initialLoadComplete) {
       if (currentPlayer && currentPlayerImage) {
-        console.log('tutto ok');
         setIsSetPlayer(true);
       } else {
-        console.log('non ok');
         setIsSetPlayer(false);
       }
     }
