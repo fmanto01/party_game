@@ -36,14 +36,14 @@ export class Game {
   }
 
   calculateScores(): string {
-    const voteCounts = {};
+    const voteCounts: { [key: string]: number } = {};
     let resultMessage: string;
 
     // Conta i voti
     for (const voter in this.whatPlayersVoted) {
       const votedPerson = this.whatPlayersVoted[voter];
-      if (voteCounts[votedPerson]) {
-        this.playerScores[voter] = (this.playerScores[voter] || 0) + 1;
+      if (votedPerson in voteCounts) {
+        voteCounts[votedPerson] += 1;
       } else {
         voteCounts[votedPerson] = 1;
       }
@@ -103,6 +103,9 @@ export class Game {
       delete this.playerScores[playerName];
       delete this.readyForNextQuestion[playerName];
       delete this.isReadyToGame[playerName];
+      delete this.playerSocketIds[playerName];
+      delete this.images[playerName];
+      delete this.whatPlayersVoted[playerName];
     }
   }
 
@@ -129,8 +132,6 @@ export class Game {
   castVote(playerName: string, vote: string): void {
     this.whatPlayersVoted[playerName] = vote;
 
-    // Questo if non dovrebbe più servire ma non sono sicuro
-    // TODO: controllare
     if (this.players.includes(playerName)) {
       if (!this.votes[vote]) {
         this.votes[vote] = 0;
