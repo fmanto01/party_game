@@ -43,7 +43,7 @@ export class Game {
     for (const voter in this.whatPlayersVoted) {
       const votedPerson = this.whatPlayersVoted[voter];
       if (voteCounts[votedPerson]) {
-        voteCounts[votedPerson]++;
+        this.playerScores[voter] = (this.playerScores[voter] || 0) + 1;
       } else {
         voteCounts[votedPerson] = 1;
       }
