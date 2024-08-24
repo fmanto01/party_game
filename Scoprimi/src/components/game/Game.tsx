@@ -44,11 +44,15 @@ const Game: React.FC = () => {
       setShowResults(false);
     });
 
-    socket.on(c.SHOW_RESULTS, (data: { resultMessage: string }) => {
-      setResultMessage(data.resultMessage);
+    socket.on(c.SHOW_RESULTS, (data: { resultMessage: string, voteRecap: string }) => {
+      console.log("Recap dei voti: ", data.voteRecap);
+      const formattedVoteRecap = data.voteRecap.replace(/\n/g, '<br />');
+      const formattedResultMessage = data.resultMessage + '<br />' + formattedVoteRecap;
+      setResultMessage(formattedResultMessage);
       setShowResults(true);
       setIsTimerActive(false);
     });
+
 
     socket.on(c.GAME_OVER, (data: { playerScores: PlayerScores, playerImages: PlayerImages }) => {
       setGameOver(true);
