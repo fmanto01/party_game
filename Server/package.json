@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npm i && tsc && cpx \"src/questions.json\" dist/",
     "server": "node dist/index.js",
-    "start": "npm run build && nodemon dist/index.js"
+    "start": "npm run build && nodemon --env-file=.env dist/index.js"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +15,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1",
     "socket.io": "^4.7.5"
   },
   "devDependencies": {
@@ -22,6 +23,7 @@
     "@stylistic/eslint-plugin-js": "^2.6.1",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
+    "@types/multer": "^1.4.12",
     "@types/node": "^22.5.0",
     "cpx2": "^7.0.1",
     "eslint": "^9.8.0",
