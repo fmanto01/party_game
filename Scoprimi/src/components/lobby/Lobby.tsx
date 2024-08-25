@@ -38,11 +38,11 @@ const Lobby: React.FC = () => {
     socket.emit(c.REQUEST_RENDER_LOBBY, currentLobby, (data: Game) => {
       console.log('Received data:', data);
       setGame(data);
-      setIsReady(data.isReadyToGame[currentPlayer!]);
+      setIsReady(data.isReadyToGame[currentPlayer]);
     });
     socket.on(c.RENDER_LOBBY, (data: Game) => {
       setGame(data);
-      setIsReady(data.isReadyToGame[currentPlayer!]);
+      setIsReady(data.isReadyToGame[currentPlayer]);
     });
     socket.on(c.INIZIA, () => {
       setGame((prevGame) => prevGame ? { ...prevGame, isGameStarted: true } : undefined);
@@ -57,7 +57,7 @@ const Lobby: React.FC = () => {
   const toggleReady = () => {
     const newReadyState = !isReady;
     setIsReady(newReadyState);
-    handleToggleisReadyToGame({ lobbyCode: currentLobby!, playerName: currentPlayer! });
+    handleToggleisReadyToGame({ lobbyCode: currentLobby, playerName: currentPlayer });
   };
 
   const goBackToLobbyList = () => {

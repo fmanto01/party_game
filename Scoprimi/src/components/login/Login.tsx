@@ -5,7 +5,7 @@ const images = [
   'https://avatar.iran.liara.run/public/job/police/male',
   'https://avatar.iran.liara.run/public/job/doctor/female',
   'https://avatar.iran.liara.run/public/job/chef/male',
-  'https://avatar.iran.liara.run/public/job/firefighters/male'
+  'https://avatar.iran.liara.run/public/job/firefighters/male',
 ];
 
 const Login: React.FC = () => {

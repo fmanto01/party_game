@@ -45,7 +45,7 @@ const Game: React.FC = () => {
     });
 
     socket.on(c.SHOW_RESULTS, (data: { resultMessage: string, voteRecap: string }) => {
-      console.log("Recap dei voti: ", data.voteRecap);
+      console.log('Recap dei voti: ', data.voteRecap);
       const formattedVoteRecap = data.voteRecap.replace(/\n/g, '<br />');
       const formattedResultMessage = data.resultMessage + '<br />' + formattedVoteRecap;
       setResultMessage(formattedResultMessage);
