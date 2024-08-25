@@ -1,6 +1,6 @@
 import multer from 'multer';
 import { Request, Response, NextFunction } from 'express';
-import { readFile, rename } from 'fs/promises';
+import { readFile, rename, mkdir } from 'fs/promises';
 import { Express } from 'express-serve-static-core';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
@@ -16,23 +16,27 @@ export const SetAllQuestions = async (): Promise<any> => {
 }
 
 export const SetupAPI = (app: Express) => {
-  const upload = multer({ dest: 'uploads/' });
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
+
+  const uploadDir = join(__dirname, '../uploads');
+
+  mkdir(uploadDir, { recursive: true }).catch(console.error);
+
+  const upload = multer({ dest: uploadDir });
 
   const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers['authorization'];
-    if (token === process.env.SECRET_TOKEN) {
+    if (token && token === process.env.SECRET_TOKEN) {
       next();
     } else {
       res.status(403).json({ error: 'Accesso non autorizzato' });
     }
   };
 
-
   app.post('/upload', authMiddleware, upload.single('file'), async (req: Request, res: Response) => {
     console.log('eccoci');
     const tempPath = req.file?.path;
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = dirname(__filename);
     const targetPath = join(__dirname, '../questions.json');
 
     if (!tempPath) {
@@ -42,10 +46,11 @@ export const SetupAPI = (app: Express) => {
     try {
       await rename(tempPath, targetPath);
       const data = await readFile(targetPath, 'utf8');
-      const AllQuestions = JSON.parse(data);
+      AllQuestions = JSON.parse(data);
       console.log(AllQuestions);
       res.status(200).json({ message: 'File aggiornato con successo' });
     } catch (err) {
+      console.error('Errore durante il salvataggio del file', err);
       res.status(500).json({ error: 'Errore durante il salvataggio del file' });
     }
   });

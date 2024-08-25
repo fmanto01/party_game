@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npm i && tsc && cpx \"src/questions.json\" dist/",
     "server": "node dist/index.js",
-    "start": "npm run build && nodemon --env-file=.env dist/index.js"
+    "start": "npm run build && node dist/start.js"
   },
   "keywords": [],
   "author": "",
