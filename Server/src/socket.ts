@@ -1,6 +1,7 @@
 import * as c from './socketConsts.js';
 import { GameManager } from './data/GameManager.js';
 import { Game } from './data/Game.js';
+import { AllQuestions } from './API/questions.js';
 
 const gameManager = new GameManager();
 let voteRecap: string = '';
@@ -17,7 +18,7 @@ function shuffle(array: string[]) {
 }
 
 
-export function setupSocket(io: any, questions: string[]) {
+export function setupSocket(io: any) {
   io.on(c.CONNECTION, (socket: any) => {
 
     console.log(`Client connected: ${socket.id}`);
@@ -51,7 +52,7 @@ export function setupSocket(io: any, questions: string[]) {
     socket.on(c.CREATE_LOBBY, ([code, numQuestionsParam]: [string, number]) => {
       console.log('Ho ricevuto questo dato: ', code, ' - ', numQuestionsParam);
       gameManager.createGame(code, numQuestionsParam);
-      gameManager.getGame(code).selectedQuestions = shuffle(questions).slice(0, numQuestionsParam);
+      gameManager.getGame(code).selectedQuestions = shuffle(AllQuestions).slice(0, numQuestionsParam);
       const lobbies = gameManager.listGames();
       io.emit(c.RENDER_LOBBIES, { lobbies });
     });
