@@ -24,7 +24,7 @@ function checkLobbiesAge(io: any) {
 
   lobbies.forEach(lobby => {
     const game = gameManager.getGame(lobby.lobbyCode);
-    if (game && currentTime - game.creationTime >= 0.9 * 60 * 1000) { // Eliminazione lobby dopo 30 minuti
+    if (game && currentTime - game.creationTime >= 30 * 60 * 1000) { // Eliminazione lobby dopo 30 minuti
       console.log(`Lobby da eliminare: ${lobby.lobbyCode}`);
       gameManager.deleteGame(lobby.lobbyCode);
       const lobbies = gameManager.listGames();
