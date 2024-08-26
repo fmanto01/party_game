@@ -1,6 +1,6 @@
 import { Express } from 'express-serve-static-core';
-import { setupUpload } from './questions';
-import { setupServerStatus } from './serverStatus';
+import { setupUpload } from './questions.js';
+import { setupServerStatus } from './serverStatus.js';
 
 // IMPORTA TUTTE LE API DEI VARI FILE
 export const setupAPI = (app: Express) => {
