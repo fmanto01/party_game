@@ -28,6 +28,10 @@ export function setupSocket(io: any) {
 
       for (const lobbyCode of gameManager.listLobbiesCode()) {
         const game = gameManager.getGame(lobbyCode);
+        if (!game) {
+          socket.emit(c.FORCE_RESET);
+          return;
+        }
         const playerName = game.players.find(pname => game.playerSocketIds[pname] === socket.id);
 
         if (playerName) {
@@ -63,6 +67,11 @@ export function setupSocket(io: any) {
         console.log('sto joinando la lobby', code);
         const game = gameManager.getGame(code);
 
+        if (!game) {
+          socket.emit(c.FORCE_RESET);
+          return;
+        }
+
         if (game.players.includes(data.playerName)) {
           console.log(`Player with name ${data.playerName} already exists in lobby ${data.lobbyCode}`);
           socket.emit(c.PLAYER_CAN_JOIN, { canJoin: false, lobbyCode: code, playerName: data.playerName });
@@ -87,6 +96,10 @@ export function setupSocket(io: any) {
     socket.on(c.TOGGLE_IS_READY_TO_GAME, (data: { lobbyCode: string; playerName: string }) => {
       console.log('Toggle', data.lobbyCode);
       const thisGame = gameManager.getGame(data.lobbyCode);
+      if (!thisGame) {
+        socket.emit(c.FORCE_RESET);
+        return;
+      }
       thisGame.toogleIsReadyToGame(data.playerName);
       if (!thisGame.isAllPlayersReadyToGame()) {
         return;
@@ -103,6 +116,11 @@ export function setupSocket(io: any) {
       voteRecap += `\n${data.voter} ha votato ${data.vote}`;
       const thisGame = gameManager.getGame(data.lobbyCode);
 
+      if (!thisGame) {
+        socket.emit(c.FORCE_RESET);
+        return;
+      }
+
       if (thisGame.players.includes(data.vote) || data.vote === '')
         thisGame.castVote(data.voter, data.vote);
 
@@ -116,6 +134,10 @@ export function setupSocket(io: any) {
 
     socket.on(c.READY_FOR_NEXT_QUESTION, (data: { lobbyCode: string; playerName: string }) => {
       const thisGame = gameManager.getGame(data.lobbyCode);
+      if (!thisGame) {
+        socket.emit(c.FORCE_RESET);
+        return;
+      }
       thisGame.setReadyForNextQuestion(data.playerName);
 
       if (!thisGame.isAllPlayersReady()) {
@@ -150,6 +172,10 @@ export function setupSocket(io: any) {
     socket.on(c.JOIN_ROOM, (data: { playerName: string, lobbyCode: string, image: string }) => {
       socket.join(data.lobbyCode);
       const thisGame = gameManager.getGame(data.lobbyCode);
+      if (!thisGame) {
+        socket.emit(c.FORCE_RESET);
+        return;
+      }
       thisGame.addPlayer(data.playerName, socket.id, data.image);
     })
 
@@ -160,11 +186,17 @@ export function setupSocket(io: any) {
     socket.on(c.EXIT_LOBBY, (data: { currentPlayer: string; currentLobby: string; }) => {
       console.log(`Removing ${data.currentPlayer} from lobby ${data.currentLobby}`);
       const thisGame = gameManager.getGame(data.currentLobby);
+      if (!thisGame) {
+        socket.emit(c.FORCE_RESET);
+        return;
+      }
       thisGame.removePlayer(data.currentPlayer);
       const lobbies = gameManager.listGames();
       console.log(thisGame.players);
       socket.leave(data.currentLobby);
       io.emit(c.RENDER_LOBBIES, { lobbies });
+      // TODO
+      io.to(data.currentLobby).emit(c.RENDER_LOBBY, thisGame);
     });
 
   });

@@ -1,31 +1,28 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Home from './components/home/Home.tsx';
-import Lobby from './components/lobby/Lobby.tsx';
-import Game from './components/game/Game.tsx';
-import { SessionProvider } from './contexts/SessionContext.tsx';
-import ProtectedRoute from './components/ProtectedRoutes.tsx';
-import ErrorPage from './components/ErrorPage.tsx';
-import FinalResults from './components/finalresults/FinalResults.tsx';
-import Login from './components/login/Login.tsx';
-
+import Home from './components/home/Home';
+import Lobby from './components/lobby/Lobby';
+import Game from './components/game/Game';
+import { SessionProvider } from './contexts/SessionContext';
+import ProtectedRoute from './components/ProtectedRoutes';
+import ErrorPage from './components/ErrorPage';
+import FinalResults from './components/finalresults/FinalResults';
+import Login from './components/login/Login';
+import SocketListener from './components/SocketListeners';
 
 const App = () => (
   <SessionProvider>
     <Router basename="/party_game">
+      <SocketListener />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route
-          path="/lobby" element={<ProtectedRoute component={Lobby} />}
-        />
-        <Route
-          path="/game" element={<ProtectedRoute component={Game} />}
-        />
+        <Route path="/lobby" element={<ProtectedRoute component={Lobby} />} />
+        <Route path="/game" element={<ProtectedRoute component={Game} />} />
         <Route path="/final-results" element={<FinalResults />} />
         <Route path="/error" element={<ErrorPage />} />
       </Routes>
     </Router>
-  </SessionProvider >
+  </SessionProvider>
 );
 
 export default App;
