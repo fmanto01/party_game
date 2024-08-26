@@ -17,11 +17,30 @@ function shuffle(array: string[]) {
   return array;
 }
 
+// Funzione per verificare se una lobby è da eliminare
+function checkLobbiesAge(io: any) {
+  const lobbies = gameManager.listGames();
+  const currentTime = Date.now();
+
+  lobbies.forEach(lobby => {
+    const game = gameManager.getGame(lobby.lobbyCode);
+    if (game && currentTime - game.creationTime >= 0.9 * 60 * 1000) { // Eliminazione lobby dopo 30 minuti
+      console.log(`Lobby da eliminare: ${lobby.lobbyCode}`);
+      gameManager.deleteGame(lobby.lobbyCode);
+      const lobbies = gameManager.listGames();
+      io.emit(c.RENDER_LOBBIES, { lobbies });
+    }
+  });
+}
+
+
 
 export function setupSocket(io: any) {
   io.on(c.CONNECTION, (socket: any) => {
 
     console.log(`Client connected: ${socket.id}`);
+    // Avvia il controllo per l'eliminazione delle lobby (ogni 60 sec)
+    setInterval(() => checkLobbiesAge(io), 10 * 1000);
 
     socket.on(c.DISCONNECT, () => {
       console.log('Client disconnected:', socket.id);
