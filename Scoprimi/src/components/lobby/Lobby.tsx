@@ -116,7 +116,8 @@ const Lobby: React.FC = () => {
       <div className="text-center mt-4">
         <button
           onClick={() => goBackToLobbyList()}
-          className="btn btn-primary">Indietro
+          className="btn btn-primary">
+          Indietro
         </button>
       </div>
       <Navbar />

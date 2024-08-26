@@ -90,9 +90,6 @@ const Home: React.FC = () => {
 
   return (
     <div>
-      <div>
-        <button className="btn btn-primary" onClick={() => navigate('login')}>Login</button>
-      </div>
       <div className="container mt-5">
         <h1 className="text-center">ScopriMi</h1>
         <CreateGameForm
@@ -109,7 +106,7 @@ const Home: React.FC = () => {
           <h2>Lobby attive</h2>
           <LobbyList lobbies={(filteredLobbies.length > 0) ? filteredLobbies : lobbies} onJoin={handleJoinGame} playerName={currentPlayer || ''} />
         </div>
-        <Navbar></Navbar>
+        <Navbar />
       </div>
     </div>
   );

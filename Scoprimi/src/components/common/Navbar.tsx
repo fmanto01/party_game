@@ -9,8 +9,8 @@ const Navbar = () => {
     const navdirections = [
       '/',
       '/lobby',
-      '/TODO',
-      '/TODO',
+      '/new-game',
+      '/serch-game',
       '/login',
     ];
     navigate(navdirections[index], { replace: true });

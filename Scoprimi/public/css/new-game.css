@@ -1,0 +1,43 @@
+.new-game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f7f7f7;
+}
+
+.counter {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.counter button {
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.counter input {
+  width: 60px;
+  text-align: center;
+  font-size: 18px;
+  padding: 5px;
+}
+
+.btn-primary {
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
