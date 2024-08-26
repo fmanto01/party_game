@@ -17,11 +17,30 @@ function shuffle(array: string[]) {
   return array;
 }
 
+// Funzione per verificare se una lobby è da eliminare
+function checkLobbiesAge(io: any) {
+  const lobbies = gameManager.listGames();
+  const currentTime = Date.now();
+
+  lobbies.forEach(lobby => {
+    const game = gameManager.getGame(lobby.lobbyCode);
+    if (game && currentTime - game.creationTime >= 30 * 60 * 1000) { // Eliminazione lobby dopo 30 minuti
+      console.log(`Lobby da eliminare: ${lobby.lobbyCode}`);
+      gameManager.deleteGame(lobby.lobbyCode);
+      const lobbies = gameManager.listGames();
+      io.emit(c.RENDER_LOBBIES, { lobbies });
+    }
+  });
+}
+
+
 
 export function setupSocket(io: any) {
   io.on(c.CONNECTION, (socket: any) => {
 
     console.log(`Client connected: ${socket.id}`);
+    // Avvia il controllo per l'eliminazione delle lobby (ogni 60 sec)
+    setInterval(() => checkLobbiesAge(io), 10 * 1000);
 
     socket.on(c.DISCONNECT, () => {
       console.log('Client disconnected:', socket.id);
@@ -113,7 +132,12 @@ export function setupSocket(io: any) {
 
     socket.on(c.VOTE, (data: { lobbyCode: string; voter: string, vote: string }) => {
       console.log('Ho ricevuto il voto ', data);
-      voteRecap += `\n${data.voter} ha votato ${data.vote}`;
+
+      if (data.vote === '' || data.vote === null)
+        voteRecap += `\n${data.voter} non ha votato`;
+      else
+        voteRecap += `\n${data.voter} ha votato ${data.vote}`;
+
       const thisGame = gameManager.getGame(data.lobbyCode);
 
       if (!thisGame) {

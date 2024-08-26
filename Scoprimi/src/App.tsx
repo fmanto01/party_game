@@ -38,7 +38,7 @@ const App = () => {
 
   return (
     <SessionProvider>
-      <Router basename="/party_game">
+      <Router basename="/party_game/">
         <SocketListener />
         <Routes>
           <Route path="/" element={<Home />} />
