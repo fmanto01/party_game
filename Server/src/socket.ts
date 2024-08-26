@@ -132,7 +132,12 @@ export function setupSocket(io: any) {
 
     socket.on(c.VOTE, (data: { lobbyCode: string; voter: string, vote: string }) => {
       console.log('Ho ricevuto il voto ', data);
-      voteRecap += `\n${data.voter} ha votato ${data.vote}`;
+
+      if (data.vote === '' || data.vote === null)
+        voteRecap += `\n${data.voter} non ha votato`;
+      else
+        voteRecap += `\n${data.voter} ha votato ${data.vote}`;
+
       const thisGame = gameManager.getGame(data.lobbyCode);
 
       if (!thisGame) {
