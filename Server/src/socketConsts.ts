@@ -24,3 +24,4 @@ export const PLAYER_CAN_JOIN: string = 'playerCanJoin';
 export const JOIN_ROOM: string = 'joinROOM';
 export const EXIT_LOBBY: string = 'exitLobby';
 export const LEAVE_ROOM: string = 'LeaveROOM';
+export const FORCE_RESET: string = 'FORCE_RESET';
