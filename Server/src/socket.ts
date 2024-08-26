@@ -24,7 +24,7 @@ function checkLobbiesAge(io: any) {
 
   lobbies.forEach(lobby => {
     const game = gameManager.getGame(lobby.lobbyCode);
-    if (game && currentTime - game.creationTime >= 0.9 * 60 * 1000) { // Eliminazione lobby dopo 30 minuti
+    if (game && currentTime - game.creationTime >= 30 * 60 * 1000) { // Eliminazione lobby dopo 30 minuti
       console.log(`Lobby da eliminare: ${lobby.lobbyCode}`);
       gameManager.deleteGame(lobby.lobbyCode);
       const lobbies = gameManager.listGames();
@@ -132,7 +132,12 @@ export function setupSocket(io: any) {
 
     socket.on(c.VOTE, (data: { lobbyCode: string; voter: string, vote: string }) => {
       console.log('Ho ricevuto il voto ', data);
-      voteRecap += `\n${data.voter} ha votato ${data.vote}`;
+
+      if (data.vote === '' || data.vote === null)
+        voteRecap += `\n${data.voter} non ha votato`;
+      else
+        voteRecap += `\n${data.voter} ha votato ${data.vote}`;
+
       const thisGame = gameManager.getGame(data.lobbyCode);
 
       if (!thisGame) {
