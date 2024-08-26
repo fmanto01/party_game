@@ -1,13 +1,13 @@
 import { io } from 'socket.io-client';
 
-const socketUrl = process.env.NODE_ENV === 'production'
+const webServerBaseUrl = process.env.NODE_ENV === 'production'
   ? 'https://party-game-backend.onrender.com'
   : 'http://localhost:3001';
 
-const socket = io(socketUrl, {
+const socket = io(webServerBaseUrl, {
   transports: ['websocket'],
   withCredentials: true,
 });
 
 
-export { socket };
+export { socket, webServerBaseUrl };

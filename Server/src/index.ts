@@ -3,12 +3,14 @@ import { Server } from 'socket.io';
 import { createServer } from 'http';
 import { setupSocket } from './socket.js';
 import cors from 'cors';
-import { SetAllQuestions, SetupAPI } from './API/questions.js'
+// API
+import { setupAPI } from './API/setupAPI.js';
+import { SetAllQuestions } from './API/questions.js'
 
 const app = express();
 app.use(cors());
 
-SetupAPI(app);
+setupAPI(app);
 const server = createServer(app);
 
 const io = new Server(server, {

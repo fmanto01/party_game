@@ -15,7 +15,7 @@ export const SetAllQuestions = async (): Promise<any> => {
   AllQuestions = JSON.parse(data);
 }
 
-export const SetupAPI = (app: Express) => {
+export const setupUpload = (app: Express) => {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
 
