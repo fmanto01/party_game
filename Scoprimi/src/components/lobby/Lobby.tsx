@@ -17,6 +17,7 @@ interface Game {
   readyForNextQuestion: { [key: string]: boolean };
   isReadyToGame: { [key: string]: boolean };
   isGameStarted: boolean;
+  images: { [key: string]: string }; // Add this line
 }
 
 function handleToggleisReadyToGame(data: { lobbyCode: string, playerName: string }) {
@@ -83,13 +84,21 @@ const Lobby: React.FC = () => {
         <table className="table table-bordered">
           <thead className="thead-dark">
             <tr>
-              <th>Players</th>
+              <th>Player</th>
+              <th></th>
             </tr>
           </thead>
           <tbody id="playersTable">
             {game.players.map((player) => (
               <tr key={player} className={game.isReadyToGame[player] ? 'color-ok' : 'color-ko'}>
                 <td>{player}</td>
+                <td>
+                  <img
+                    src={game.images[player] || 'default-image-url'}
+                    alt={player}
+                    style={{ width: '50px', height: '50px', borderRadius: '50%' }}
+                  />
+                </td>
               </tr>
             ))}
           </tbody>

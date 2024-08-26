@@ -15,6 +15,7 @@ export class Game {
   public isReadyToGame: { [key: string]: boolean };
   public images: { [key: string]: string };
   public whatPlayersVoted: { [key: string]: string };
+  public creationTime: number;
 
   constructor(lobbyCode: string, numQuestions: number) {
     this.lobbyCode = lobbyCode;
@@ -33,6 +34,7 @@ export class Game {
     this.isReadyToGame = {};
     this.images = {};
     this.whatPlayersVoted = {};
+    this.creationTime = Date.now();  // Inizializzazione con l'ora corrente
   }
 
   calculateScores(): string {
