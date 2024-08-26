@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="refresh" content="0; URL='/'" />
+  <script type="text/javascript">
+    var path = window.location.pathname;
+    var redirect = "/" + path.substring(1);
+    if (redirect.endsWith("/")) {
+      redirect += "index.html";
+    }
+    window.location.href = redirect;
+  </script>
+</head>
+
+<body>
+</body>
+
+</html>
