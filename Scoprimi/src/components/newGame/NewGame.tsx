@@ -1,4 +1,16 @@
 import { useState } from 'react';
+import { socket } from '../../ts/socketInit';
+import * as c from '../../../../Server/src/socketConsts.js';
+import Navbar from '../common/Navbar.js';
+
+function generateLobbyCode() {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let code = '';
+  for (let i = 0; i < 6; i++) {
+    code += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return code;
+}
 
 const NewGame = () => {
   const [numQuestions, setNumQuestions] = useState(5);
@@ -33,11 +45,11 @@ const NewGame = () => {
     setNumQuestions(value);
   };
 
-  // Funzione per creare la lobby
-  const createLobby = () => {
-    console.log(`Creando una lobby con ${numQuestions} domande.`);
-    // Qui puoi aggiungere la logica per creare la lobby
-  };
+
+  function handleCreateGame() {
+    const code = generateLobbyCode();
+    socket.emit(c.CREATE_LOBBY, [code, numQuestions]);
+  }
 
   return (
     <div className="new-game">
@@ -53,10 +65,11 @@ const NewGame = () => {
         />
         <button onClick={increment}>+</button>
       </div>
-      <button onClick={createLobby} className="btn btn-primary mt-3">
+      <button onClick={() => handleCreateGame()} className="btn btn-primary mt-3">
         Crea Lobby
       </button>
-    </div>
+      <Navbar />
+    </div >
   );
 };
 
