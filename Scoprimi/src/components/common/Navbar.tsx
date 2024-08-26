@@ -8,12 +8,12 @@ const Navbar = () => {
     setActiveIndex(index);
     const navdirections = [
       '/',
-      'lobby',
-      'TODO',
-      'TODO',
-      'login',
+      '/lobby',
+      '/TODO',
+      '/TODO',
+      '/login',
     ];
-    navigate(navdirections[index]);
+    navigate(navdirections[index], { replace: true });
   };
 
   return (

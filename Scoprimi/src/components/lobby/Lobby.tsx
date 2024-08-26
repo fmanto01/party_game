@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import * as c from '../../../../Server/src/socketConsts.js';
 import { socket } from '../../ts/socketInit.ts';
 import { useSession } from '../../contexts/SessionContext.tsx';
+import Navbar from '../common/Navbar.tsx';
 
 interface Game {
   lobbyCode: string;
@@ -118,6 +119,7 @@ const Lobby: React.FC = () => {
           className="btn btn-primary">Indietro
         </button>
       </div>
+      <Navbar />
     </div>
   );
 };

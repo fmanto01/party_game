@@ -1,5 +1,6 @@
 import { useSession } from '../../contexts/SessionContext';
 import { useNavigate } from 'react-router-dom';
+import Navbar from '../common/Navbar';
 
 const images = [
   'https://avatar.iran.liara.run/public/job/police/male',
@@ -61,6 +62,7 @@ const Login: React.FC = () => {
       >
         Done
       </button>
+      <Navbar />
     </div>
   );
 };

@@ -219,7 +219,6 @@ export function setupSocket(io: any) {
       console.log(thisGame.players);
       socket.leave(data.currentLobby);
       io.emit(c.RENDER_LOBBIES, { lobbies });
-      // TODO
       io.to(data.currentLobby).emit(c.RENDER_LOBBY, thisGame);
     });
 
