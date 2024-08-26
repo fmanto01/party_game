@@ -2,18 +2,21 @@
 <html>
 
 <head>
-  <meta http-equiv="refresh" content="0; URL='/'" />
+  <meta charset="UTF-8">
+  <title>Page Not Found</title>
   <script type="text/javascript">
-    var path = window.location.pathname;
-    var redirect = "/" + path.substring(1);
-    if (redirect.endsWith("/")) {
-      redirect += "index.html";
+    // Recupera il percorso della richiesta
+    var pathname = window.location.pathname;
+
+    // Se il percorso non è root ("/"), carica index.html
+    if (pathname !== '/') {
+      window.location.replace('/index.html?path=' + pathname);
     }
-    window.location.href = redirect;
   </script>
 </head>
 
 <body>
+  <h1>Page Not Found</h1>
 </body>
 
 </html>

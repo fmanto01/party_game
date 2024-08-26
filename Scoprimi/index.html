@@ -12,6 +12,16 @@
   <script type="module" src="/src/main.tsx"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     rel="stylesheet" />
+  <script type="text/javascript">
+    // Verifica se c'è un percorso nella query string
+    var params = new URLSearchParams(window.location.search);
+    var path = params.get('path');
+
+    if (path) {
+      // Usa history API per reimpostare il percorso
+      window.history.replaceState(null, '', path);
+    }
+  </script>
 </body>
 
 </html>
