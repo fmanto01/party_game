@@ -6,6 +6,7 @@ import { Game } from '../../../../Server/src/data/Game.ts';
 import LobbyList from './LobbyList.tsx';
 import CreateGameForm from './CreateGameForm.tsx';
 import { useSession } from '../../contexts/SessionContext.tsx';
+import Navbar from '../common/Navbar.tsx';
 
 function generateLobbyCode() {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -108,6 +109,7 @@ const Home: React.FC = () => {
           <h2>Lobby attive</h2>
           <LobbyList lobbies={(filteredLobbies.length > 0) ? filteredLobbies : lobbies} onJoin={handleJoinGame} playerName={currentPlayer || ''} />
         </div>
+        <Navbar></Navbar>
       </div>
     </div>
   );
