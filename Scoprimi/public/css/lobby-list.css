@@ -1,0 +1,26 @@
+/* Set the cursor to pointer for clickable rows */
+.lobby-row {
+  cursor: pointer;
+}
+
+
+/* Style for the status indicator */
+.status-indicator {
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  border-radius: 50%;
+  margin: auto;
+}
+
+/* Color for waiting (not started) status */
+.status-indicator.waiting {
+  background-color: #28a745;
+  /* Green */
+}
+
+/* Color for started status */
+.status-indicator.started {
+  background-color: #ffc107;
+  /* Orange */
+}

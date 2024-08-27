@@ -7,29 +7,21 @@ interface LobbyListProps {
 }
 
 const LobbyList: React.FC<LobbyListProps> = ({ lobbies, onJoin, playerName }) => (
-  <table id="lobbiesList" className="table table-bordered">
-    <thead>
-      <tr>
-        <th>Codice Lobby</th>
-        <th>Status</th>
-        <th></th>
-      </tr>
-    </thead>
+  <table id="lobbiesList" className="table table-hover">
     <tbody>
       {lobbies.map((lobby) => (
-        <tr key={lobby.lobbyCode}>
-          <td>{lobby.lobbyCode}</td>
-          <td>{lobby.isGameStarted ? 'Iniziato' : 'In attesa'}</td>
+        <tr
+          key={lobby.lobbyCode}
+          onClick={() => !lobby.isGameStarted && onJoin(lobby.lobbyCode, playerName)}
+          className={`lobby-row ${lobby.isGameStarted ? 'disabled' : ''}`}
+        >
           <td>
-            {
-              <button
-                className="btn btn-success"
-                disabled={lobby.isGameStarted}
-                onClick={() => onJoin(lobby.lobbyCode, playerName)}>
-                Join
-              </button>
-            }
+            <span
+              className={`status-indicator ${lobby.isGameStarted ? 'started' : 'waiting'}`}
+            ></span>
           </td>
+          <td>{lobby.lobbyCode}</td>
+          <td>{lobby.players.length}</td>
         </tr>
       ))}
     </tbody>
