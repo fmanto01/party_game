@@ -1,43 +1,28 @@
+/* NewGame.css */
+
 .new-game {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: #f7f7f7;
 }
 
 .counter {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
 }
 
-.counter button {
-  width: 40px;
-  height: 40px;
-  font-size: 20px;
-  background-color: #007bff;
+.btn-success {
+  background-color: #28a745;
   color: white;
   border: none;
-  border-radius: 5px;
-  margin: 0 10px;
-  cursor: pointer;
+  border-radius: 20px;
+  /* Pill button styling */
 }
 
-.counter input {
-  width: 60px;
-  text-align: center;
-  font-size: 18px;
-  padding: 5px;
+.btn-success:hover {
+  background-color: #218838;
 }
 
-.btn-primary {
-  padding: 10px 20px;
-  font-size: 18px;
-  background-color: #007bff;
-  border: none;
-  border-radius: 5px;
-  color: white;
-  cursor: pointer;
+.btn-secondary:hover {
+  background-color: #5a6268;
 }
