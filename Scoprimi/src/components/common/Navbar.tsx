@@ -4,6 +4,7 @@ import { useSession } from '../../contexts/SessionContext';
 import { socket } from '../../ts/socketInit';
 import * as c from '../../../../Server/src/socketConsts.js';
 import { useNavbar } from '../../contexts/NavbarContext';
+import Modal from './Modal'; // Import the Modal component
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -19,11 +20,9 @@ const Navbar = () => {
 
   const handleButtonClick = (index: number) => {
     if (activeIndex === 1 && index !== 1) {
-      // User is trying to navigate away from the lobby, show the confirmation modal
       setPendingNavIndex(index);
       setShowModal(true);
     } else {
-      // Navigate to the selected route directly
       const navdirections = [
         '/',
         '/lobby',
@@ -37,7 +36,6 @@ const Navbar = () => {
 
   const handleConfirmLeave = () => {
     if (pendingNavIndex !== null) {
-      // User confirmed to leave the lobby
       exitLobbyPage();
       const navdirections = [
         '/',
@@ -47,13 +45,12 @@ const Navbar = () => {
         '/login',
       ];
       navigate(navdirections[pendingNavIndex], { replace: true });
-      setPendingNavIndex(null); // Clear pending index
+      setPendingNavIndex(null);
     }
-    setShowModal(false); // Hide the modal
+    setShowModal(false);
   };
 
   const handleCancelLeave = () => {
-    // User canceled, close the modal and stay in the lobby
     setShowModal(false);
     setPendingNavIndex(null);
   };
@@ -95,20 +92,11 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {showModal && (
-        <div className="modal-backdrop">
-          <div className="modal-content">
-            <h5>Confirm Exit</h5>
-            <p>Are you sure you want to leave the lobby?</p>
-            <button className="btn btn-danger" onClick={handleConfirmLeave}>
-              Yes, leave
-            </button>
-            <button className="btn btn-secondary" onClick={handleCancelLeave}>
-              No, stay
-            </button>
-          </div>
-        </div>
-      )}
+      <Modal
+        show={showModal}
+        onConfirm={handleConfirmLeave}
+        onCancel={handleCancelLeave}
+      />
     </>
   );
 };
