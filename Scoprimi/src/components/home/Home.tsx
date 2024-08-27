@@ -19,7 +19,7 @@ const Home: React.FC = () => {
   }, [setActiveIndex]);
 
   function handleJoinGame(lobbyCode: string) {
-    if (currentPlayer === '' || currentPlayer === undefined) {
+    if (!isSetPlayer) {
       alert('Inserisci un nome utente');
       return;
     }
@@ -69,7 +69,7 @@ const Home: React.FC = () => {
         <h1 className="text-center">ScopriMi</h1>
         <div className="mt-5">
           <h2>Lobby attive</h2>
-          <LobbyList lobbies={lobbies} onJoin={handleJoinGame} playerName={currentPlayer || ''} />
+          <LobbyList lobbies={lobbies} onJoin={handleJoinGame} />
         </div>
         <Navbar />
       </div>

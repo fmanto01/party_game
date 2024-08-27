@@ -3,13 +3,12 @@ import { Game } from '../../../../Server/src/data/Game.ts';
 
 interface LobbyRowProps {
   lobby: Game;
-  onJoin: (lobbyCode: string, playerName: string) => void;
-  playerName: string;
+  onJoin: (lobbyCode: string) => void;
 }
 
-const LobbyRow: React.FC<LobbyRowProps> = ({ lobby, onJoin, playerName }) => (
+const LobbyRow: React.FC<LobbyRowProps> = ({ lobby, onJoin }) => (
   <tr
-    onClick={() => !lobby.isGameStarted && onJoin(lobby.lobbyCode, playerName)}
+    onClick={() => !lobby.isGameStarted && onJoin(lobby.lobbyCode)}
     className={`lobby-row ${lobby.isGameStarted ? 'disabled' : ''}`}
   >
     <td>
@@ -18,7 +17,7 @@ const LobbyRow: React.FC<LobbyRowProps> = ({ lobby, onJoin, playerName }) => (
       ></span>
     </td>
     <td>{lobby.lobbyCode}</td>
-    <td>{lobby.players.length}</td>
+    <td>0</td>
   </tr>
 );
 

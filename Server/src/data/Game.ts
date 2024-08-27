@@ -26,6 +26,7 @@ export class Game {
     this.numQuestions = numQuestions >= 5 ? numQuestions : 5;
     this.selectedQuestions = [];
     this.iterator = this.createIterator();
+    this.creationTime = Date.now();  // Inizializzazione con l'ora corrente
     // Player denormalizzato
     this.playerSocketIds = {}
     this.votes = {};
@@ -34,7 +35,6 @@ export class Game {
     this.isReadyToGame = {};
     this.images = {};
     this.whatPlayersVoted = {};
-    this.creationTime = Date.now();  // Inizializzazione con l'ora corrente
   }
 
   calculateScores(): string {

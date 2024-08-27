@@ -25,3 +25,4 @@ export const JOIN_ROOM: string = 'joinROOM';
 export const EXIT_LOBBY: string = 'exitLobby';
 export const LEAVE_ROOM: string = 'LeaveROOM';
 export const FORCE_RESET: string = 'FORCE_RESET';
+export const RETURN_NEWGAME: string = 'RETURN_NEWGAME';

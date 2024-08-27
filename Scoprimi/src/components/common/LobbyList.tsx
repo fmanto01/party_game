@@ -4,19 +4,16 @@ import LobbyRow from './SingleLobby.tsx'; // Import the LobbyRow component
 
 interface LobbyListProps {
   lobbies: Game[];
-  onJoin: (lobbyCode: string, playerName: string) => void;
-  playerName: string;
+  onJoin: (lobbyCode: string) => void;
 }
 
-const LobbyList: React.FC<LobbyListProps> = ({ lobbies, onJoin, playerName }) => (
+const LobbyList: React.FC<LobbyListProps> = ({ lobbies, onJoin }) => (
   <table id="lobbiesList" className="table table-hover">
     <tbody>
       {lobbies.map((lobby) => (
         <LobbyRow
-          key={lobby.lobbyCode}
           lobby={lobby}
           onJoin={onJoin}
-          playerName={playerName}
         />
       ))}
     </tbody>

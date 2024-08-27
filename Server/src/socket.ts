@@ -74,10 +74,11 @@ export function setupSocket(io: any) {
 
     socket.on(c.CREATE_LOBBY, ([code, numQuestionsParam]: [string, number]) => {
       console.log('Ho ricevuto questo dato: ', code, ' - ', numQuestionsParam);
-      gameManager.createGame(code, numQuestionsParam);
+      const newGame = gameManager.createGame(code, numQuestionsParam);
       gameManager.getGame(code).selectedQuestions = shuffle(AllQuestions).slice(0, numQuestionsParam);
       const lobbies = gameManager.listGames();
       io.emit(c.RENDER_LOBBIES, { lobbies });
+      socket.emit(c.RETURN_NEWGAME, { newGame })
     });
 
     socket.on(c.REQUEST_TO_JOIN_LOBBY, (data: { lobbyCode: string; playerName: string, image: string }) => {
