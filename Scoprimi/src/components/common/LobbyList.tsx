@@ -1,4 +1,6 @@
+import React from 'react';
 import { Game } from '../../../../Server/src/data/Game.ts';
+import LobbyRow from './SingleLobby.tsx'; // Import the LobbyRow component
 
 interface LobbyListProps {
   lobbies: Game[];
@@ -10,19 +12,12 @@ const LobbyList: React.FC<LobbyListProps> = ({ lobbies, onJoin, playerName }) =>
   <table id="lobbiesList" className="table table-hover">
     <tbody>
       {lobbies.map((lobby) => (
-        <tr
+        <LobbyRow
           key={lobby.lobbyCode}
-          onClick={() => !lobby.isGameStarted && onJoin(lobby.lobbyCode, playerName)}
-          className={`lobby-row ${lobby.isGameStarted ? 'disabled' : ''}`}
-        >
-          <td>
-            <span
-              className={`status-indicator ${lobby.isGameStarted ? 'started' : 'waiting'}`}
-            ></span>
-          </td>
-          <td>{lobby.lobbyCode}</td>
-          <td>{lobby.players.length}</td>
-        </tr>
+          lobby={lobby}
+          onJoin={onJoin}
+          playerName={playerName}
+        />
       ))}
     </tbody>
   </table>

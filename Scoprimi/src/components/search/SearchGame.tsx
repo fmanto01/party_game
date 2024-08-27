@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import * as c from '../../../../Server/src/socketConsts.js';
 import { socket } from '../../ts/socketInit.ts';
 import { Game } from '../../../../Server/src/data/Game.ts';
-import LobbyList from '../home/LobbyList.tsx';
+import LobbyList from '../common/LobbyList.tsx';
 import { useSession } from '../../contexts/SessionContext.tsx';
 import Navbar from '../common/Navbar.tsx';
 import { useNavbar } from '../../contexts/NavbarContext.tsx';
