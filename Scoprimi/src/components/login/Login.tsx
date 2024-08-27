@@ -45,10 +45,11 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="container d-flex flex-column align-items-center py-5">
-      <h1 className="mb-4">ScopriMi</h1>
-      <div className="mb-4 w-100">
-        <h2 className="h5 text-center">Username</h2>
+    <div className="paginator">
+      <h2>ScopriMi</h2>
+      {/* Primo blocco */}
+      <div className="elegant-background">
+        <p>Username</p>
         <input
           type="text"
           value={currentPlayer}
@@ -56,30 +57,29 @@ const Login: React.FC = () => {
           className="form-control"
         />
       </div>
-      <div className="mb-4 w-100 text-center">
-        <h2 className="h5">Profile picture:</h2>
-        <div className="container">
-          <div className="row">
-            {images.map((image, index) => (
-              <div key={index} className="col-3 mb-3 d-flex justify-content-center">
-                <img
-                  src={image}
-                  alt={`Profile ${index + 1}`}
-                  className={`img-thumbnail rounded-circle ${currentPlayerImage === image ? 'border-primary' : ''}`}
-                  onClick={() => handleImageSelect(image)}
-                />
-              </div>
-            ))}
-          </div>
+      {/* Secondo blocco */}
+      <div className="elegant-background image-container">
+        <div className="image-row">
+          {images.map((image, index) => (
+            <div key={index} className="image-column">
+              <img
+                src={image}
+                alt={`Profile ${index + 1}`}
+                className={`image-thumbnail ${currentPlayerImage === image ? 'selected' : ''}`}
+                onClick={() => handleImageSelect(image)}
+              />
+            </div>
+          ))}
         </div>
       </div>
 
-      <button
+
+      {/* <button
         className="btn btn-primary w-100"
         onClick={handleDoneClick}
       >
         Done
-      </button>
+      </button> */}
       <Navbar />
     </div>
   );

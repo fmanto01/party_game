@@ -65,10 +65,9 @@ const Home: React.FC = () => {
 
   return (
     <div>
-      <div className="container mt-5">
-        <h1 className="text-center">ScopriMi</h1>
-        <div className="mt-5">
-          <h2>Lobby attive</h2>
+      <div className="paginator">
+        <h2>ScopriMi</h2>
+        <div className="elegant-background mt-2">
           <LobbyList lobbies={lobbies} onJoin={handleJoinGame} />
         </div>
         <Navbar />

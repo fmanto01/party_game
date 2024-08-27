@@ -1,0 +1,48 @@
+/* Contenitore principale */
+.image-container {
+  display: flex;
+  justify-content: center;
+}
+
+/* Righe per le immagini */
+.image-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  /* Spaziatura tra le colonne */
+  justify-content: space-between;
+  /* Centra tutte le immagini */
+}
+
+/* Colonne per le immagini */
+.image-column {
+  flex: 0 0 calc(25% - 20px);
+  /* La larghezza delle colonne è il 25% del contenitore meno il gap */
+  display: flex;
+  justify-content: center;
+}
+
+/* Stile delle immagini */
+.image-thumbnail {
+  height: auto;
+  width: 14vw;
+  /* Mantiene il rapporto d'aspetto */
+  border-radius: 20%;
+  /* Arrotonda gli angoli */
+  cursor: pointer;
+  /* Cambia il cursore su hover */
+  transition: transform 0.2s ease-in-out, border-color 0.2s;
+  /* Aggiunge una transizione su hover */
+}
+
+/* Hover su immagini */
+.image-thumbnail:hover {
+  transform: scale(1.1);
+  /* Ingrandisce leggermente l'immagine al passaggio del mouse */
+}
+
+/* Immagine selezionata */
+.selected {
+  border: 3px solid #007bff;
+  /* Bordo blu per l'immagine selezionata */
+}

@@ -101,9 +101,9 @@ const NewGame = () => {
 
   return (
     <div className="paginator">
-      <h1 className="text-center">ScopriMi</h1>
+      <h2>ScopriMi</h2>
       {/* Primo blocco */}
-      <div className="elegant-background new-game mt-5">
+      <div className="elegant-background new-game mt-1">
         <div className=" counter mb-4">
           <button className="btn btn-secondary me-2" onClick={decrement}>-</button>
           <input
@@ -119,8 +119,10 @@ const NewGame = () => {
         <button onClick={handleCreateGame} className="btn btn-success">
           Crea Lobby
         </button>
-
-        {createdLobby && (
+      </div>
+      {/* Secondo blocco */}
+      {createdLobby && (
+        <div className="elegant-background mt-5">
           <table className="table table-hover mt-4">
             <tbody>
               <LobbyRow
@@ -129,11 +131,11 @@ const NewGame = () => {
               />
             </tbody>
           </table>
-        )}
-      </div>
+        </div>
+      )}
 
       <Navbar />
-    </div>
+    </div >
   );
 };
 
