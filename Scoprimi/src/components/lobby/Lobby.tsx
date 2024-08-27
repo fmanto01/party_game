@@ -4,6 +4,7 @@ import * as c from '../../../../Server/src/socketConsts.js';
 import { socket } from '../../ts/socketInit.ts';
 import { useSession } from '../../contexts/SessionContext.tsx';
 import Navbar from '../common/Navbar.tsx';
+import { useNavbar } from '../../contexts/NavbarContext.tsx';
 
 interface Game {
   lobbyCode: string;
@@ -29,14 +30,15 @@ function handleToggleisReadyToGame(data: { lobbyCode: string, playerName: string
 const Lobby: React.FC = () => {
 
   const [game, setGame] = useState<Game | undefined>(undefined);
-  const { currentLobby, currentPlayer, setCurrentLobby } = useSession();
+  const { currentLobby, currentPlayer } = useSession();
   const [isReady, setIsReady] = useState<boolean>(false);
   const navigate = useNavigate();
+  const { setActiveIndex } = useNavbar();
 
   useEffect(() => {
 
     document.title = `Lobby - ${currentLobby}`;
-
+    setActiveIndex(1);
     socket.emit(c.REQUEST_RENDER_LOBBY, currentLobby, (data: Game) => {
       console.log('Received data:', data);
       setGame(data);
@@ -60,12 +62,6 @@ const Lobby: React.FC = () => {
     const newReadyState = !isReady;
     setIsReady(newReadyState);
     handleToggleisReadyToGame({ lobbyCode: currentLobby, playerName: currentPlayer });
-  };
-
-  const goBackToLobbyList = () => {
-    socket.emit(c.EXIT_LOBBY, { currentPlayer, currentLobby });
-    setCurrentLobby(undefined);
-    navigate('/');
   };
 
   // TODO load page
@@ -112,13 +108,13 @@ const Lobby: React.FC = () => {
           {isReady ? 'Ready' : 'Not Ready'}
         </button>
       </div>
-      <div className="text-center mt-4">
+      {/* <div className="text-center mt-4">
         <button
           onClick={() => goBackToLobbyList()}
           className="btn btn-primary">
           Indietro
         </button>
-      </div>
+      </div> */}
       <Navbar />
     </div>
   );
