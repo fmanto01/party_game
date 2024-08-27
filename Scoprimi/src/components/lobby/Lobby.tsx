@@ -83,22 +83,21 @@ const Lobby: React.FC = () => {
 
       <div className="table-responsive">
         <table className="table table-bordered">
-          <thead className="thead-dark">
-            <tr>
-              <th>Player</th>
-              <th></th>
-            </tr>
-          </thead>
           <tbody id="playersTable">
             {game.players.map((player) => (
-              <tr key={player} className={game.isReadyToGame[player] ? 'color-ok' : 'color-ko'}>
-                <td>{player}</td>
-                <td>
+              <tr key={player}>
+                <td className="text-center player-image">
                   <img
                     src={game.images[player] || 'default-image-url'}
                     alt={player}
-                    style={{ width: '50px', height: '50px', borderRadius: '50%' }}
+                    className="player-img"
                   />
+                </td>
+                <td className="text-center align-middle player-name">{player}</td>
+                <td className="text-center align-middle player-status">
+                  <span className={`badge ${game.isReadyToGame[player] ? 'bg-success' : 'bg-warning'}`}>
+                    {game.isReadyToGame[player] ? 'Ready' : 'Not Ready'}
+                  </span>
                 </td>
               </tr>
             ))}
@@ -123,6 +122,7 @@ const Lobby: React.FC = () => {
       <Navbar />
     </div>
   );
+
 };
 
 export default Lobby;
