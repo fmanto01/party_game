@@ -17,7 +17,7 @@ const SearchGame: React.FC = () => {
   const { setActiveIndex } = useNavbar();
 
   useEffect(() => {
-    setActiveIndex(1);
+    setActiveIndex(3);
   }, [setActiveIndex]);
 
   function handleJoinGame(lobbyCode: string) {
