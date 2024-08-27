@@ -1,6 +1,8 @@
 import { useSession } from '../../contexts/SessionContext';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../common/Navbar';
+import { useNavbar } from '../../contexts/NavbarContext';
+import { useEffect } from 'react';
 
 const images = [
   'https://avatar.iran.liara.run/public/job/police/male',
@@ -12,6 +14,11 @@ const images = [
 const Login: React.FC = () => {
   const { currentPlayer, setCurrentPlayer, currentPlayerImage, setCurrentPlayerImage } = useSession();
   const navigate = useNavigate();
+  const { setActiveIndex } = useNavbar();
+
+  useEffect(() => {
+    setActiveIndex(4);
+  }, [setActiveIndex]);
 
   const handleImageSelect = (image: string) => {
     setCurrentPlayerImage(image);

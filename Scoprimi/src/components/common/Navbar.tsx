@@ -7,7 +7,7 @@ import { useNavbar } from '../../contexts/NavbarContext';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { activeIndex, setActiveIndex } = useNavbar();
+  const { activeIndex } = useNavbar();
   const [pendingNavIndex, setPendingNavIndex] = useState<number | null>(null);
   const [showModal, setShowModal] = useState(false);
   const { currentLobby, currentPlayer, setCurrentLobby } = useSession();
@@ -24,7 +24,6 @@ const Navbar = () => {
       setShowModal(true);
     } else {
       // Navigate to the selected route directly
-      setActiveIndex(index);
       const navdirections = [
         '/',
         '/lobby',
@@ -40,7 +39,6 @@ const Navbar = () => {
     if (pendingNavIndex !== null) {
       // User confirmed to leave the lobby
       exitLobbyPage();
-      setActiveIndex(pendingNavIndex);
       const navdirections = [
         '/',
         '/lobby',

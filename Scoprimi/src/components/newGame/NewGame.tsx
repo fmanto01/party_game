@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { socket } from '../../ts/socketInit';
 import * as c from '../../../../Server/src/socketConsts.js';
 import Navbar from '../common/Navbar.js';
+import { useNavbar } from '../../contexts/NavbarContext.js';
 
 function generateLobbyCode() {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -14,6 +15,11 @@ function generateLobbyCode() {
 
 const NewGame = () => {
   const [numQuestions, setNumQuestions] = useState(5);
+  const { setActiveIndex } = useNavbar();
+
+  useEffect(() => {
+    setActiveIndex(2);
+  }, [setActiveIndex]);
 
   // Funzione per incrementare il numero di domande
   const increment = () => {

@@ -36,9 +36,12 @@ const Lobby: React.FC = () => {
   const { setActiveIndex } = useNavbar();
 
   useEffect(() => {
+    setActiveIndex(1);
+  }, [setActiveIndex]);
+
+  useEffect(() => {
 
     document.title = `Lobby - ${currentLobby}`;
-    setActiveIndex(1);
     socket.emit(c.REQUEST_RENDER_LOBBY, currentLobby, (data: Game) => {
       console.log('Received data:', data);
       setGame(data);
@@ -56,7 +59,7 @@ const Lobby: React.FC = () => {
     return () => {
       socket.off(c.INIZIA);
     };
-  }, [currentLobby, navigate, currentPlayer]);
+  }, [currentLobby, navigate, currentPlayer, setActiveIndex]);
 
   const toggleReady = () => {
     const newReadyState = !isReady;

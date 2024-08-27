@@ -6,13 +6,17 @@ import { Game } from '../../../../Server/src/data/Game.ts';
 import LobbyList from './LobbyList.tsx';
 import { useSession } from '../../contexts/SessionContext.tsx';
 import Navbar from '../common/Navbar.tsx';
-
+import { useNavbar } from '../../contexts/NavbarContext.tsx';
 
 const Home: React.FC = () => {
   const { currentPlayer, setCurrentLobby, currentPlayerImage, isSetPlayer } = useSession();
   const [lobbies, setLobbies] = useState<Game[]>([]);
   const navigate = useNavigate();
+  const { setActiveIndex } = useNavbar();
 
+  useEffect(() => {
+    setActiveIndex(0);
+  }, [setActiveIndex]);
 
   function handleJoinGame(lobbyCode: string) {
     if (currentPlayer === '' || currentPlayer === undefined) {

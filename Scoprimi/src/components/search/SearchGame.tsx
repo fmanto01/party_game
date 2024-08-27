@@ -6,6 +6,7 @@ import { Game } from '../../../../Server/src/data/Game.ts';
 import LobbyList from '../home/LobbyList.tsx';
 import { useSession } from '../../contexts/SessionContext.tsx';
 import Navbar from '../common/Navbar.tsx';
+import { useNavbar } from '../../contexts/NavbarContext.tsx';
 
 const SearchGame: React.FC = () => {
   const { currentPlayer, setCurrentLobby, currentPlayerImage, isSetPlayer } = useSession();
@@ -13,6 +14,11 @@ const SearchGame: React.FC = () => {
   const [filteredLobbies, setFilteredLobbies] = useState<Game[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>(''); // Aggiunto lo stato searchTerm
   const navigate = useNavigate();
+  const { setActiveIndex } = useNavbar();
+
+  useEffect(() => {
+    setActiveIndex(1);
+  }, [setActiveIndex]);
 
   function handleJoinGame(lobbyCode: string) {
     if (!currentPlayer) {
