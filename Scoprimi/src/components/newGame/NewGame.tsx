@@ -4,7 +4,7 @@ import * as c from '../../../../Server/src/socketConsts.js';
 import Navbar from '../common/Navbar.js';
 import { useNavbar } from '../../contexts/NavbarContext.js';
 import { Game } from '../../../../Server/src/data/Game.ts';
-import LobbyRow from '../common/SingleLobby.tsx';
+import LobbyList from '../common/LobbyList.tsx';
 import { useSession } from '../../contexts/SessionContext.tsx';
 import { useNavigate } from 'react-router-dom';
 
@@ -123,14 +123,7 @@ const NewGame = () => {
       {/* Secondo blocco */}
       {createdLobby && (
         <div className="elegant-background mt-5">
-          <table className="table table-hover mt-4">
-            <tbody>
-              <LobbyRow
-                lobby={createdLobby}
-                onJoin={handleJoinGame}
-              />
-            </tbody>
-          </table>
+          <LobbyList lobbies={[createdLobby]} onJoin={handleJoinGame} />
         </div>
       )}
 

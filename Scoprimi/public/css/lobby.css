@@ -1,14 +1,39 @@
-/* Lobby.css */
-
 .table {
   border-collapse: collapse;
-  /* Assicura che i bordi delle celle siano uniti */
+  margin: 0 auto;
+  display: table;
+  width: 100%;
+  /* Fa sì che la tabella occupi l'intera larghezza disponibile */
 }
 
-.table td,
-.table th {
+.table td {
+  padding-top: 15px;
+  /* Spazio sopra ogni cella */
+  padding-bottom: 15px;
+  /* Spazio sotto ogni cella */
+}
+
+.table td {
   border: none;
-  /* Rimuove i bordi delle celle */
+  text-align: left;
+  padding: 20px 10px;
+  /* Spazio interno alle celle */
+}
+
+/* Imposta la larghezza specifica delle colonne */
+.table td:first-child {
+  width: 35%;
+  /* Prima colonna occupa il 50% della larghezza */
+}
+
+.table td:nth-child(2) {
+  width: 50%;
+  /* Seconda colonna occupa il 30% della larghezza */
+}
+
+.table td:nth-child(3) {
+  width: 20%;
+  /* Terza colonna occupa il 20% della larghezza */
 }
 
 .player-image {
