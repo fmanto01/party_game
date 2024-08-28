@@ -8,7 +8,7 @@ interface LobbyListProps {
 }
 
 const LobbyList: React.FC<LobbyListProps> = ({ lobbies, onJoin }) => (
-  <table id="lobby-list" className="table table-hover">
+  <table id="lobby-list" className="table table-lobby table-hover">
     <tbody>
       {lobbies.map((lobby) => (
         <LobbyRow
