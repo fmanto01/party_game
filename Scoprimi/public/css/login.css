@@ -1,5 +1,6 @@
 /* Contenitore principale */
 .image-container {
+  margin-top: 2vh;
   display: flex;
   justify-content: center;
 }
@@ -8,7 +9,8 @@
 .image-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  column-gap: 4vw;
+  row-gap: 5vw;
   /* Spaziatura tra le colonne */
   justify-content: space-between;
   /* Centra tutte le immagini */
@@ -16,8 +18,6 @@
 
 /* Colonne per le immagini */
 .image-column {
-  flex: 0 0 calc(25% - 20px);
-  /* La larghezza delle colonne è il 25% del contenitore meno il gap */
   display: flex;
   justify-content: center;
 }
@@ -25,7 +25,7 @@
 /* Stile delle immagini */
 .image-thumbnail {
   height: auto;
-  width: 14vw;
+  width: 20vw;
   /* Mantiene il rapporto d'aspetto */
   border-radius: 20%;
   /* Arrotonda gli angoli */

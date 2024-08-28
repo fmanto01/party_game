@@ -18,7 +18,6 @@ const images = [
   'https://avatar.iran.liara.run/public/job/operator/female',
   'https://avatar.iran.liara.run/public/job/astronomer/male',
   'https://avatar.iran.liara.run/public/job/chef/female',
-  'https://avatar.iran.liara.run/public/job/teacher/female',
   'https://avatar.iran.liara.run/public/job/farmer/male',
   'https://avatar.iran.liara.run/public/job/designer/female',
 ];
