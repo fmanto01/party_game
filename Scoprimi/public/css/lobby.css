@@ -5,12 +5,6 @@
   width: 100%;
 }
 
-.table td {
-  padding-top: 15px;
-  /* Spazio sopra ogni cella */
-  padding-bottom: 15px;
-  /* Spazio sotto ogni cella */
-}
 
 .table td {
   border: none;
@@ -19,7 +13,7 @@
 
 /* Solo per le righe di lobby */
 
-.table-lobby {
+.table-lobby td {
   padding: 20px 10px;
 }
 
