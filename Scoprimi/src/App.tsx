@@ -13,6 +13,7 @@ import { webServerBaseUrl } from './ts/socketInit';
 import NewGame from './components/newGame/NewGame';
 import SearchGame from './components/search/SearchGame';
 import { NavbarProvider } from './contexts/NavbarContext';
+import Loader from './components/Loader';
 
 const App = () => {
   const [serviceUp, setServiceUp] = useState(null); // null: loading, true: up, false: down
@@ -32,7 +33,12 @@ const App = () => {
   }, []);
 
   if (serviceUp === null) {
-    return <div id="loader">Loading...</div>;
+    return (
+      <div className='center'>
+        <Loader />
+        <p>Bro i server sono scarsi, dammi il tempo...</p>
+      </div>
+    );
   }
 
   if (!serviceUp) {
