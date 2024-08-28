@@ -8,17 +8,19 @@ interface LobbyListProps {
 }
 
 const LobbyList: React.FC<LobbyListProps> = ({ lobbies, onJoin }) => (
-  <table id="lobby-list" className="table table-lobby table-hover">
+  <table className="table table-games table-hover">
     <tbody>
-      {lobbies.map((lobby) => (
-        <LobbyRow
-          key={lobby.lobbyCode}
-          lobby={lobby}
-          onJoin={onJoin}
-        />
-      ))}
-    </tbody>
-  </table>
+      {
+        lobbies.map((lobby) => (
+          <LobbyRow
+            key={lobby.lobbyCode}
+            lobby={lobby}
+            onJoin={onJoin}
+          />
+        ))
+      }
+    </tbody >
+  </table >
 );
 
 export default LobbyList;

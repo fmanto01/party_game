@@ -1,36 +1,5 @@
-.table {
-  border-collapse: collapse;
-  margin: 0 auto;
-  display: table;
-  width: 100%;
-}
-
-
-.table td {
-  border: none;
-  /* Spazio interno alle celle */
-}
-
 /* Solo per le righe di lobby */
 
-.table-lobby td {
-  padding: 20px 10px;
-}
-
-.table-lobby td:first-child {
-  width: 27%;
-  text-align: left;
-}
-
-.table-lobby td:nth-child(2) {
-  width: 50%;
-  text-align: center;
-}
-
-.table-lobby td:nth-child(3) {
-  width: 23%;
-  text-align: right;
-}
 
 .player-image {
   width: 50px;

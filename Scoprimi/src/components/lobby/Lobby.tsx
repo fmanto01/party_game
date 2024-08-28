@@ -5,22 +5,8 @@ import { socket } from '../../ts/socketInit.ts';
 import { useSession } from '../../contexts/SessionContext.tsx';
 import Navbar from '../common/Navbar.tsx';
 import { useNavbar } from '../../contexts/NavbarContext.tsx';
-
-interface Game {
-  lobbyCode: string;
-  players: string[];
-  numOfVoters: number;
-  currentQuestionIndex: number;
-  numQuestions: number;
-  selectedQuestions: string[];
-  iterator: Iterator<string>;
-  votes: { [key: string]: number };
-  playerScores: { [key: string]: number };
-  readyForNextQuestion: { [key: string]: boolean };
-  isReadyToGame: { [key: string]: boolean };
-  isGameStarted: boolean;
-  images: { [key: string]: string }; // Add this line
-}
+import LobbyList from '../common/LobbyList.tsx';
+import { Game } from '../../../../Server/src/data/Game.ts';
 
 function handleToggleisReadyToGame(data: { lobbyCode: string, playerName: string }) {
   console.log('handleLobbycode ', data.lobbyCode);
@@ -52,7 +38,14 @@ const Lobby: React.FC = () => {
       setIsReady(data.isReadyToGame[currentPlayer]);
     });
     socket.on(c.INIZIA, () => {
-      setGame((prevGame) => prevGame ? { ...prevGame, isGameStarted: true } : undefined);
+      setGame((prevGame) => {
+        if (!prevGame) { return undefined; } // Check if prevGame is undefined
+
+        // Return the full previous game state with the updated property
+        return Object.assign(Object.create(Object.getPrototypeOf(prevGame)), prevGame, {
+          isGameStarted: true,
+        });
+      });
       navigate('/game');
     });
 
@@ -73,16 +66,16 @@ const Lobby: React.FC = () => {
   }
 
   return (
-    <div className="container mt-5">
-      <div className="text-center mb-4">
-        <h1 id="lobbyCodeTitle">{game.lobbyCode}</h1>
+    <div className="paginator">
+      <h2>ScopriMi</h2>
+      {/* Primo blocco */}
+      <div className="elegant-background">
+        <LobbyList lobbies={[game]} onJoin={() => void 0} />
       </div>
-
-      <hr />
-
-      <div className="table-responsive">
-        <table className="table table-bordered">
-          <tbody id="playersTable">
+      {/* Secondo blocco */}
+      <div className="elegant-background mt-3">
+        <table className="table">
+          <tbody>
             {game.players.map((player) => (
               <tr key={player}>
                 <td className="text-center player-image">

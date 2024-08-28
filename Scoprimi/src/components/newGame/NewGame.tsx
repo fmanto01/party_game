@@ -126,7 +126,6 @@ const NewGame = () => {
           <LobbyList lobbies={[createdLobby]} onJoin={handleJoinGame} />
         </div>
       )}
-
       <Navbar />
     </div >
   );
