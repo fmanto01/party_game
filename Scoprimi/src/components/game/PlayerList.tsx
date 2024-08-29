@@ -10,9 +10,8 @@ interface PlayerListProps {
 const PlayerList: React.FC<PlayerListProps> = ({ players, images, onVote, disabled }) => (
   <div id="playersContainer" className="image-row">
     {players.map(player => (
-      <div className='player-image-card'>
+      <div key={player} className='player-image-card'>
         <div
-          key={player}
           className="image-column"
           onClick={() => onVote(player)}
           style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
@@ -28,5 +27,6 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, images, onVote, disabl
     ))}
   </div>
 );
+
 
 export default PlayerList;

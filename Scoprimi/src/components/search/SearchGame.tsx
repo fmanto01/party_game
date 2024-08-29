@@ -79,27 +79,26 @@ const SearchGame: React.FC = () => {
   }, [isSetPlayer, navigate]);
 
   return (
-    <div className="paginator">
-      <h2>ScopriMi</h2>
-      {/* Primo blocco */}
-      <div className='elegant-background'>
-        <p>Codice lobby:</p>
-        <input
-          type="text"
-          placeholder="Cerca una lobby..."
-          value={searchTerm}
-          onChange={filterLobbies}
-        />
-      </div>
-      {/* Secondo blocco */}
-      <div className="elegant-background mt-3 h90 scrollable">
-        <LobbyList
-          lobbies={searchTerm !== '' ? filteredLobbies : lobbies}
-          onJoin={handleJoinGame}
-        />
-      </div>
-      <Navbar />
-    </div>
+    <>
+      <div className="paginator">
+        <h2>ScopriMi</h2>
+        {/* Primo blocco */}
+        <div className='elegant-background'>
+          <p>Codice lobby:</p>
+          <input
+            type="text"
+            placeholder="Cerca una lobby..."
+            value={searchTerm}
+            onChange={filterLobbies} />
+        </div>
+        {/* Secondo blocco */}
+        <div className="elegant-background mt-3 h90 scrollable">
+          <LobbyList
+            lobbies={searchTerm !== '' ? filteredLobbies : lobbies}
+            onJoin={handleJoinGame} />
+        </div>
+      </div><Navbar />
+    </>
   );
 };
 

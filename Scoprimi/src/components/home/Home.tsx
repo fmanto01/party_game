@@ -64,13 +64,15 @@ const Home: React.FC = () => {
   }, [isSetPlayer, navigate]);
 
   return (
-    <div className="paginator">
-      <h2>ScopriMi</h2>
-      <div className="elegant-background mt-2 h90 scrollable">
-        <LobbyList lobbies={lobbies} onJoin={handleJoinGame} />
-      </div>
+    <>
+      <div className="paginator">
+        <h2>ScopriMi</h2>
+        <div className="elegant-background mt-2 scrollable content">
+          <LobbyList lobbies={lobbies} onJoin={handleJoinGame} />
+        </div>
+      </div >
       <Navbar />
-    </div>
+    </>
   );
 };
 

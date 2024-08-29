@@ -66,53 +66,54 @@ const Lobby: React.FC = () => {
   }
 
   return (
-    <div className="paginator">
-      <h2>ScopriMi</h2>
-      {/* Primo blocco */}
-      <div className="elegant-background">
-        <LobbyList lobbies={[game]} onJoin={() => void 0} />
+    <>
+      <div className="paginator">
+        <h2>ScopriMi</h2>
+        {/* Primo blocco */}
+        <div className="elegant-background">
+          <LobbyList lobbies={[game]} onJoin={() => void 0} />
+        </div>
+        {/* Secondo blocco */}
+        <div className="elegant-background mt-3 scrollable">
+          <table className="table">
+            <tbody>
+              {game.players.map((player) => (
+                <tr key={player}>
+                  <td className="text-center player-image">
+                    <img
+                      src={game.images[player] || 'default-image-url'}
+                      alt={player}
+                      className="player-img" />
+                  </td>
+                  <td className="text-center align-middle player-name">{player}</td>
+                  <td className="text-center align-middle player-status">
+                    <span className={`badge ${game.isReadyToGame[player] ? 'bg-success' : 'bg-warning'}`}>
+                      {game.isReadyToGame[player] ? 'Ready' : 'Not Ready'}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="text-center mt-4">
+          <button
+            id="toggleisReadyToGame"
+            className={`btn ${isReady ? 'btn-success' : 'btn-secondary'}`}
+            onClick={() => toggleReady()}>
+            {isReady ? 'Ready' : 'Not Ready'}
+          </button>
+        </div>
+        {/* <div className="text-center mt-4">
+      <button
+        onClick={() => goBackToLobbyList()}
+        className="btn btn-primary">
+        Indietro
+      </button>
+    </div> */}
       </div>
-      {/* Secondo blocco */}
-      <div className="elegant-background mt-3 scrollable">
-        <table className="table">
-          <tbody>
-            {game.players.map((player) => (
-              <tr key={player}>
-                <td className="text-center player-image">
-                  <img
-                    src={game.images[player] || 'default-image-url'}
-                    alt={player}
-                    className="player-img"
-                  />
-                </td>
-                <td className="text-center align-middle player-name">{player}</td>
-                <td className="text-center align-middle player-status">
-                  <span className={`badge ${game.isReadyToGame[player] ? 'bg-success' : 'bg-warning'}`}>
-                    {game.isReadyToGame[player] ? 'Ready' : 'Not Ready'}
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <div className="text-center mt-4">
-        <button
-          id="toggleisReadyToGame"
-          className={`btn ${isReady ? 'btn-success' : 'btn-secondary'}`}
-          onClick={() => toggleReady()}>
-          {isReady ? 'Ready' : 'Not Ready'}
-        </button>
-      </div>
-      {/* <div className="text-center mt-4">
-        <button
-          onClick={() => goBackToLobbyList()}
-          className="btn btn-primary">
-          Indietro
-        </button>
-      </div> */}
       <Navbar />
-    </div>
+    </>
   );
 
 };

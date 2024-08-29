@@ -35,44 +35,36 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="paginator">
-      <h2>ScopriMi</h2>
-      {/* Primo blocco */}
-      <div className="elegant-background">
-        <p>Username</p>
-        <input
-          type="text"
-          value={currentPlayer}
-          onChange={(e) => setCurrentPlayer(e.target.value)}
-          className="form-control"
-        />
-      </div>
-      {/* Secondo blocco */}
-      <div className="elegant-background image-container">
-        <div className="image-row">
-          {images.map((image, index) => (
-            <div key={index}
-              className="image-column">
-              <img
-                src={image}
-                alt={`Profile ${index + 1}`}
-                className={`image-thumbnail ${currentPlayerImage === image ? 'selected' : ''}`}
-                onClick={() => handleImageSelect(image)}
-              />
-            </div>
-          ))}
+    <>
+      <div className="paginator">
+        <h2>ScopriMi</h2>
+        {/* Primo blocco */}
+        <div className="elegant-background">
+          <p>Username</p>
+          <input
+            type="text"
+            value={currentPlayer}
+            onChange={(e) => setCurrentPlayer(e.target.value)}
+            className="form-control" />
+        </div>
+        {/* Secondo blocco */}
+        <div className="elegant-background image-container">
+          <div className="image-row">
+            {images.map((image, index) => (
+              <div key={index}
+                className="image-column">
+                <img
+                  src={image}
+                  alt={`Profile ${index + 1}`}
+                  className={`image-thumbnail ${currentPlayerImage === image ? 'selected' : ''}`}
+                  onClick={() => handleImageSelect(image)} />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-
-
-      {/* <button
-        className="btn btn-primary w-100"
-        onClick={handleDoneClick}
-      >
-        Done
-      </button> */}
       <Navbar />
-    </div>
+    </>
   );
 };
 

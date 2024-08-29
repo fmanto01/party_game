@@ -57,7 +57,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="navbar fixed-bottom navbar-light bg-dark">
+      <nav className="navbar navbar-light bg-dark">
         <div className="container-fluid justify-content-around">
           <button
             className={`btn btn-dark ${activeIndex === 0 ? 'active' : ''}`}

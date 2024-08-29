@@ -100,34 +100,35 @@ const NewGame = () => {
   }
 
   return (
-    <div className="paginator">
-      <h2>ScopriMi</h2>
-      {/* Primo blocco */}
-      <div className="elegant-background new-game mt-1">
-        <div className=" counter mb-4">
-          <button className="btn btn-secondary me-2" onClick={decrement}>-</button>
-          <input
-            type="number"
-            className="form-control d-inline-block text-center"
-            value={numQuestions}
-            onChange={(e) => handleInputChange(e.target.value)}
-            min="5"
-            max="50"
-          />
-          <button className="btn btn-secondary ms-2" onClick={increment}>+</button>
+    <>
+      <div className="paginator">
+        <h2>ScopriMi</h2>
+        {/* Primo blocco */}
+        <div className="elegant-background new-game mt-1">
+          <div className=" counter mb-4">
+            <button className="btn btn-secondary me-2" onClick={decrement}>-</button>
+            <input
+              type="number"
+              className="form-control d-inline-block text-center"
+              value={numQuestions}
+              onChange={(e) => handleInputChange(e.target.value)}
+              min="5"
+              max="50" />
+            <button className="btn btn-secondary ms-2" onClick={increment}>+</button>
+          </div>
+          <button onClick={handleCreateGame} className="btn btn-success">
+            Crea Lobby
+          </button>
         </div>
-        <button onClick={handleCreateGame} className="btn btn-success">
-          Crea Lobby
-        </button>
+        {/* Secondo blocco */}
+        {createdLobby && (
+          <div className="elegant-background mt-5">
+            <LobbyList lobbies={[createdLobby]} onJoin={handleJoinGame} />
+          </div>
+        )}
       </div>
-      {/* Secondo blocco */}
-      {createdLobby && (
-        <div className="elegant-background mt-5">
-          <LobbyList lobbies={[createdLobby]} onJoin={handleJoinGame} />
-        </div>
-      )}
       <Navbar />
-    </div >
+    </>
   );
 };
 

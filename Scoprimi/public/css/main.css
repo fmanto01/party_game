@@ -10,6 +10,13 @@ body,
 .paginator {
   padding: 4vh 10vw 0vh 10vw;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+  /* Occupa tutto lo spazio disponibile */
 }
 
 .elegant-background {
