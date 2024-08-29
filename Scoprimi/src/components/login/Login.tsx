@@ -39,13 +39,14 @@ const Login: React.FC = () => {
       <div className="paginator navbar-page">
         <h2>ScopriMi</h2>
         {/* Primo blocco */}
-        <div className="elegant-background ">
+        <div className="elegant-background">
           <p>Username</p>
           <input
             type="text"
             value={currentPlayer}
             onChange={(e) => setCurrentPlayer(e.target.value)}
-            className="form-control" />
+            className="my-input"
+          />
         </div>
         {/* Secondo blocco */}
         <div className="elegant-background image-container mt-3">

@@ -105,11 +105,11 @@ const NewGame = () => {
         <h2>ScopriMi</h2>
         {/* Primo blocco */}
         <div className="elegant-background new-game mt-1">
-          <div className=" counter mb-4">
+          <div className="counter mb-4">
             <button className="btn btn-secondary me-2" onClick={decrement}>-</button>
             <input
               type="number"
-              className="form-control d-inline-block text-center"
+              className="my-input text-center"
               value={numQuestions}
               onChange={(e) => handleInputChange(e.target.value)}
               min="5"

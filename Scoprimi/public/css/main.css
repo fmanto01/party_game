@@ -37,6 +37,18 @@ body,
 /* Basic components */
 /********************/
 
+/* Input */
+
+.my-input {
+  /* Corretto selettore */
+  width: 100%;
+  /* Occupa l'intera larghezza del contenitore */
+  padding: 10px;
+  /* Aggiunge un padding interno per migliorare l'estetica */
+  border: 1px solid #ccc;
+  border-radius: 15px;
+}
+
 .table {
   border-collapse: collapse;
   margin: 0 auto;
