@@ -75,7 +75,7 @@ const Lobby: React.FC = () => {
         </div>
         {/* Secondo blocco */}
         <div className="elegant-background mt-3 scrollable fill">
-          <table className="table">
+          <table className="my-table">
             <tbody>
               {game.players.map((player) => (
                 <tr key={player}>
@@ -87,7 +87,7 @@ const Lobby: React.FC = () => {
                   </td>
                   <td className="text-center align-middle player-name">{player}</td>
                   <td className="text-center align-middle player-status">
-                    <span className={`badge ${game.isReadyToGame[player] ? 'bg-success' : 'bg-warning'}`}>
+                    <span className={`pill ${game.isReadyToGame[player] ? 'my-bg-success' : 'my-bg-error'}`}>
                       {game.isReadyToGame[player] ? 'Ready' : 'Not Ready'}
                     </span>
                   </td>

@@ -30,7 +30,7 @@ const FinalResults: React.FC = () => {
         </div>
 
         <div className="elegant-background scrollable">
-          <table className="table">
+          <table className="my-table">
             {sortedResults.map(([player, { score, image }]) => (
               <tr key={player}>
                 <td>
