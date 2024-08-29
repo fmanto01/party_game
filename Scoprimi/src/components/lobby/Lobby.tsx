@@ -67,14 +67,14 @@ const Lobby: React.FC = () => {
 
   return (
     <>
-      <div className="paginator">
+      <div className="paginator navbar-page">
         <h2>ScopriMi</h2>
         {/* Primo blocco */}
         <div className="elegant-background">
           <LobbyList lobbies={[game]} onJoin={() => void 0} />
         </div>
         {/* Secondo blocco */}
-        <div className="elegant-background mt-3 scrollable">
+        <div className="elegant-background mt-3 scrollable fill">
           <table className="table">
             <tbody>
               {game.players.map((player) => (

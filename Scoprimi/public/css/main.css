@@ -14,9 +14,8 @@ body,
   flex-direction: column;
 }
 
-.content {
-  flex: 1;
-  /* Occupa tutto lo spazio disponibile */
+.navbar-page {
+  padding-bottom: 9vh;
 }
 
 .elegant-background {
@@ -26,9 +25,8 @@ body,
   display: block;
 }
 
-/* dimensioni */
-.h90 {
-  height: 84%;
+.fill {
+  flex: 1;
 }
 
 .scrollable {

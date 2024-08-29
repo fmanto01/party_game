@@ -36,10 +36,10 @@ const Login: React.FC = () => {
 
   return (
     <>
-      <div className="paginator">
+      <div className="paginator navbar-page">
         <h2>ScopriMi</h2>
         {/* Primo blocco */}
-        <div className="elegant-background">
+        <div className="elegant-background ">
           <p>Username</p>
           <input
             type="text"
@@ -48,7 +48,7 @@ const Login: React.FC = () => {
             className="form-control" />
         </div>
         {/* Secondo blocco */}
-        <div className="elegant-background image-container">
+        <div className="elegant-background image-container mt-3">
           <div className="image-row">
             {images.map((image, index) => (
               <div key={index}

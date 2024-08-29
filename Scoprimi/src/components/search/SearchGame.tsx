@@ -80,7 +80,7 @@ const SearchGame: React.FC = () => {
 
   return (
     <>
-      <div className="paginator">
+      <div className="paginator navbar-page">
         <h2>ScopriMi</h2>
         {/* Primo blocco */}
         <div className='elegant-background'>
@@ -92,12 +92,13 @@ const SearchGame: React.FC = () => {
             onChange={filterLobbies} />
         </div>
         {/* Secondo blocco */}
-        <div className="elegant-background mt-3 h90 scrollable">
+        <div className="elegant-background mt-3 fill scrollable">
           <LobbyList
             lobbies={searchTerm !== '' ? filteredLobbies : lobbies}
             onJoin={handleJoinGame} />
         </div>
-      </div><Navbar />
+      </div>
+      <Navbar />
     </>
   );
 };

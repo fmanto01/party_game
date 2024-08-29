@@ -23,7 +23,7 @@ const FinalResults: React.FC = () => {
 
   return (
     <>
-      <div id="gameOverMessage" className="paginator">
+      <div id="gameOverMessage" className="paginator navbar-page">
         <h2 className="">Classifica</h2>
         {/* podium */}
         <div>

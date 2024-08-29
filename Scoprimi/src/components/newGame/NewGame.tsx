@@ -101,7 +101,7 @@ const NewGame = () => {
 
   return (
     <>
-      <div className="paginator">
+      <div className="paginator navbar-page">
         <h2>ScopriMi</h2>
         {/* Primo blocco */}
         <div className="elegant-background new-game mt-1">

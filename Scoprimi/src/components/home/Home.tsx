@@ -65,9 +65,9 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <div className="paginator">
+      <div className="paginator navbar-page">
         <h2>ScopriMi</h2>
-        <div className="elegant-background mt-2 scrollable content">
+        <div className="elegant-background mt-2 scrollable fill">
           <LobbyList lobbies={lobbies} onJoin={handleJoinGame} />
         </div>
       </div >
