@@ -1,5 +1,4 @@
 import { useSession } from '../../contexts/SessionContext';
-import { useNavigate } from 'react-router-dom';
 import Navbar from '../common/Navbar';
 import { useNavbar } from '../../contexts/NavbarContext';
 import { useEffect } from 'react';
@@ -25,7 +24,6 @@ const images = [
 
 const Login: React.FC = () => {
   const { currentPlayer, setCurrentPlayer, currentPlayerImage, setCurrentPlayerImage } = useSession();
-  const navigate = useNavigate();
   const { setActiveIndex } = useNavbar();
 
   useEffect(() => {
@@ -34,13 +32,6 @@ const Login: React.FC = () => {
 
   const handleImageSelect = (image: string) => {
     setCurrentPlayerImage(image);
-  };
-
-  const handleDoneClick = () => {
-    if (!currentPlayerImage || !currentPlayer) {
-      alert('Please select an image and enter a username.');
-    }
-    navigate('/');
   };
 
   return (
@@ -60,7 +51,8 @@ const Login: React.FC = () => {
       <div className="elegant-background image-container">
         <div className="image-row">
           {images.map((image, index) => (
-            <div key={index} className="image-column">
+            <div key={index}
+              className="image-column">
               <img
                 src={image}
                 alt={`Profile ${index + 1}`}

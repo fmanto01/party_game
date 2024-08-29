@@ -173,7 +173,9 @@ export function setupSocket(io: any) {
       if (!done) {
         thisGame.resetReadyForNextQuestion(); // Reset readiness for the next round
         const players = thisGame.players;
-        io.to(data.lobbyCode).emit(c.SEND_QUESTION, { question, players });
+        const images = thisGame.images;
+        console.log(images);
+        io.to(data.lobbyCode).emit(c.SEND_QUESTION, { question, players, images });
       } else {
         console.log('Game Over: no more questions.');
         console.log('Risultati finali:');
