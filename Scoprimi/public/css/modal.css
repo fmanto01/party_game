@@ -12,7 +12,7 @@
 }
 
 .modal-content-custom {
-  background-color: #fff;
+  background-color: var(--elegant-background-color);
   border-radius: 8px;
   padding: 20px;
   max-width: 400px;
@@ -27,27 +27,20 @@
 }
 
 .btn-leave {
-  background-color: orange;
-  color: white;
+  background-color: var(--error-color);
+  color: var(--text-color);
   border: none;
   padding: 10px 20px;
   border-radius: 4px;
   cursor: pointer;
 }
 
-.btn-leave:hover {
-  background-color: darkorange;
-}
 
 .btn-stay {
-  background-color: green;
-  color: white;
+  background-color: var(--success-color);
+  color: var(--text-color);
   border: none;
   padding: 10px 20px;
   border-radius: 4px;
   cursor: pointer;
-}
-
-.btn-stay:hover {
-  background-color: darkgreen;
 }

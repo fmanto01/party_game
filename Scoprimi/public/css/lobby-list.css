@@ -15,12 +15,12 @@
 
 /* Color for waiting (not started) status */
 .status-indicator.waiting {
-  background-color: #28a745;
+  background-color: var(--success-color);
   /* Green */
 }
 
 /* Color for started status */
 .status-indicator.started {
-  background-color: #ffc107;
+  background-color: var(--error-color);
   /* Orange */
 }

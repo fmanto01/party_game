@@ -87,7 +87,7 @@ const SearchGame: React.FC = () => {
           <p>Codice lobby:</p>
           <input
             type="text"
-            className='my-input'
+            className='my-input fill-input'
             value={searchTerm}
             onChange={filterLobbies} />
         </div>

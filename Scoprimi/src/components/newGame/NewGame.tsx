@@ -104,25 +104,30 @@ const NewGame = () => {
       <div className="paginator navbar-page">
         <h2>ScopriMi</h2>
         {/* Primo blocco */}
-        <div className="elegant-background new-game mt-1">
+        <div className="elegant-background">
+          <p>Numero di domande:</p>
           <div className="counter mb-4">
-            <button className="btn btn-secondary me-2" onClick={decrement}>-</button>
+            <button className="btn-change-value" onClick={decrement}>-</button>
             <input
               type="number"
-              className="my-input text-center"
+              className="my-input stretch text-center"
               value={numQuestions}
               onChange={(e) => handleInputChange(e.target.value)}
               min="5"
               max="50" />
-            <button className="btn btn-secondary ms-2" onClick={increment}>+</button>
+            <button className="btn-change-value" onClick={increment}>+</button>
           </div>
-          <button onClick={handleCreateGame} className="btn btn-success">
-            Crea Lobby
-          </button>
+          <div className='counter pt-3'>
+            <button onClick={handleCreateGame} className="btn-pill">
+              Create
+            </button>
+          </div>
+
+
         </div>
         {/* Secondo blocco */}
         {createdLobby && (
-          <div className="elegant-background mt-5">
+          <div className="elegant-background mt-3">
             <LobbyList lobbies={[createdLobby]} onJoin={handleJoinGame} />
           </div>
         )}

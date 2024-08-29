@@ -5,6 +5,7 @@ body,
 #root {
   font-family: 'Sora', serif;
   height: 100%;
+  color: var(--text-color);
 }
 
 .paginator {
@@ -12,6 +13,7 @@ body,
   height: 100%;
   display: flex;
   flex-direction: column;
+  background-color: var(--background-color);
 }
 
 .navbar-page {
@@ -19,7 +21,7 @@ body,
 }
 
 .elegant-background {
-  background-color: rgb(184, 184, 184);
+  background-color: var(--elegant-background-color);
   border-radius: 10px;
   padding: 2vh 5vw 2vh 5vw;
   display: block;
@@ -40,14 +42,31 @@ body,
 /* Input */
 
 .my-input {
-  /* Corretto selettore */
-  width: 100%;
-  /* Occupa l'intera larghezza del contenitore */
   padding: 10px;
-  /* Aggiunge un padding interno per migliorare l'estetica */
   border: 1px solid #ccc;
   border-radius: 15px;
 }
+
+.fill-input {
+  width: 100%;
+}
+
+.stretch {
+  width: 30%;
+}
+
+.btn-change-value {
+  padding: 0;
+  border: 0;
+  height: 50px;
+  width: 50px;
+  background-color: var(--primary-color);
+  border-radius: 10px;
+  border: none;
+  font-size: 35px;
+}
+
+
 
 .table {
   border-collapse: collapse;

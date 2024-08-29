@@ -1,28 +1,16 @@
 /* NewGame.css */
 
-.new-game {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 
 .counter {
   display: flex;
-  align-items: center;
+  justify-content: space-evenly;
 }
 
-.btn-success {
-  background-color: #28a745;
+.btn-pill {
+  background-color: hsl(134, 61%, 41%);
   color: white;
   border: none;
   border-radius: 20px;
-  /* Pill button styling */
-}
-
-.btn-success:hover {
-  background-color: #218838;
-}
-
-.btn-secondary:hover {
-  background-color: #5a6268;
+  padding: 5px 20px;
+  display: inline-block;
 }
