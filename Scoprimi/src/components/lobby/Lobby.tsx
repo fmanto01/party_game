@@ -73,7 +73,7 @@ const Lobby: React.FC = () => {
         <LobbyList lobbies={[game]} onJoin={() => void 0} />
       </div>
       {/* Secondo blocco */}
-      <div className="elegant-background mt-3">
+      <div className="elegant-background mt-3 scrollable">
         <table className="table">
           <tbody>
             {game.players.map((player) => (

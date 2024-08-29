@@ -92,7 +92,7 @@ const SearchGame: React.FC = () => {
         />
       </div>
       {/* Secondo blocco */}
-      <div className="elegant-background mt-3">
+      <div className="elegant-background mt-3 h90 scrollable">
         <LobbyList
           lobbies={searchTerm !== '' ? filteredLobbies : lobbies}
           onJoin={handleJoinGame}
