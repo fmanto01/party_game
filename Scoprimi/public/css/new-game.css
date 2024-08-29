@@ -1,0 +1,16 @@
+/* NewGame.css */
+
+
+.counter {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.btn-pill {
+  background-color: hsl(134, 61%, 41%);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 5px 20px;
+  display: inline-block;
+}

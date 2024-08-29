@@ -1,6 +1,7 @@
 export interface QuestionData {
   question: string;
   players: string[];
+  images: string[];
 }
 
 

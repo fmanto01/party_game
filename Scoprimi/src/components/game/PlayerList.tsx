@@ -2,26 +2,31 @@ import React from 'react';
 
 interface PlayerListProps {
   players: string[];
+  images: string[];
   onVote: (player: string) => void;
   disabled: boolean;
 }
 
-const PlayerList: React.FC<PlayerListProps> = ({ players, onVote, disabled }) => (
-  <div id="playersContainer" className="text-center mt-5">
-    <div className="d-flex flex-column align-items-center">
-      {players.map(player => (
-        <button
-          key={player}
-          className="btn btn-primary m-2 player-button"
-          style={{ width: '100%', maxWidth: '400px' }}
+const PlayerList: React.FC<PlayerListProps> = ({ players, images, onVote, disabled }) => (
+  <div id="playersContainer" className="image-row">
+    {players.map(player => (
+      <div key={player} className='player-image-card'>
+        <div
+          className="image-column"
           onClick={() => onVote(player)}
-          disabled={disabled}
+          style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
         >
-          <h5>{player}</h5>
-        </button>
-      ))}
-    </div>
+          <img
+            src={images[player]}
+            className="image-thumbnail"
+            alt={`Image of ${player}`}
+          />
+        </div>
+        <p>{player}</p>
+      </div>
+    ))}
   </div>
 );
+
 
 export default PlayerList;

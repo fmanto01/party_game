@@ -3,22 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import * as c from '../../../../Server/src/socketConsts.js';
 import { socket } from '../../ts/socketInit.ts';
 import { useSession } from '../../contexts/SessionContext.tsx';
-
-interface Game {
-  lobbyCode: string;
-  players: string[];
-  numOfVoters: number;
-  currentQuestionIndex: number;
-  numQuestions: number;
-  selectedQuestions: string[];
-  iterator: Iterator<string>;
-  votes: { [key: string]: number };
-  playerScores: { [key: string]: number };
-  readyForNextQuestion: { [key: string]: boolean };
-  isReadyToGame: { [key: string]: boolean };
-  isGameStarted: boolean;
-  images: { [key: string]: string }; // Add this line
-}
+import Navbar from '../common/Navbar.tsx';
+import { useNavbar } from '../../contexts/NavbarContext.tsx';
+import LobbyList from '../common/LobbyList.tsx';
+import { Game } from '../../../../Server/src/data/Game.ts';
 
 function handleToggleisReadyToGame(data: { lobbyCode: string, playerName: string }) {
   console.log('handleLobbycode ', data.lobbyCode);
@@ -28,14 +16,18 @@ function handleToggleisReadyToGame(data: { lobbyCode: string, playerName: string
 const Lobby: React.FC = () => {
 
   const [game, setGame] = useState<Game | undefined>(undefined);
-  const { currentLobby, currentPlayer, setCurrentLobby } = useSession();
+  const { currentLobby, currentPlayer } = useSession();
   const [isReady, setIsReady] = useState<boolean>(false);
   const navigate = useNavigate();
+  const { setActiveIndex } = useNavbar();
+
+  useEffect(() => {
+    setActiveIndex(1);
+  }, [setActiveIndex]);
 
   useEffect(() => {
 
     document.title = `Lobby - ${currentLobby}`;
-
     socket.emit(c.REQUEST_RENDER_LOBBY, currentLobby, (data: Game) => {
       console.log('Received data:', data);
       setGame(data);
@@ -46,25 +38,26 @@ const Lobby: React.FC = () => {
       setIsReady(data.isReadyToGame[currentPlayer]);
     });
     socket.on(c.INIZIA, () => {
-      setGame((prevGame) => prevGame ? { ...prevGame, isGameStarted: true } : undefined);
+      setGame((prevGame) => {
+        if (!prevGame) { return undefined; } // Check if prevGame is undefined
+
+        // Return the full previous game state with the updated property
+        return Object.assign(Object.create(Object.getPrototypeOf(prevGame)), prevGame, {
+          isGameStarted: true,
+        });
+      });
       navigate('/game');
     });
 
     return () => {
       socket.off(c.INIZIA);
     };
-  }, [currentLobby, navigate, currentPlayer]);
+  }, [currentLobby, navigate, currentPlayer, setActiveIndex]);
 
   const toggleReady = () => {
     const newReadyState = !isReady;
     setIsReady(newReadyState);
     handleToggleisReadyToGame({ lobbyCode: currentLobby, playerName: currentPlayer });
-  };
-
-  const goBackToLobbyList = () => {
-    socket.emit(c.EXIT_LOBBY, { currentPlayer, currentLobby });
-    setCurrentLobby(undefined);
-    navigate('/');
   };
 
   // TODO load page
@@ -73,53 +66,54 @@ const Lobby: React.FC = () => {
   }
 
   return (
-    <div className="container mt-5">
-      <div className="text-center mb-4">
-        <h1 id="lobbyCodeTitle">{game.lobbyCode}</h1>
-      </div>
-
-      <hr />
-
-      <div className="table-responsive">
-        <table className="table table-bordered">
-          <thead className="thead-dark">
-            <tr>
-              <th>Player</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="playersTable">
+    <>
+      <div className="paginator navbar-page">
+        <h2>ScopriMi</h2>
+        {/* Primo blocco */}
+        <div className="elegant-background">
+          <LobbyList lobbies={[game]} onJoin={() => void 0} />
+        </div>
+        {/* Secondo blocco */}
+        <div className="elegant-background mt-3 scrollable fill">
+          <table className="my-table my-table-players">
             {game.players.map((player) => (
-              <tr key={player} className={game.isReadyToGame[player] ? 'color-ok' : 'color-ko'}>
-                <td>{player}</td>
-                <td>
+              <tr key={player}>
+                <td className="player-image">
                   <img
                     src={game.images[player] || 'default-image-url'}
                     alt={player}
-                    style={{ width: '50px', height: '50px', borderRadius: '50%' }}
-                  />
+                    className="player-img" />
+                </td>
+                <td className="player-name">{player}</td>
+                <td className="player-status">
+                  <span className={`pill ${game.isReadyToGame[player] ? 'my-bg-success' : 'my-bg-error'}`}>
+                    {game.isReadyToGame[player] ? 'Ready' : 'Not Ready'}
+                  </span>
                 </td>
               </tr>
             ))}
-          </tbody>
-        </table>
+          </table>
+        </div>
+        <div className="text-center mt-4">
+          <button
+            id="toggleisReadyToGame"
+            className={`btn ${isReady ? 'btn-success' : 'btn-secondary'}`}
+            onClick={() => toggleReady()}>
+            {isReady ? 'Ready' : 'Not Ready'}
+          </button>
+        </div>
+        {/* <div className="text-center mt-4">
+      <button
+        onClick={() => goBackToLobbyList()}
+        className="btn btn-primary">
+        Indietro
+      </button>
+    </div> */}
       </div>
-      <div className="text-center mt-4">
-        <button
-          id="toggleisReadyToGame"
-          className={`btn ${isReady ? 'btn-success' : 'btn-secondary'}`}
-          onClick={() => toggleReady()}>
-          {isReady ? 'Ready' : 'Not Ready'}
-        </button>
-      </div>
-      <div className="text-center mt-4">
-        <button
-          onClick={() => goBackToLobbyList()}
-          className="btn btn-primary">Indietro
-        </button>
-      </div>
-    </div>
+      <Navbar />
+    </>
   );
+
 };
 
 export default Lobby;

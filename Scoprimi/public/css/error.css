@@ -1,0 +1,6 @@
+.my-error {
+  position: absolute;
+  top: 50%;
+  left: 52.5%;
+  transform: translate(-50%, -50%);
+}

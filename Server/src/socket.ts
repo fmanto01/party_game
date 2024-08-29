@@ -74,10 +74,11 @@ export function setupSocket(io: any) {
 
     socket.on(c.CREATE_LOBBY, ([code, numQuestionsParam]: [string, number]) => {
       console.log('Ho ricevuto questo dato: ', code, ' - ', numQuestionsParam);
-      gameManager.createGame(code, numQuestionsParam);
+      const newGame = gameManager.createGame(code, numQuestionsParam);
       gameManager.getGame(code).selectedQuestions = shuffle(AllQuestions).slice(0, numQuestionsParam);
       const lobbies = gameManager.listGames();
       io.emit(c.RENDER_LOBBIES, { lobbies });
+      socket.emit(c.RETURN_NEWGAME, { newGame })
     });
 
     socket.on(c.REQUEST_TO_JOIN_LOBBY, (data: { lobbyCode: string; playerName: string, image: string }) => {
@@ -172,7 +173,9 @@ export function setupSocket(io: any) {
       if (!done) {
         thisGame.resetReadyForNextQuestion(); // Reset readiness for the next round
         const players = thisGame.players;
-        io.to(data.lobbyCode).emit(c.SEND_QUESTION, { question, players });
+        const images = thisGame.images;
+        console.log(images);
+        io.to(data.lobbyCode).emit(c.SEND_QUESTION, { question, players, images });
       } else {
         console.log('Game Over: no more questions.');
         console.log('Risultati finali:');
@@ -219,7 +222,6 @@ export function setupSocket(io: any) {
       console.log(thisGame.players);
       socket.leave(data.currentLobby);
       io.emit(c.RENDER_LOBBIES, { lobbies });
-      // TODO
       io.to(data.currentLobby).emit(c.RENDER_LOBBY, thisGame);
     });
 

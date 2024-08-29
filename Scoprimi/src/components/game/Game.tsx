@@ -11,7 +11,9 @@ import { useSession } from '../../contexts/SessionContext';
 
 const Game: React.FC = () => {
   const [question, setQuestion] = useState<string>('');
+  // TODO inizio a proporre la classe Player
   const [players, setPlayers] = useState<string[]>([]);
+  const [images, setImages] = useState<string[]>([]);
   const [resultMessage, setResultMessage] = useState<string>('');
   const [showResults, setShowResults] = useState<boolean>(false);
   const [gameOver, setGameOver] = useState<boolean>(false);
@@ -19,28 +21,32 @@ const Game: React.FC = () => {
   const [clicked, setClicked] = useState<boolean>(false);
   const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
 
-  const { currentLobby, currentPlayer, setCurrentPlayer } = useSession();
+  const { currentLobby, currentPlayer, setCurrentPlayer, setCurrentLobby } = useSession();
   const navigate = useNavigate();
 
   useEffect(() => {
     const storedQuestion = sessionStorage.getItem('currentQuestion');
     const storedPlayers = sessionStorage.getItem('players');
+    const storedImages = sessionStorage.getItem('images');
 
-    if (storedQuestion && storedPlayers) {
+    if (storedQuestion && storedPlayers && storedImages) {
       setQuestion(storedQuestion);
       setPlayers(JSON.parse(storedPlayers));
       setIsTimerActive(true);
+      setImages(JSON.parse(storedImages));
     } else {
       socket.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode: currentLobby, playerName: currentPlayer });
     }
 
-    socket.on(c.SEND_QUESTION, ({ question, players }: QuestionData) => {
+    socket.on(c.SEND_QUESTION, ({ question, players, images }: QuestionData) => {
       sessionStorage.setItem('currentQuestion', question);
       sessionStorage.setItem('players', JSON.stringify(players));
+      sessionStorage.setItem('images', JSON.stringify(images));
       setClicked(false);
       setIsTimerActive(true);
       setQuestion(question);
       setPlayers(players);
+      setImages(images);
       setShowResults(false);
     });
 
@@ -59,6 +65,7 @@ const Game: React.FC = () => {
       setQuestion('');
       setPlayers([]);
       setShowResults(false);
+      setCurrentLobby(undefined);
       socket.emit(c.LEAVE_ROOM, { playerName: currentPlayer, LobbyCode: currentLobby });
 
       // Naviga alla pagina dei risultati finali
@@ -82,7 +89,7 @@ const Game: React.FC = () => {
       socket.off(c.RESULT_MESSAGE);
       socket.off(c.GAME_OVER);
     };
-  }, [currentLobby, currentPlayer, setCurrentPlayer, navigate]);
+  }, [currentLobby, currentPlayer, setCurrentPlayer, navigate, setCurrentLobby]);
 
   const handleVote = (player: string) => {
     if (clicked) {
@@ -107,19 +114,23 @@ const Game: React.FC = () => {
   };
 
   return (
-    <div className="container mt-5">
-      <div className="top-container text-center mt-3">
+    <div className="paginator">
+      <div className="">
         {!gameOver && (
           <>
-            <Timer duration={25} onTimeUp={handleTimeUp} isActive={isTimerActive} />
-            <div className="p-3 my-3 border rounded bg-primary text-white">
-              <Question question={question} />
+            <Question question={question} />
+            <div className='inline'>
+              <p>Scegli un giocatore</p>
+              <Timer duration={25} onTimeUp={handleTimeUp} isActive={isTimerActive} />
             </div>
           </>
         )}
       </div>
+      {/* Blocco player */}
       {!gameOver && (
-        <PlayerList players={players} onVote={handleVote} disabled={clicked} />
+        <div className='elegant-background image-container'>
+          <PlayerList players={players} images={images} onVote={handleVote} disabled={clicked} />
+        </div>
       )}
       {showResults && (
         <Results resultMessage={resultMessage} onNextQuestion={handleNextQuestion} />
