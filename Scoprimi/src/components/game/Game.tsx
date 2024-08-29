@@ -46,6 +46,7 @@ const Game: React.FC = () => {
       setIsTimerActive(true);
       setQuestion(question);
       setPlayers(players);
+      setImages(images);
       setShowResults(false);
     });
 

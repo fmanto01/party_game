@@ -10,17 +10,21 @@ interface PlayerListProps {
 const PlayerList: React.FC<PlayerListProps> = ({ players, images, onVote, disabled }) => (
   <div id="playersContainer" className="image-row">
     {players.map(player => (
-      <button
-        key={player}
-        className="image-column"
-        onClick={() => onVote(player)}
-        disabled={disabled}
-      >
-        <img
-          src={images[player]}
-          className={'image-thumbnail'}
-        />
-      </button>
+      <div>
+        <div
+          key={player}
+          className="image-column"
+          onClick={() => onVote(player)}
+          style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
+        >
+          <img
+            src={images[player]}
+            className="image-thumbnail"
+            alt={`Image of ${player}`}
+          />
+        </div>
+        <p>{player}</p>
+      </div>
     ))}
   </div>
 );
