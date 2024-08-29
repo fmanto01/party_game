@@ -45,7 +45,7 @@ const Login: React.FC = () => {
             type="text"
             value={currentPlayer}
             onChange={(e) => setCurrentPlayer(e.target.value)}
-            className="my-input fill-input"
+            className="my-input fill-input my-bg-secondary"
           />
         </div>
         {/* Secondo blocco */}

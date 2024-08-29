@@ -45,6 +45,7 @@ body,
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 15px;
+  border: none;
 }
 
 .fill-input {
@@ -109,6 +110,14 @@ body,
 
 .my-bg-error {
   background-color: var(--error-color);
+}
+
+.my-bg-primary {
+  background-color: var(--primary-color);
+}
+
+.my-bg-secondary {
+  background-color: var(--secondary-color);
 }
 
 .my-bg-tertiary {

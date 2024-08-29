@@ -8,12 +8,12 @@ interface ResultsProps {
 const Results: React.FC<ResultsProps> = ({ resultMessage, onNextQuestion }) => (
   <div id="resultsContainer" className="text-center mt-3">
     <div id="resultMessageContainer">
-      <h3 id="resultMessage" dangerouslySetInnerHTML={{ __html: resultMessage }} />
+      <p id="resultMessage" dangerouslySetInnerHTML={{ __html: resultMessage }} />
     </div>
     <div className="d-flex justify-content-center align-items-center">
       <button
         id="nextQuestionBtn"
-        className="btn btn-primary mt-3 w-100"
+        className="pill my-bg-tertiary mt-3"
         onClick={onNextQuestion}
         style={{ marginBottom: '10px' }}
       >
