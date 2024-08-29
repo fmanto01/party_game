@@ -1,5 +1,23 @@
 /* Solo per le righe di lobby */
 
+/* .my-table-players td {
+  padding: 20px 10px;
+} */
+
+.my-table-players td:first-child {
+  width: 17%;
+  text-align: left;
+}
+
+.my-table-players td:nth-child(2) {
+  width: 46%;
+  text-align: center;
+}
+
+.my-table-players td:nth-child(3) {
+  width: 37%;
+  text-align: right;
+}
 
 .player-image {
   width: 50px;

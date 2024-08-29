@@ -75,25 +75,23 @@ const Lobby: React.FC = () => {
         </div>
         {/* Secondo blocco */}
         <div className="elegant-background mt-3 scrollable fill">
-          <table className="my-table">
-            <tbody>
-              {game.players.map((player) => (
-                <tr key={player}>
-                  <td className="text-center player-image">
-                    <img
-                      src={game.images[player] || 'default-image-url'}
-                      alt={player}
-                      className="player-img" />
-                  </td>
-                  <td className="text-center align-middle player-name">{player}</td>
-                  <td className="text-center align-middle player-status">
-                    <span className={`pill ${game.isReadyToGame[player] ? 'my-bg-success' : 'my-bg-error'}`}>
-                      {game.isReadyToGame[player] ? 'Ready' : 'Not Ready'}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+          <table className="my-table my-table-players">
+            {game.players.map((player) => (
+              <tr key={player}>
+                <td className="player-image">
+                  <img
+                    src={game.images[player] || 'default-image-url'}
+                    alt={player}
+                    className="player-img" />
+                </td>
+                <td className="player-name">{player}</td>
+                <td className="player-status">
+                  <span className={`pill ${game.isReadyToGame[player] ? 'my-bg-success' : 'my-bg-error'}`}>
+                    {game.isReadyToGame[player] ? 'Ready' : 'Not Ready'}
+                  </span>
+                </td>
+              </tr>
+            ))}
           </table>
         </div>
         <div className="text-center mt-4">
