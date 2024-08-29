@@ -2,3 +2,7 @@
   display: flex;
   justify-content: space-between;
 }
+
+.player-image-card {
+  text-align: center;
+}

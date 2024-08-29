@@ -10,7 +10,7 @@ interface PlayerListProps {
 const PlayerList: React.FC<PlayerListProps> = ({ players, images, onVote, disabled }) => (
   <div id="playersContainer" className="image-row">
     {players.map(player => (
-      <div>
+      <div className='player-image-card'>
         <div
           key={player}
           className="image-column"
