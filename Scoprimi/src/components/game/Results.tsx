@@ -12,7 +12,7 @@ const Results: React.FC<ResultsProps> = ({ resultMessage, voteRecap }) => (
       {
         Object.entries(voteRecap).map(([voter, vote]) => (
           <div key={voter}>
-            <strong>{voter}:</strong> {vote}
+            <p>{voter} {vote ? `ha votato ${vote}` : 'non ha votato'}</p>
           </div>
         ))
       }

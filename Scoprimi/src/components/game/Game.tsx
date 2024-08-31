@@ -7,6 +7,7 @@ import Timer from './Timer';
 import Question from './Question';
 import PlayerList from './PlayerList';
 import { useSession } from '../../contexts/SessionContext';
+import Results from './Results';
 
 const Game: React.FC = () => {
   const [question, setQuestion] = useState<string>('');
@@ -14,6 +15,10 @@ const Game: React.FC = () => {
   const [players, setPlayers] = useState<string[]>([]);
   const [images, setImages] = useState<string[]>([]);
   const [showResults, setShowResults] = useState<boolean>(false);
+  // TODO Remove
+  const [resultMessage, setResultMessage] = useState<string>('');
+  // TODO Remove
+  const [voteRecap, setVoteRecap] = useState<{ [key: string]: string }>({});
   const [gameOver, setGameOver] = useState<boolean>(false);
 
   const [clicked, setClicked] = useState<boolean>(false);
@@ -48,12 +53,11 @@ const Game: React.FC = () => {
       setShowResults(false);
     });
 
-    socket.on(c.SHOW_RESULTS, (data: { resultMessage: string, voteRecap: string }) => {
-      console.log('Recap dei voti: ', data.voteRecap);
-      // TODO REFORMAT
-      // const formattedVoteRecap = data.voteRecap.replace(/\n/g, '<br />');
-      // const formattedResultMessage = data.resultMessage + '<br />' + formattedVoteRecap;
-      // setResultMessage(formattedResultMessage);
+    socket.on(c.SHOW_RESULTS, (data: { resultMessage: string, voteRecap: { [key: string]: string } }) => {
+      // TODO REMOVE
+      setResultMessage(data.resultMessage);
+      // TODO REMOVE
+      setVoteRecap(data.voteRecap);
       setShowResults(true);
       setIsTimerActive(false);
     });
@@ -88,7 +92,7 @@ const Game: React.FC = () => {
       socket.off(c.RESULT_MESSAGE);
       socket.off(c.GAME_OVER);
     };
-  }, [currentLobby, currentPlayer, setCurrentPlayer, navigate, setCurrentLobby]);
+  }, [currentLobby, currentPlayer, setCurrentPlayer, navigate, setCurrentLobby, resultMessage]);
 
   const handleVote = (player: string) => {
     if (clicked) {
@@ -133,17 +137,18 @@ const Game: React.FC = () => {
       )}
       {showResults && (
         // TODO REMOVE
-        // <Results resultMessage={resultMessage} onNextQuestion={handleNextQuestion} />
-        <div className="d-flex justify-content-center align-items-center">
-          <button
-            id="nextQuestionBtn"
-            className="pill my-bg-tertiary mt-3"
-            onClick={handleNextQuestion}
-          >
-            Prosegui al prossimo turno
-          </button>
-        </div>
-
+        <>
+          <Results resultMessage={resultMessage} voteRecap={voteRecap} />
+          <div className="d-flex justify-content-center align-items-center">
+            <button
+              id="nextQuestionBtn"
+              className="pill my-bg-tertiary mt-3"
+              onClick={handleNextQuestion}
+            >
+              Prosegui al prossimo turno
+            </button>
+          </div>
+        </>
       )}
     </div>
   );
