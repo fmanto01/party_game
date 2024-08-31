@@ -4,7 +4,6 @@ import { Game } from './data/Game.js';
 import { AllQuestions } from './API/questions.js';
 
 const gameManager = new GameManager();
-let voteRecap: string = '';
 
 function shuffle(array: string[]) {
   if (!Array.isArray(array)) {
@@ -134,11 +133,6 @@ export function setupSocket(io: any) {
     socket.on(c.VOTE, (data: { lobbyCode: string; voter: string, vote: string }) => {
       console.log('Ho ricevuto il voto ', data);
 
-      if (data.vote === '' || data.vote === null)
-        voteRecap += `\n${data.voter} non ha votato`;
-      else
-        voteRecap += `\n${data.voter} ha votato ${data.vote}`;
-
       const thisGame = gameManager.getGame(data.lobbyCode);
 
       if (!thisGame) {
@@ -152,8 +146,8 @@ export function setupSocket(io: any) {
       if (thisGame.didAllPlayersVote()) {
         const resultMessage = thisGame.calculateScores();
         const players = thisGame.players;
+        const voteRecap = thisGame.whatPlayersVoted;
         io.to(data.lobbyCode).emit(c.SHOW_RESULTS, { resultMessage, players, voteRecap });
-        voteRecap = '';
       }
     });
 
