@@ -4,7 +4,7 @@ import { Game } from './data/Game.js';
 import { AllQuestions } from './API/questions.js';
 
 const gameManager = new GameManager();
-let voteRecap: string = '';
+let voteRecap: string[] = [];
 
 function shuffle(array: string[]) {
   if (!Array.isArray(array)) {
@@ -74,6 +74,7 @@ export function setupSocket(io: any) {
 
     socket.on(c.CREATE_LOBBY, ([code, numQuestionsParam]: [string, number]) => {
       console.log('Ho ricevuto questo dato: ', code, ' - ', numQuestionsParam);
+      voteRecap[code] = '';
       const newGame = gameManager.createGame(code, numQuestionsParam);
       gameManager.getGame(code).selectedQuestions = shuffle(AllQuestions).slice(0, numQuestionsParam);
       const lobbies = gameManager.listGames();
@@ -135,9 +136,9 @@ export function setupSocket(io: any) {
       console.log('Ho ricevuto il voto ', data);
 
       if (data.vote === '' || data.vote === null)
-        voteRecap += `\n${data.voter} non ha votato`;
+        voteRecap[data.lobbyCode] += `\n${data.voter} non ha votato`;
       else
-        voteRecap += `\n${data.voter} ha votato ${data.vote}`;
+        voteRecap[data.lobbyCode] += `\n${data.voter} ha votato ${data.vote}`;
 
       const thisGame = gameManager.getGame(data.lobbyCode);
 
@@ -152,8 +153,10 @@ export function setupSocket(io: any) {
       if (thisGame.didAllPlayersVote()) {
         const resultMessage = thisGame.calculateScores();
         const players = thisGame.players;
-        io.to(data.lobbyCode).emit(c.SHOW_RESULTS, { resultMessage, players, voteRecap });
-        voteRecap = '';
+        const voteLobbyRecap = voteRecap[data.lobbyCode];
+        console.log('Recap dei voti da inviare ' + voteRecap[data.lobbyCode]);
+        io.to(data.lobbyCode).emit(c.SHOW_RESULTS, { resultMessage, players, voteLobbyRecap });
+        voteRecap[data.lobbyCode] = '';
       }
     });
 

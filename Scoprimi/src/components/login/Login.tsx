@@ -46,7 +46,6 @@ const Login: React.FC = () => {
             value={currentPlayer}
             onChange={(e) => setCurrentPlayer(e.target.value)}
             className="my-input fill-input my-bg-secondary"
-            maxLength="10"  // Imposta il numero massimo di caratteri
           />
         </div>
 

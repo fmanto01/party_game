@@ -48,8 +48,8 @@ const Game: React.FC = () => {
       setShowResults(false);
     });
 
-    socket.on(c.SHOW_RESULTS, (data: { resultMessage: string, voteRecap: string }) => {
-      console.log('Recap dei voti: ', data.voteRecap);
+    socket.on(c.SHOW_RESULTS, (data: { resultMessage: string, voteLobbyRecap: string }) => {
+      console.log('Recap dei voti: ', data.voteLobbyRecap);
       // TODO REFORMAT
       // const formattedVoteRecap = data.voteRecap.replace(/\n/g, '<br />');
       // const formattedResultMessage = data.resultMessage + '<br />' + formattedVoteRecap;
