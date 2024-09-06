@@ -39,6 +39,7 @@ const Login: React.FC = () => {
         <div className="elegant-background">
           <p>Username</p>
           <input
+            maxLength={8}
             type="text"
             value={currentPlayer}
             onChange={(e) => setCurrentPlayer(e.target.value)}
