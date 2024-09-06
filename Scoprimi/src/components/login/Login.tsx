@@ -4,18 +4,18 @@ import { useNavbar } from '../../contexts/NavbarContext';
 import { useEffect } from 'react';
 
 const images = [
-  'https://avatar.iran.liara.run/public/job/police/male',
-  'https://avatar.iran.liara.run/public/job/doctor/female',
-  'https://avatar.iran.liara.run/public/job/chef/male',
-  'https://avatar.iran.liara.run/public/job/firefighters/female',
-  'https://avatar.iran.liara.run/public/job/teacher/male',
-  'https://avatar.iran.liara.run/public/job/firefighters/male',
-  'https://avatar.iran.liara.run/public/job/farmer/female',
-  'https://avatar.iran.liara.run/public/job/doctor/male',
-  'https://avatar.iran.liara.run/public/job/police/female',
-  'https://avatar.iran.liara.run/public/job/lawyer/female',
-  'https://avatar.iran.liara.run/public/job/operator/female',
-  'https://avatar.iran.liara.run/public/job/astronomer/male',
+  'https://cdn.jsdelivr.net/gh/alohe/avatars/png/memo_1.png',
+  'https://cdn.jsdelivr.net/gh/alohe/avatars/png/memo_2.png',
+  'https://cdn.jsdelivr.net/gh/alohe/avatars/png/memo_3.png',
+  'https://cdn.jsdelivr.net/gh/alohe/avatars/png/memo_4.png',
+  'https://cdn.jsdelivr.net/gh/alohe/avatars/png/memo_5.png',
+  'https://cdn.jsdelivr.net/gh/alohe/avatars/png/memo_6.png',
+  'https://cdn.jsdelivr.net/gh/alohe/avatars/png/memo_7.png',
+  'https://cdn.jsdelivr.net/gh/alohe/avatars/png/memo_8.png',
+  'https://cdn.jsdelivr.net/gh/alohe/avatars/png/memo_15.png',
+  'https://cdn.jsdelivr.net/gh/alohe/avatars/png/memo_18.png',
+  'https://cdn.jsdelivr.net/gh/alohe/avatars/png/memo_28.png',
+  'https://cdn.jsdelivr.net/gh/alohe/avatars/png/memo_32.png',
   // 'https://avatar.iran.liara.run/public/job/chef/female',
   // 'https://avatar.iran.liara.run/public/job/farmer/male',
   // 'https://avatar.iran.liara.run/public/job/designer/female',
@@ -46,8 +46,10 @@ const Login: React.FC = () => {
             value={currentPlayer}
             onChange={(e) => setCurrentPlayer(e.target.value)}
             className="my-input fill-input my-bg-secondary"
+            maxLength="10"  // Imposta il numero massimo di caratteri
           />
         </div>
+
         {/* Secondo blocco */}
         <div className="elegant-background image-container mt-3">
           <div className="image-row">
