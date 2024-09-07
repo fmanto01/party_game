@@ -71,7 +71,7 @@ export class Game {
     if (isTie || mostVotedPerson === null || mostVotedPerson === '') {
       resultMessage = 'Pareggio! Nessun punto assegnato';
     } else {
-      resultMessage = `+ 1 punto a chi ha scelto ${mostVotedPerson}\n`;
+      resultMessage = `+ 1 punto a chi ha scelto ${mostVotedPerson}`;
 
       for (const voter in this.whatPlayersVoted) {
         if (this.whatPlayersVoted[voter] === mostVotedPerson)
