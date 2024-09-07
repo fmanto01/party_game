@@ -66,7 +66,9 @@ export class Game {
       }
     }
 
-    if (isTie) {
+    console.log('Most voted person: ', mostVotedPerson);
+
+    if (isTie || mostVotedPerson === null || mostVotedPerson === '') {
       resultMessage = 'Pareggio! Nessun punto assegnato';
     } else {
       resultMessage = `+ 1 punto a chi ha scelto ${mostVotedPerson}\n`;
