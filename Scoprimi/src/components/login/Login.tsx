@@ -34,15 +34,18 @@ const Login: React.FC = () => {
       <div className="paginator">
         <h2>ScopriMi</h2>
         {/* Primo blocco */}
-        <div className="elegant-background mt-3">
-          <p>Username</p>
+        <div className="elegant-background mt-3 form-floating">
           <input
             maxLength={8}
             type="text"
             value={currentPlayer || ''}
             onChange={(e) => setCurrentPlayer(e.target.value)}
             className="my-input fill-input my-bg-secondary"
+            placeholder='Username'
+            required
+            id="floatingInput"
           />
+          <label className='my-label'>Username</label>
         </div>
         {/* Secondo blocco */}
         <div className="elegant-background image-container mt-3 fill">
