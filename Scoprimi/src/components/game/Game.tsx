@@ -11,18 +11,16 @@ import Results from './Results';
 
 const Game: React.FC = () => {
   const [question, setQuestion] = useState<string>('');
-  // TODO inizio a proporre la classe Player
   const [players, setPlayers] = useState<string[]>([]);
   const [images, setImages] = useState<string[]>([]);
   const [showResults, setShowResults] = useState<boolean>(false);
-  // TODO Remove
   const [resultMessage, setResultMessage] = useState<string>('');
-  // TODO Remove
   const [voteRecap, setVoteRecap] = useState<{ [key: string]: string }>({});
   const [gameOver, setGameOver] = useState<boolean>(false);
 
   const [clicked, setClicked] = useState<boolean>(false);
   const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
+  const [resetSelection, setResetSelection] = useState<boolean>(false); // Nuovo stato
 
   const { currentLobby, currentPlayer, setCurrentPlayer, setCurrentLobby } = useSession();
   const navigate = useNavigate();
@@ -34,24 +32,21 @@ const Game: React.FC = () => {
 
   useEffect(() => {
     socket.on(c.SEND_QUESTION, ({ question, players, images }: QuestionData) => {
-      console.log('ecco la domanda');
       setClicked(false);
       setIsTimerActive(true);
       setQuestion(question);
       setPlayers(players);
       setImages(images);
       setShowResults(false);
+      setResetSelection(false); // Resetta la selezione all'inizio della nuova domanda
     });
 
     socket.on(c.SHOW_RESULTS, (data: { resultMessage: string, voteRecap: { [key: string]: string } }) => {
-      // TODO REMOVE
       setResultMessage(data.resultMessage);
-      // TODO REMOVE
       setVoteRecap(data.voteRecap);
       setShowResults(true);
       setIsTimerActive(false);
     });
-
 
     socket.on(c.GAME_OVER, (data: { playerScores: PlayerScores, playerImages: PlayerImages }) => {
       setGameOver(true);
@@ -61,7 +56,6 @@ const Game: React.FC = () => {
       setCurrentLobby(undefined);
       socket.emit(c.LEAVE_ROOM, { playerName: currentPlayer, LobbyCode: currentLobby });
 
-      // Naviga alla pagina dei risultati finali
       const finalResults: FinalResultData = {};
       Object.keys(data.playerScores).forEach(playerName => {
         finalResults[playerName] = {
@@ -92,6 +86,7 @@ const Game: React.FC = () => {
   };
 
   const handleNextQuestion = () => {
+    setResetSelection(true); // Resetta la selezione prima della prossima domanda
     socket.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode: currentLobby, playerName: currentPlayer });
   };
 
@@ -107,37 +102,51 @@ const Game: React.FC = () => {
       <div className="">
         {!gameOver && (
           <>
-            <Question question={question} />
-            <div className='inline'>
-              <p>Scegli un giocatore</p>
-              <Timer duration={25} onTimeUp={handleTimeUp} isActive={isTimerActive} />
-            </div>
+            {showResults ? (
+              // Mostra il ResultMessage quando ci sono i risultati
+              <div className="result-message">
+                <h3>{resultMessage}</h3>
+              </div>
+            ) : (
+              // Altrimenti mostra la domanda e il timer
+              <>
+                <Question question={question} />
+                <div className='inline'>
+                  <p>Scegli un giocatore</p>
+                  <Timer duration={25} onTimeUp={handleTimeUp} isActive={isTimerActive} />
+                </div>
+              </>
+            )}
           </>
         )}
       </div>
-      {/* Blocco player */}
+
       {!gameOver && (
         <div className='elegant-background image-container'>
-          <PlayerList players={players} images={images} onVote={handleVote} disabled={clicked} />
+          {showResults ? (
+            <>
+              <Results resultMessage={null} voteRecap={voteRecap} />
+            </>
+          ) : (
+            <PlayerList players={players} images={images} onVote={handleVote} disabled={clicked} resetSelection={resetSelection} />
+          )}
         </div>
       )}
+
       {showResults && (
-        // TODO REMOVE
-        <>
-          <Results resultMessage={resultMessage} voteRecap={voteRecap} />
-          <div className="d-flex justify-content-center align-items-center">
-            <button
-              id="nextQuestionBtn"
-              className="my-btn my-bg-tertiary mt-3"
-              onClick={handleNextQuestion}
-            >
-              Prosegui al prossimo turno
-            </button>
-          </div>
-        </>
+        <div className="d-flex justify-content-center align-items-center">
+          <button
+            id="nextQuestionBtn"
+            className="my-btn my-bg-tertiary mt-3"
+            onClick={handleNextQuestion}
+          >
+            Prosegui al prossimo turno
+          </button>
+        </div>
       )}
     </div>
   );
+
 };
 
 export default Game;
