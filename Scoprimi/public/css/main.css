@@ -22,7 +22,7 @@ button {
 
 /* Stile normale del placeholder */
 input::placeholder {
-  color: #999;
+  color: var(--text-color);
 }
 
 .paginator {

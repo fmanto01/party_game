@@ -93,13 +93,17 @@ const Home: React.FC = () => {
       <div className="paginator">
         <h2>ScopriMi</h2>
         {/* Primo blocco */}
-        <div className='elegant-background mt-3'>
-          <p>Codice lobby</p>
+        <div className='elegant-background mt-3 form-floating'>
           <input
             type="text"
             className='my-input fill-input my-bg-tertiary'
             value={searchTerm}
-            onChange={filterLobbies} />
+            onChange={filterLobbies}
+            placeholder='Codice lobby...'
+            required
+            id="floatingInput"
+          />
+          <label className='my-label'>Codice lobby</label>
         </div>
         {/* Secondo blocco */}
         <div className="elegant-background mt-3 fill scrollable">

@@ -41,7 +41,7 @@ const Login: React.FC = () => {
             value={currentPlayer || ''}
             onChange={(e) => setCurrentPlayer(e.target.value)}
             className="my-input fill-input my-bg-secondary"
-            placeholder='Username'
+            placeholder='Username...'
             required
             id="floatingInput"
           />
