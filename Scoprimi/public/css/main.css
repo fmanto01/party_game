@@ -120,6 +120,10 @@ body,
   background-color: var(--tertiary-color);
 }
 
+.my-bg-disabled {
+  background-color: var(--disabled-color);
+}
+
 .pill {
   padding: 5px 10px;
   text-align: center;

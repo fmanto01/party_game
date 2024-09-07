@@ -1,4 +1,5 @@
 import { useSession } from '../../contexts/SessionContext';
+import { useNavigate } from 'react-router-dom';
 
 const images = [
   'https://cdn.jsdelivr.net/gh/alohe/avatars/png/memo_1.png',
@@ -18,9 +19,14 @@ const images = [
 
 const Login: React.FC = () => {
   const { currentPlayer, setCurrentPlayer, currentPlayerImage, setCurrentPlayerImage } = useSession();
+  const navigator = useNavigate();
 
   const handleImageSelect = (image: string) => {
     setCurrentPlayerImage(image);
+  };
+
+  const toHomePage = () => {
+    navigator('/');
   };
 
   return (
@@ -54,7 +60,9 @@ const Login: React.FC = () => {
           </div>
         </div>
         <button
-          className=''
+          className={`pill mt-5 ${!currentPlayer || !currentPlayerImage ? 'my-bg-disabled' : 'my-bg-tertiary'}`}
+          onClick={toHomePage}
+          disabled={!currentPlayer || !currentPlayerImage}
         >
           Crea utente
         </button>
