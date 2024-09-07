@@ -26,23 +26,25 @@ const FinalResults: React.FC = () => {
         {/* non-podium players */}
         <div className="elegant-background scrollable fill">
           <table className="my-table">
-            {sortedResults.map(([player, { score, image }]) => (
-              <tr key={player}>
-                <td>
-                  <img
-                    src={image}
-                    alt={`${player} avatar`}
-                    style={{ width: '30px', height: '30px', borderRadius: '10%' }} />
-                </td>
-                <td>{player}</td>
-                <td>{score}</td>
-              </tr>
-            ))}
+            <tbody>
+              {sortedResults.map(([player, { score, image }]) => (
+                <tr key={player}>
+                  <td>
+                    <img
+                      src={image}
+                      alt={`${player} avatar`}
+                      style={{ width: '40px', height: '40px', borderRadius: '10%' }} />
+                  </td>
+                  <td>{player}</td>
+                  <td>{score}</td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </div>
         <button
           className='my-btn mt-5 my-bg-tertiary'
-          onClick={() => navigate('/')} // Naviga alla homepage
+          onClick={() => navigate('/')}
         >
           Torna alla homepage
         </button>
