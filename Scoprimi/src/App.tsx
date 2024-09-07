@@ -10,7 +10,6 @@ import Login from './components/login/Login';
 import SocketListener from './components/SocketListeners';
 import { useEffect, useState } from 'react';
 import { webServerBaseUrl } from './ts/socketInit';
-import NewGame from './components/newGame/NewGame';
 import Loader from './components/Loader';
 
 const App = () => {
@@ -52,7 +51,6 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/lobby" element={<ProtectedRoute component={Lobby} />} />
           <Route path="/game" element={<ProtectedRoute component={Game} />} />
-          <Route path="/new-game" element={<NewGame />} />
           <Route path="/final-results" element={<FinalResults />} />
           <Route path="/error" element={<ErrorPage />} />
         </Routes>

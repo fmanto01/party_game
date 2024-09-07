@@ -5,6 +5,7 @@ import { socket } from '../../ts/socketInit.ts';
 import { Game } from '../../../../Server/src/data/Game.ts';
 import LobbyList from '../common/LobbyList.tsx';
 import { useSession } from '../../contexts/SessionContext.tsx';
+import BottomModal from '../newGame/BottomModal.tsx';
 
 const Home: React.FC = () => {
   const { currentPlayer, setCurrentLobby, currentPlayerImage, isSetPlayer } = useSession();
@@ -12,6 +13,12 @@ const Home: React.FC = () => {
   const [filteredLobbies, setFilteredLobbies] = useState<Game[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const navigate = useNavigate();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleCreateGame = () => {
+    // Emit the event to create the game
+    setIsModalOpen(false); // Close modal after creating the game
+  };
 
   function handleJoinGame(lobbyCode: string) {
     if (!currentPlayer) {
@@ -24,6 +31,11 @@ const Home: React.FC = () => {
       image: currentPlayerImage,
     };
     socket.emit(c.REQUEST_TO_JOIN_LOBBY, data);
+  }
+
+  function lol() {
+    setIsModalOpen(true);
+    console.log(isModalOpen);
   }
 
   function filterLobbies(event: React.ChangeEvent<HTMLInputElement>) {
@@ -104,12 +116,16 @@ const Home: React.FC = () => {
         </div>
         <button
           className='my-btn mt-5 my-bg-primary'
-          onClick={() => navigate('/new-game')}
+          onClick={lol}
         >
           Crea Partita
         </button>
       </div>
-
+      <BottomModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onCreateGame={handleCreateGame}
+      />
     </>
   );
 };
