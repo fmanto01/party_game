@@ -94,7 +94,7 @@ const Home: React.FC = () => {
         <h2>ScopriMi</h2>
         {/* Primo blocco */}
         <div className='elegant-background mt-3'>
-          <p>Codice lobby:</p>
+          <p>Codice lobby</p>
           <input
             type="text"
             className='my-input fill-input my-bg-tertiary'

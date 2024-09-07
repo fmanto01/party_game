@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
 
+/* Rimozione stile standard */
+button:focus,
+input:focus {
+  outline: none;
+}
+
 html,
 body,
 #root {
@@ -7,6 +13,11 @@ body,
   height: 100%;
   color: var(--text-color);
   background-color: var(--background-color);
+}
+
+input,
+button {
+  color: var(--text-color);
 }
 
 .paginator {
