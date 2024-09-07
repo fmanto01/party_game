@@ -1,9 +1,11 @@
 import { FinalResultData } from '../../ts/types';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const FinalResults: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { finalResults } = location.state as { finalResults: FinalResultData };
+
   // Ordinamento con tipizzazione
   const sortedResults = Object.entries(finalResults)
     .sort(([, a], [, b]) => (b.score - a.score)); // Ordina per punteggio decrescente
@@ -17,11 +19,12 @@ const FinalResults: React.FC = () => {
     <>
       <div id="gameOverMessage" className="paginator">
         <h2 className="">Classifica</h2>
-        {/* podium */}
+        {/* TODO podium */}
         <div>
         </div>
 
-        <div className="elegant-background scrollable">
+        {/* non-podium players */}
+        <div className="elegant-background scrollable fill">
           <table className="my-table">
             {sortedResults.map(([player, { score, image }]) => (
               <tr key={player}>
@@ -37,6 +40,12 @@ const FinalResults: React.FC = () => {
             ))}
           </table>
         </div>
+        <button
+          className='my-btn mt-5 my-bg-tertiary'
+          onClick={() => navigate('/')} // Naviga alla homepage
+        >
+          Torna alla homepage
+        </button>
       </div>
     </>
   );

@@ -60,7 +60,7 @@ const Login: React.FC = () => {
           </div>
         </div>
         <button
-          className={`pill mt-5 ${!currentPlayer || !currentPlayerImage ? 'my-bg-disabled' : 'my-bg-tertiary'}`}
+          className={`my-btn mt-5 ${!currentPlayer || !currentPlayerImage ? 'my-bg-disabled' : 'my-bg-tertiary'}`}
           onClick={toHomePage}
           disabled={!currentPlayer || !currentPlayerImage}
         >

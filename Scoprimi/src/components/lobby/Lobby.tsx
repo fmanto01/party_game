@@ -5,6 +5,7 @@ import { socket } from '../../ts/socketInit.ts';
 import { useSession } from '../../contexts/SessionContext.tsx';
 import LobbyList from '../common/LobbyList.tsx';
 import { Game } from '../../../../Server/src/data/Game.ts';
+import Modal from '../common/Modal.tsx';
 
 function handleToggleisReadyToGame(data: { lobbyCode: string, playerName: string }) {
   console.log('handleLobbycode ', data.lobbyCode);
@@ -14,12 +15,12 @@ function handleToggleisReadyToGame(data: { lobbyCode: string, playerName: string
 const Lobby: React.FC = () => {
 
   const [game, setGame] = useState<Game | undefined>(undefined);
-  const { currentLobby, currentPlayer } = useSession();
+  const { currentLobby, currentPlayer, setCurrentLobby } = useSession();
   const [isReady, setIsReady] = useState<boolean>(false);
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   useEffect(() => {
-
     document.title = `Lobby - ${currentLobby}`;
     socket.emit(c.REQUEST_RENDER_LOBBY, currentLobby, (data: Game) => {
       console.log('Received data:', data);
@@ -46,6 +47,16 @@ const Lobby: React.FC = () => {
       socket.off(c.INIZIA);
     };
   }, [currentLobby, navigate, currentPlayer]);
+
+  const handleConfirmLeave = () => {
+    socket.emit(c.EXIT_LOBBY, { currentPlayer, currentLobby });
+    setCurrentLobby(undefined);
+    navigate('/');
+  };
+
+  const handleCancelLeave = () => {
+    setShowModal(false);
+  };
 
   const toggleReady = () => {
     const newReadyState = !isReady;
@@ -87,21 +98,26 @@ const Lobby: React.FC = () => {
             ))}
           </table>
         </div>
-        <div className="text-center mt-4">
+
+        <div className='button-group mt-5'>
+          <button
+            onClick={() => setShowModal(true)}
+            className="my-btn my-bg-error">
+            Indietro
+          </button>
           <button
             id="toggleisReadyToGame"
-            className={`btn ${isReady ? 'btn-success' : 'btn-secondary'}`}
+            className={`my-btn ${isReady ? 'my-bg-success' : 'my-bg-secondary'}`}
             onClick={() => toggleReady()}>
             {isReady ? 'Ready' : 'Not Ready'}
           </button>
         </div>
-        {/* <div className="text-center mt-4">
-      <button
-        onClick={() => goBackToLobbyList()}
-        className="btn btn-primary">
-        Indietro
-      </button>
-    </div> */}
+        {/* // Modal for confirm exit lobby */}
+        <Modal
+          show={showModal}
+          onConfirm={handleConfirmLeave}
+          onCancel={handleCancelLeave}
+        />
       </div>
     </>
   );

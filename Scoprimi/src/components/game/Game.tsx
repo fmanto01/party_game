@@ -142,7 +142,7 @@ const Game: React.FC = () => {
           <div className="d-flex justify-content-center align-items-center">
             <button
               id="nextQuestionBtn"
-              className="pill my-bg-tertiary mt-3"
+              className="my-btn my-bg-tertiary mt-3"
               onClick={handleNextQuestion}
             >
               Prosegui al prossimo turno

@@ -31,6 +31,11 @@ body,
   overflow-y: scroll;
 }
 
+.flex {
+  display: flex;
+  justify-content: space-around;
+}
+
 /********************/
 /* Basic components */
 /********************/
@@ -50,6 +55,22 @@ body,
 
 .stretch {
   width: 30%;
+}
+
+/* Button */
+
+.button-group {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.my-btn {
+  color: var(--text-color);
+  border: none;
+  padding: 15px 25px;
+  border-radius: 16px !important;
+  cursor: pointer;
 }
 
 .btn-change-value {
@@ -122,10 +143,4 @@ body,
 
 .my-bg-disabled {
   background-color: var(--disabled-color);
-}
-
-.pill {
-  padding: 5px 10px;
-  text-align: center;
-  border-radius: 16px !important;
 }

@@ -91,8 +91,8 @@ const Home: React.FC = () => {
             onJoin={handleJoinGame} />
         </div>
         <button
-          className='pill mt-5 my-bg-primary'
-          onClick={() => navigate('new-game')}
+          className='my-btn mt-5 my-bg-primary'
+          onClick={() => navigate('/new-game')}
         >
           Crea Partita
         </button>

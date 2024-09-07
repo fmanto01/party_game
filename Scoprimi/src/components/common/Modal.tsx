@@ -15,10 +15,10 @@ const Modal: React.FC<ModalProps> = ({ show, onConfirm, onCancel }) => {
         <h5>Confirm Exit</h5>
         <p>Are you sure you want to leave the lobby?</p>
         <div className="button-group">
-          <button className="btn-leave pill" onClick={onConfirm}>
+          <button className="my-btn my-bg-error" onClick={onConfirm}>
             Yes, leave
           </button>
-          <button className="btn-stay pill" onClick={onCancel}>
+          <button className="my-btn my-bg-success" onClick={onCancel}>
             No, stay
           </button>
         </div>
