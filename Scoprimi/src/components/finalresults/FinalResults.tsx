@@ -24,7 +24,7 @@ const FinalResults: React.FC = () => {
         </div>
 
         {/* non-podium players */}
-        <div className="elegant-background scrollable fill">
+        <div className="elegant-background mt-3 scrollable fill">
           <table className="my-table">
             <tbody>
               {sortedResults.map(([player, { score, image }]) => (
@@ -43,7 +43,7 @@ const FinalResults: React.FC = () => {
           </table>
         </div>
         <button
-          className='my-btn mt-5 my-bg-tertiary'
+          className='my-btn mt-3 my-bg-tertiary'
           onClick={() => navigate('/')}
         >
           Torna alla homepage

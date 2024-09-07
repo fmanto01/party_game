@@ -17,6 +17,8 @@
 
 
 .bottom-modal {
+  border-top: 5px solid var(--tertiary-color);
+  /* Added border style, width, and color */
   position: fixed;
   bottom: 0;
   left: 0;

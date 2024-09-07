@@ -110,7 +110,7 @@ const Home: React.FC = () => {
             onJoin={handleJoinGame} />
         </div>
         <button
-          className='my-btn mt-5 my-bg-primary'
+          className='my-btn mt-3 my-bg-primary'
           onClick={lol}
         >
           Crea Partita
