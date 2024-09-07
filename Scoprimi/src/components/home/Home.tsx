@@ -90,7 +90,14 @@ const Home: React.FC = () => {
             lobbies={searchTerm !== '' ? filteredLobbies : lobbies}
             onJoin={handleJoinGame} />
         </div>
+        <button
+          className='pill mt-5 my-bg-primary'
+          onClick={() => navigate('new-game')}
+        >
+          Crea Partita
+        </button>
       </div>
+
     </>
   );
 };
