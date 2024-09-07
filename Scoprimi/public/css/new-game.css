@@ -30,18 +30,10 @@
   transform: translateY(0);
 }
 
-.bottom-modal-content {
-  background: white;
-  padding: 20px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
-
 .bottom-modal-close {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: #ddd;
   border: none;
   padding: 10px;
   cursor: pointer;

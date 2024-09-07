@@ -54,29 +54,27 @@ const NewGameModal: React.FC<NewGameModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <div className={`bottom-modal ${isOpen ? 'open' : ''}`}>
-      <div className="bottom-modal-content">
-        <button className="bottom-modal-close" onClick={onClose}>X</button>
-        <div className="paginator">
-          <h2>ScopriMi</h2>
-          <div className="elegant-background">
-            <p>Numero di domande:</p>
-            <div className="counter mb-4">
-              <button className="btn-change-value" onClick={decrement}>-</button>
-              <input
-                type="number"
-                className="my-input stretch text-center"
-                value={numQuestions}
-                onChange={(e) => handleInputChange(e.target.value)}
-                min="5"
-                max="50" />
-              <button className="btn-change-value" onClick={increment}>+</button>
-            </div>
-            <div className='counter pt-3'>
-              <button onClick={handleCreateGame} className="btn-pill">Create</button>
-            </div>
+      <button className="my-btn bottom-modal-close" onClick={onClose}>X</button>
+      <div className="paginator">
+        <div className="elegant-background">
+          <p>Numero di domande:</p>
+          <div className="counter mb-4">
+            <button className="btn-change-value" onClick={decrement}>-</button>
+            <input
+              type="number"
+              className="my-input stretch text-center"
+              value={numQuestions}
+              onChange={(e) => handleInputChange(e.target.value)}
+              min="5"
+              max="50" />
+            <button className="btn-change-value" onClick={increment}>+</button>
+          </div>
+          <div className='counter pt-3'>
+            <button onClick={handleCreateGame} className="btn-pill">Create</button>
           </div>
         </div>
       </div>
+
     </div>
   );
 };
