@@ -5,7 +5,7 @@ const ErrorPage: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="paginator ">
+    <div className="paginator">
       <div className='my-error'>
         <h1>Errore</h1>
         <p>Non hai i permessi necessari per accedere a questa pagina.</p>
