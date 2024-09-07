@@ -45,7 +45,7 @@ const Login: React.FC = () => {
           />
         </div>
         {/* Secondo blocco */}
-        <div className="elegant-background image-container mt-3">
+        <div className="elegant-background image-container mt-3 fill">
           <div className="image-row">
             {images.map((image, index) => (
               <div key={index}
