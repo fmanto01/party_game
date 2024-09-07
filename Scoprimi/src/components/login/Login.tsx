@@ -34,7 +34,7 @@ const Login: React.FC = () => {
       <div className="paginator">
         <h2>ScopriMi</h2>
         {/* Primo blocco */}
-        <div className="elegant-background">
+        <div className="elegant-background mt-3">
           <p>Username</p>
           <input
             maxLength={8}
