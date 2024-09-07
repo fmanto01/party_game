@@ -1,20 +1,21 @@
 /* NewGame.css */
 
-
 .counter {
   display: flex;
   justify-content: space-evenly;
 }
 
-.btn-pill {
-  background-color: hsl(134, 61%, 41%);
-  color: white;
+.btn-change-value {
+  padding: 0;
+  border: 0;
+  height: 50px;
+  width: 50px;
+  background-color: var(--primary-color);
+  border-radius: 10px;
   border: none;
-  border-radius: 20px;
-  padding: 5px 20px;
-  display: inline-block;
+  font-size: 35px;
+  color: var(--text-color)
 }
-
 
 .bottom-modal {
   border-top: 2px solid var(--tertiary-color);

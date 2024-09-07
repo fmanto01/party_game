@@ -74,19 +74,6 @@ body,
   cursor: pointer;
 }
 
-.btn-change-value {
-  padding: 0;
-  border: 0;
-  height: 50px;
-  width: 50px;
-  background-color: var(--primary-color);
-  border-radius: 10px;
-  border: none;
-  font-size: 35px;
-}
-
-
-
 .my-table {
   border-collapse: collapse;
   margin: 0 auto;

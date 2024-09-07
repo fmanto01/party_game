@@ -70,7 +70,7 @@ const NewGameModal: React.FC<NewGameModalProps> = ({ isOpen, onClose }) => {
             <button className="btn-change-value" onClick={increment}>+</button>
           </div>
           <div className='counter pt-3'>
-            <button onClick={handleCreateGame} className="btn-pill">Create</button>
+            <button onClick={handleCreateGame} className="my-btn my-bg-success">Create</button>
           </div>
         </div>
       </div>
