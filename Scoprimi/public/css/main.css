@@ -16,14 +16,10 @@ body,
   background-color: var(--background-color);
 }
 
-.navbar-page {
-  padding-bottom: 9vh;
-}
-
 .elegant-background {
   background-color: var(--elegant-background-color);
   border-radius: 10px;
-  padding: 2vh 5vw 2vh 5vw;
+  padding: 2vh 5vw;
   display: block;
 }
 

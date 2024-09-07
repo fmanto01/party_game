@@ -5,8 +5,6 @@ import { socket } from '../../ts/socketInit.ts';
 import { Game } from '../../../../Server/src/data/Game.ts';
 import LobbyList from '../common/LobbyList.tsx';
 import { useSession } from '../../contexts/SessionContext.tsx';
-import Navbar from '../common/Navbar.tsx';
-import { useNavbar } from '../../contexts/NavbarContext.tsx';
 
 const SearchGame: React.FC = () => {
   const { currentPlayer, setCurrentLobby, currentPlayerImage, isSetPlayer } = useSession();
@@ -14,11 +12,6 @@ const SearchGame: React.FC = () => {
   const [filteredLobbies, setFilteredLobbies] = useState<Game[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>(''); // Aggiunto lo stato searchTerm
   const navigate = useNavigate();
-  const { setActiveIndex } = useNavbar();
-
-  useEffect(() => {
-    setActiveIndex(3);
-  }, [setActiveIndex]);
 
   function handleJoinGame(lobbyCode: string) {
     if (!currentPlayer) {
@@ -80,7 +73,7 @@ const SearchGame: React.FC = () => {
 
   return (
     <>
-      <div className="paginator navbar-page">
+      <div className="paginator">
         <h2>ScopriMi</h2>
         {/* Primo blocco */}
         <div className='elegant-background'>
@@ -98,7 +91,6 @@ const SearchGame: React.FC = () => {
             onJoin={handleJoinGame} />
         </div>
       </div>
-      <Navbar />
     </>
   );
 };

@@ -1,20 +1,12 @@
-import React, { useEffect } from 'react';
 import { FinalResultData } from '../../ts/types';
 import { useLocation } from 'react-router-dom';
-import Navbar from '../common/Navbar';
-import { useNavbar } from '../../contexts/NavbarContext';
 
 const FinalResults: React.FC = () => {
   const location = useLocation();
   const { finalResults } = location.state as { finalResults: FinalResultData };
-  const { setActiveIndex } = useNavbar();
   // Ordinamento con tipizzazione
   const sortedResults = Object.entries(finalResults)
     .sort(([, a], [, b]) => (b.score - a.score)); // Ordina per punteggio decrescente
-
-  useEffect(() => {
-    setActiveIndex(-1);
-  }, [setActiveIndex]);
 
   // Verifica se finalResults è definito
   if (!finalResults) {
@@ -23,7 +15,7 @@ const FinalResults: React.FC = () => {
 
   return (
     <>
-      <div id="gameOverMessage" className="paginator navbar-page">
+      <div id="gameOverMessage" className="paginator">
         <h2 className="">Classifica</h2>
         {/* podium */}
         <div>
@@ -46,7 +38,6 @@ const FinalResults: React.FC = () => {
           </table>
         </div>
       </div>
-      <Navbar />
     </>
   );
 };

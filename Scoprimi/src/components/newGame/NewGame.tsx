@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { socket } from '../../ts/socketInit';
 import * as c from '../../../../Server/src/socketConsts.js';
-import Navbar from '../common/Navbar.js';
-import { useNavbar } from '../../contexts/NavbarContext.js';
 import { Game } from '../../../../Server/src/data/Game.ts';
 import LobbyList from '../common/LobbyList.tsx';
 import { useSession } from '../../contexts/SessionContext.tsx';
@@ -22,11 +20,6 @@ const NewGame = () => {
   const { currentPlayer, currentPlayerImage, isSetPlayer, setCurrentLobby } = useSession();
   const [numQuestions, setNumQuestions] = useState(5);
   const [createdLobby, setCreatedLobby] = useState<Game | null>(null);
-  const { setActiveIndex } = useNavbar();
-
-  useEffect(() => {
-    setActiveIndex(2);
-  }, [setActiveIndex]);
 
   useEffect(() => {
     socket.on(c.RETURN_NEWGAME, (data: { newGame: Game }) => {
@@ -101,7 +94,7 @@ const NewGame = () => {
 
   return (
     <>
-      <div className="paginator navbar-page">
+      <div className="paginator">
         <h2>ScopriMi</h2>
         {/* Primo blocco */}
         <div className="elegant-background">
@@ -132,7 +125,6 @@ const NewGame = () => {
           </div>
         )}
       </div>
-      <Navbar />
     </>
   );
 };

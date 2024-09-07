@@ -1,7 +1,4 @@
 import { useSession } from '../../contexts/SessionContext';
-import Navbar from '../common/Navbar';
-import { useNavbar } from '../../contexts/NavbarContext';
-import { useEffect } from 'react';
 
 const images = [
   'https://cdn.jsdelivr.net/gh/alohe/avatars/png/memo_1.png',
@@ -21,11 +18,6 @@ const images = [
 
 const Login: React.FC = () => {
   const { currentPlayer, setCurrentPlayer, currentPlayerImage, setCurrentPlayerImage } = useSession();
-  const { setActiveIndex } = useNavbar();
-
-  useEffect(() => {
-    setActiveIndex(4);
-  }, [setActiveIndex]);
 
   const handleImageSelect = (image: string) => {
     setCurrentPlayerImage(image);
@@ -33,7 +25,7 @@ const Login: React.FC = () => {
 
   return (
     <>
-      <div className="paginator navbar-page">
+      <div className="paginator">
         <h2>ScopriMi</h2>
         {/* Primo blocco */}
         <div className="elegant-background">
@@ -61,8 +53,12 @@ const Login: React.FC = () => {
             ))}
           </div>
         </div>
+        <button
+          className=''
+        >
+          Crea utente
+        </button>
       </div>
-      <Navbar />
     </>
   );
 };

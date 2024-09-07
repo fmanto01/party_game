@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import * as c from '../../../../Server/src/socketConsts.js';
 import { socket } from '../../ts/socketInit.ts';
 import { useSession } from '../../contexts/SessionContext.tsx';
-import Navbar from '../common/Navbar.tsx';
-import { useNavbar } from '../../contexts/NavbarContext.tsx';
 import LobbyList from '../common/LobbyList.tsx';
 import { Game } from '../../../../Server/src/data/Game.ts';
 
@@ -19,11 +17,6 @@ const Lobby: React.FC = () => {
   const { currentLobby, currentPlayer } = useSession();
   const [isReady, setIsReady] = useState<boolean>(false);
   const navigate = useNavigate();
-  const { setActiveIndex } = useNavbar();
-
-  useEffect(() => {
-    setActiveIndex(1);
-  }, [setActiveIndex]);
 
   useEffect(() => {
 
@@ -52,7 +45,7 @@ const Lobby: React.FC = () => {
     return () => {
       socket.off(c.INIZIA);
     };
-  }, [currentLobby, navigate, currentPlayer, setActiveIndex]);
+  }, [currentLobby, navigate, currentPlayer]);
 
   const toggleReady = () => {
     const newReadyState = !isReady;
@@ -67,7 +60,7 @@ const Lobby: React.FC = () => {
 
   return (
     <>
-      <div className="paginator navbar-page">
+      <div className="paginator">
         <h2>ScopriMi</h2>
         {/* Primo blocco */}
         <div className="elegant-background">
@@ -110,7 +103,6 @@ const Lobby: React.FC = () => {
       </button>
     </div> */}
       </div>
-      <Navbar />
     </>
   );
 
