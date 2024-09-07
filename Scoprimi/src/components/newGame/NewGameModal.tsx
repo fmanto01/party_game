@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
+import { socket } from '../../ts/socketInit';
+import * as c from '../../../../Server/src/socketConsts.js';
 
-interface BottomModalProps {
+interface NewGameModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onCreateGame: () => void;
 }
 
-const BottomModal: React.FC<BottomModalProps> = ({ isOpen, onClose, onCreateGame }) => {
+const NewGameModal: React.FC<NewGameModalProps> = ({ isOpen, onClose }) => {
   const [numQuestions, setNumQuestions] = useState(5);
 
   const increment = () => {
@@ -36,6 +37,21 @@ const BottomModal: React.FC<BottomModalProps> = ({ isOpen, onClose, onCreateGame
     setNumQuestions(value);
   };
 
+  function generateLobbyCode() {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let code = '';
+    for (let i = 0; i < 6; i++) {
+      code += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return code;
+  }
+
+  const handleCreateGame = () => {
+    const code = generateLobbyCode();
+    socket.emit(c.CREATE_LOBBY, [code, numQuestions]);
+    onClose();
+  };
+
   return (
     <div className={`bottom-modal ${isOpen ? 'open' : ''}`}>
       <div className="bottom-modal-content">
@@ -56,7 +72,7 @@ const BottomModal: React.FC<BottomModalProps> = ({ isOpen, onClose, onCreateGame
               <button className="btn-change-value" onClick={increment}>+</button>
             </div>
             <div className='counter pt-3'>
-              <button onClick={onCreateGame} className="btn-pill">Create</button>
+              <button onClick={handleCreateGame} className="btn-pill">Create</button>
             </div>
           </div>
         </div>
@@ -65,4 +81,4 @@ const BottomModal: React.FC<BottomModalProps> = ({ isOpen, onClose, onCreateGame
   );
 };
 
-export default BottomModal;
+export default NewGameModal;

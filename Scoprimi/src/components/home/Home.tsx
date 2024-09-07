@@ -5,7 +5,7 @@ import { socket } from '../../ts/socketInit.ts';
 import { Game } from '../../../../Server/src/data/Game.ts';
 import LobbyList from '../common/LobbyList.tsx';
 import { useSession } from '../../contexts/SessionContext.tsx';
-import BottomModal from '../newGame/BottomModal.tsx';
+import BottomModal from '../newGame/NewGameModal.tsx';
 
 const Home: React.FC = () => {
   const { currentPlayer, setCurrentLobby, currentPlayerImage, isSetPlayer } = useSession();
@@ -13,12 +13,7 @@ const Home: React.FC = () => {
   const [filteredLobbies, setFilteredLobbies] = useState<Game[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const navigate = useNavigate();
-
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const handleCreateGame = () => {
-    // Emit the event to create the game
-    setIsModalOpen(false); // Close modal after creating the game
-  };
 
   function handleJoinGame(lobbyCode: string) {
     if (!currentPlayer) {
@@ -124,7 +119,6 @@ const Home: React.FC = () => {
       <BottomModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onCreateGame={handleCreateGame}
       />
     </>
   );
