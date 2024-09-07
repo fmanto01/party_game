@@ -58,14 +58,14 @@ export function setupSocket(io: any) {
           io.to(lobbyCode).emit(c.RENDER_LOBBY, game);
           socket.leave(lobbyCode);
 
-          // // Se la lobby è vuota, la elimino
-          // if (game.players.length === 0) {
-          //   console.log(`Deleting empty lobby ${lobbyCode}`);
-          //   gameManager.deleteGame(lobbyCode);
-          // }
+          // Se la lobby è vuota, la elimino
+          if (game.players.length === 0) {
+            console.log(`Deleting empty lobby ${lobbyCode}`);
+            gameManager.deleteGame(lobbyCode);
+          }
 
-          // const lobbies = gameManager.listGames();
-          // io.emit(c.RENDER_LOBBIES, { lobbies });
+          const lobbies = gameManager.listGames();
+          io.emit(c.RENDER_LOBBIES, { lobbies });
           break;
         }
       }
