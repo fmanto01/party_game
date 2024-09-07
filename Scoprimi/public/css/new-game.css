@@ -17,7 +17,7 @@
 
 
 .bottom-modal {
-  border-top: 5px solid var(--tertiary-color);
+  border-top: 2px solid var(--tertiary-color);
   /* Added border style, width, and color */
   position: fixed;
   bottom: 0;
@@ -26,17 +26,31 @@
   background: rgba(0, 0, 0, 0.5);
   transition: transform 0.3s ease-in-out;
   transform: translateY(100%);
+  z-index: 1000;
 }
 
 .bottom-modal.open {
   transform: translateY(0);
 }
 
-.bottom-modal-close {
+.btn-bottom-modal-close {
   position: absolute;
   top: 10px;
   right: 10px;
+  font-size: 30px;
   border: none;
-  padding: 10px;
   cursor: pointer;
+  background: none;
+  color: var(--text-color);
+}
+
+/* Add this to your CSS file */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 500;
 }

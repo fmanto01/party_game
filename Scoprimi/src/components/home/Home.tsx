@@ -28,11 +28,6 @@ const Home: React.FC = () => {
     socket.emit(c.REQUEST_TO_JOIN_LOBBY, data);
   }
 
-  function lol() {
-    setIsModalOpen(true);
-    console.log(isModalOpen);
-  }
-
   function filterLobbies(event: React.ChangeEvent<HTMLInputElement>) {
     const searchTerm = event.target.value;
     setSearchTerm(searchTerm);
@@ -92,6 +87,9 @@ const Home: React.FC = () => {
         />
       </button>
 
+      {/* Dim background if modal is open */}
+      {isModalOpen && <div className="overlay"></div>}
+
       <div className="paginator">
         <h2>ScopriMi</h2>
         {/* Primo blocco */}
@@ -111,11 +109,11 @@ const Home: React.FC = () => {
         </div>
         <button
           className='my-btn mt-3 my-bg-primary'
-          onClick={lol}
+          onClick={() => setIsModalOpen(true)}
         >
           Crea Partita
         </button>
-      </div>
+      </div >
       <BottomModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

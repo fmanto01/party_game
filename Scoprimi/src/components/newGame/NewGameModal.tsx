@@ -54,7 +54,7 @@ const NewGameModal: React.FC<NewGameModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <div className={`bottom-modal ${isOpen ? 'open' : ''}`}>
-      <button className="my-btn bottom-modal-close my-bg-error" onClick={onClose}>X</button>
+      <button className="btn-bottom-modal-close" onClick={onClose}><i className="fa-solid fa-xmark"></i></button>
       <div className="paginator">
         <div className="elegant-background">
           <p>Numero di domande:</p>
