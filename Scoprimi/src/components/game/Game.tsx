@@ -30,7 +30,9 @@ const Game: React.FC = () => {
   useEffect(() => {
     console.log('Sono pronto a ricevere', currentLobby, currentPlayer);
     socket.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode: currentLobby, playerName: currentPlayer });
+  }, [currentLobby, currentPlayer]);
 
+  useEffect(() => {
     socket.on(c.SEND_QUESTION, ({ question, players, images }: QuestionData) => {
       console.log('ecco la domanda');
       setClicked(false);
