@@ -1,42 +1,52 @@
 /* Solo per le righe di lobby */
 
-.my-table-players td:first-child {
-  width: 17%;
-  text-align: left;
-}
-
-.my-table-players td:nth-child(2) {
-  width: 46%;
-  text-align: center;
-}
-
-.my-table-players td:nth-child(3) {
-  width: 37%;
-  text-align: right;
-}
-
 .player-img {
   width: auto;
   height: auto;
   max-width: 20vw;
   max-height: 20vw;
   object-fit: contain;
-  border-radius: 5px;
+  border-radius: 50%;
 }
 
 .player-name {
   font-weight: bold;
   font-size: 3.5vw;
+  color: #d4d4d4;
+  text-align: left;
+  flex-grow: 1;
+  margin-right: 1vw;
 }
 
-.player-status .badge {
-  padding: 0.5em 1em;
-  font-size: 1em;
+.player-status {
+  flex-shrink: 0;
 }
 
 .status-pill {
-  padding: 1.5vw 4vw;
-  font-size: 2vw;
-  text-align: center;
-  border-radius: 16px !important;
+  padding: 1vw 3vw;
+  font-size: 2.5vw;
+  border-radius: 2vw;
+  color: #fff;
+}
+
+.players-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2vw;
+  padding: 2vw;
+}
+
+.player-item {
+  display: flex;
+  align-items: center;
+  background-color: #787878;
+  padding: 1vw 2vw;
+  border-radius: 2vw;
+  box-shadow: 0 0.8vw 1.2vw rgba(0, 0, 0, 0.1);
+  color: #fff;
+}
+
+.player-image {
+  flex-shrink: 0;
+  margin-right: 2vw;
 }
