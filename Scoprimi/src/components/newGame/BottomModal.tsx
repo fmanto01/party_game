@@ -36,10 +36,8 @@ const BottomModal: React.FC<BottomModalProps> = ({ isOpen, onClose, onCreateGame
     setNumQuestions(value);
   };
 
-  if (!isOpen) { return null; }
-
   return (
-    <div className="bottom-modal">
+    <div className={`bottom-modal ${isOpen ? 'open' : ''}`}>
       <div className="bottom-modal-content">
         <button className="bottom-modal-close" onClick={onClose}>X</button>
         <div className="paginator">
