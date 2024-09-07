@@ -74,7 +74,7 @@ const Lobby: React.FC = () => {
       <div className="paginator">
         <h2>ScopriMi</h2>
         {/* Primo blocco */}
-        <div className="elegant-background mt-3">
+        <div className="elegant-background">
           <LobbyList lobbies={[game]} onJoin={() => void 0} />
         </div>
         {/* Secondo blocco */}
@@ -111,7 +111,7 @@ const Lobby: React.FC = () => {
             id="toggleisReadyToGame"
             className={`my-btn ${isReady ? 'my-bg-success' : 'my-bg-secondary'}`}
             onClick={() => toggleReady()}>
-            {isReady ? 'Ready' : 'Not Ready'}
+            {isReady ? 'Pronto' : 'Non pronto'}
           </button>
         </div>
         {/* // Modal for confirm exit lobby */}
