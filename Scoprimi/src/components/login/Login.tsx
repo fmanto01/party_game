@@ -1,7 +1,5 @@
 import { useSession } from '../../contexts/SessionContext';
-import Navbar from '../common/Navbar';
-import { useNavbar } from '../../contexts/NavbarContext';
-import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const images = [
   'https://cdn.jsdelivr.net/gh/alohe/avatars/png/memo_1.png',
@@ -21,22 +19,22 @@ const images = [
 
 const Login: React.FC = () => {
   const { currentPlayer, setCurrentPlayer, currentPlayerImage, setCurrentPlayerImage } = useSession();
-  const { setActiveIndex } = useNavbar();
-
-  useEffect(() => {
-    setActiveIndex(4);
-  }, [setActiveIndex]);
+  const navigator = useNavigate();
 
   const handleImageSelect = (image: string) => {
     setCurrentPlayerImage(image);
   };
 
+  const toHomePage = () => {
+    navigator('/');
+  };
+
   return (
     <>
-      <div className="paginator navbar-page">
+      <div className="paginator">
         <h2>ScopriMi</h2>
         {/* Primo blocco */}
-        <div className="elegant-background">
+        <div className="elegant-background mt-3">
           <p>Username</p>
           <input
             maxLength={8}
@@ -61,8 +59,14 @@ const Login: React.FC = () => {
             ))}
           </div>
         </div>
+        <button
+          className={`my-btn mt-3 ${!currentPlayer || !currentPlayerImage ? 'my-bg-disabled' : 'my-bg-tertiary'}`}
+          onClick={toHomePage}
+          disabled={!currentPlayer || !currentPlayerImage}
+        >
+          Crea utente
+        </button>
       </div>
-      <Navbar />
     </>
   );
 };

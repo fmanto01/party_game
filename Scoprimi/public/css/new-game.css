@@ -1,16 +1,57 @@
 /* NewGame.css */
 
-
 .counter {
   display: flex;
   justify-content: space-evenly;
 }
 
-.btn-pill {
-  background-color: hsl(134, 61%, 41%);
-  color: white;
+.btn-change-value {
+  padding: 0;
+  border: 0;
+  height: 50px;
+  width: 50px;
+  background-color: var(--primary-color);
+  border-radius: 10px;
   border: none;
-  border-radius: 20px;
-  padding: 5px 20px;
-  display: inline-block;
+  font-size: 35px;
+  color: var(--text-color)
+}
+
+.bottom-modal {
+  border-top: 2px solid var(--tertiary-color);
+  /* Added border style, width, and color */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease-in-out;
+  transform: translateY(100%);
+  z-index: 1000;
+}
+
+.bottom-modal.open {
+  transform: translateY(0);
+}
+
+.btn-bottom-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 30px;
+  border: none;
+  cursor: pointer;
+  background: none;
+  color: var(--text-color);
+}
+
+/* Add this to your CSS file */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 500;
 }

@@ -10,9 +10,6 @@ import Login from './components/login/Login';
 import SocketListener from './components/SocketListeners';
 import { useEffect, useState } from 'react';
 import { webServerBaseUrl } from './ts/socketInit';
-import NewGame from './components/newGame/NewGame';
-import SearchGame from './components/search/SearchGame';
-import { NavbarProvider } from './contexts/NavbarContext';
 import Loader from './components/Loader';
 
 const App = () => {
@@ -47,21 +44,17 @@ const App = () => {
 
   return (
     <SessionProvider>
-      <NavbarProvider>
-        <Router basename="/party_game/">
-          <SocketListener />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/lobby" element={<ProtectedRoute component={Lobby} />} />
-            <Route path="/game" element={<ProtectedRoute component={Game} />} />
-            <Route path="/new-game" element={<NewGame />} />
-            <Route path="/search-game" element={<SearchGame />} />
-            <Route path="/final-results" element={<FinalResults />} />
-            <Route path="/error" element={<ErrorPage />} />
-          </Routes>
-        </Router>
-      </NavbarProvider>
+      <Router basename="/party_game/">
+        <SocketListener />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/lobby" element={<ProtectedRoute component={Lobby} />} />
+          <Route path="/game" element={<ProtectedRoute component={Game} />} />
+          <Route path="/final-results" element={<FinalResults />} />
+          <Route path="/error" element={<ErrorPage />} />
+        </Routes>
+      </Router>
     </SessionProvider>
   );
 };

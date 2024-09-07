@@ -1,0 +1,15 @@
+.my-btn-login {
+  position: absolute;
+  top: 2vh;
+  right: 5vw;
+  background-color: var(--elegant-background-color);
+  border: none;
+  border-radius: 50%;
+  padding: 0;
+}
+
+.my-btn-login img {
+  width: 55px;
+  height: 55px;
+  object-fit: cover;
+}

@@ -1,9 +1,5 @@
 /* Solo per le righe di lobby */
 
-/* .my-table-players td {
-  padding: 20px 10px;
-} */
-
 .my-table-players td:first-child {
   width: 17%;
   text-align: left;
@@ -37,4 +33,10 @@
 .player-status .badge {
   padding: 0.5em 1em;
   font-size: 1em;
+}
+
+.status-pill {
+  padding: 5px 10px;
+  text-align: center;
+  border-radius: 16px !important;
 }

@@ -9,7 +9,7 @@ const ErrorPage: React.FC = () => {
       <div className='my-error'>
         <h1>Errore</h1>
         <p>Non hai i permessi necessari per accedere a questa pagina.</p>
-        <button className="pill my-bg-tertiary" onClick={() => navigate('/')}>Torna alla Home</button>
+        <button className="my-btn my-bg-tertiary" onClick={() => navigate('/')}>Torna alla Home</button>
       </div>
     </div>
   );

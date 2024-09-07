@@ -3,10 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import * as c from '../../../../Server/src/socketConsts.js';
 import { socket } from '../../ts/socketInit.ts';
 import { useSession } from '../../contexts/SessionContext.tsx';
-import Navbar from '../common/Navbar.tsx';
-import { useNavbar } from '../../contexts/NavbarContext.tsx';
 import LobbyList from '../common/LobbyList.tsx';
 import { Game } from '../../../../Server/src/data/Game.ts';
+import Modal from '../common/Modal.tsx';
 
 function handleToggleisReadyToGame(data: { lobbyCode: string, playerName: string }) {
   console.log('handleLobbycode ', data.lobbyCode);
@@ -16,17 +15,12 @@ function handleToggleisReadyToGame(data: { lobbyCode: string, playerName: string
 const Lobby: React.FC = () => {
 
   const [game, setGame] = useState<Game | undefined>(undefined);
-  const { currentLobby, currentPlayer } = useSession();
+  const { currentLobby, currentPlayer, setCurrentLobby } = useSession();
   const [isReady, setIsReady] = useState<boolean>(false);
   const navigate = useNavigate();
-  const { setActiveIndex } = useNavbar();
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   useEffect(() => {
-    setActiveIndex(1);
-  }, [setActiveIndex]);
-
-  useEffect(() => {
-
     document.title = `Lobby - ${currentLobby}`;
     socket.emit(c.REQUEST_RENDER_LOBBY, currentLobby, (data: Game) => {
       console.log('Received data:', data);
@@ -52,7 +46,17 @@ const Lobby: React.FC = () => {
     return () => {
       socket.off(c.INIZIA);
     };
-  }, [currentLobby, navigate, currentPlayer, setActiveIndex]);
+  }, [currentLobby, navigate, currentPlayer]);
+
+  const handleConfirmLeave = () => {
+    socket.emit(c.EXIT_LOBBY, { currentPlayer, currentLobby });
+    setCurrentLobby(undefined);
+    navigate('/');
+  };
+
+  const handleCancelLeave = () => {
+    setShowModal(false);
+  };
 
   const toggleReady = () => {
     const newReadyState = !isReady;
@@ -67,7 +71,7 @@ const Lobby: React.FC = () => {
 
   return (
     <>
-      <div className="paginator navbar-page">
+      <div className="paginator">
         <h2>ScopriMi</h2>
         {/* Primo blocco */}
         <div className="elegant-background">
@@ -76,41 +80,47 @@ const Lobby: React.FC = () => {
         {/* Secondo blocco */}
         <div className="elegant-background mt-3 scrollable fill">
           <table className="my-table my-table-players">
-            {game.players.map((player) => (
-              <tr key={player}>
-                <td className="player-image">
-                  <img
-                    src={game.images[player] || 'default-image-url'}
-                    alt={player}
-                    className="player-img" />
-                </td>
-                <td className="player-name">{player}</td>
-                <td className="player-status">
-                  <span className={`pill ${game.isReadyToGame[player] ? 'my-bg-success' : 'my-bg-error'}`}>
-                    {game.isReadyToGame[player] ? 'Ready' : 'Not Ready'}
-                  </span>
-                </td>
-              </tr>
-            ))}
+            <tbody>
+              {game.players.map((player) => (
+                <tr key={player}>
+                  <td className="player-image">
+                    <img
+                      src={game.images[player] || 'default-image-url'}
+                      alt={player}
+                      className="player-img" />
+                  </td>
+                  <td className="player-name">{player}</td>
+                  <td className="player-status">
+                    <span className={`status-pill ${game.isReadyToGame[player] ? 'my-bg-success' : 'my-bg-error'}`}>
+                      {game.isReadyToGame[player] ? 'Ready' : 'Not Ready'}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </div>
-        <div className="text-center mt-4">
+
+        <div className='button-group mt-3'>
+          <button
+            onClick={() => setShowModal(true)}
+            className="my-btn my-bg-error">
+            Indietro
+          </button>
           <button
             id="toggleisReadyToGame"
-            className={`btn ${isReady ? 'btn-success' : 'btn-secondary'}`}
+            className={`my-btn ${isReady ? 'my-bg-success' : 'my-bg-secondary'}`}
             onClick={() => toggleReady()}>
-            {isReady ? 'Ready' : 'Not Ready'}
+            {isReady ? 'Pronto' : 'Non pronto'}
           </button>
         </div>
-        {/* <div className="text-center mt-4">
-      <button
-        onClick={() => goBackToLobbyList()}
-        className="btn btn-primary">
-        Indietro
-      </button>
-    </div> */}
+        {/* // Modal for confirm exit lobby */}
+        <Modal
+          show={showModal}
+          onConfirm={handleConfirmLeave}
+          onCancel={handleCancelLeave}
+        />
       </div>
-      <Navbar />
     </>
   );
 

@@ -6,24 +6,21 @@ body,
   font-family: 'Sora', serif;
   height: 100%;
   color: var(--text-color);
+  background-color: var(--background-color);
 }
 
 .paginator {
-  padding: 4vh 10vw 0vh 10vw;
+  padding: 4vh 10vw 4vh 10vw;
   height: 100%;
   display: flex;
   flex-direction: column;
   background-color: var(--background-color);
 }
 
-.navbar-page {
-  padding-bottom: 9vh;
-}
-
 .elegant-background {
   background-color: var(--elegant-background-color);
   border-radius: 10px;
-  padding: 2vh 5vw 2vh 5vw;
+  padding: 2vh 5vw;
   display: block;
 }
 
@@ -33,6 +30,11 @@ body,
 
 .scrollable {
   overflow-y: scroll;
+}
+
+.flex {
+  display: flex;
+  justify-content: space-around;
 }
 
 /********************/
@@ -56,18 +58,21 @@ body,
   width: 30%;
 }
 
-.btn-change-value {
-  padding: 0;
-  border: 0;
-  height: 50px;
-  width: 50px;
-  background-color: var(--primary-color);
-  border-radius: 10px;
-  border: none;
-  font-size: 35px;
+/* Button */
+
+.button-group {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
 }
 
-
+.my-btn {
+  color: var(--text-color);
+  border: none;
+  padding: 15px 25px;
+  border-radius: 16px !important;
+  cursor: pointer;
+}
 
 .my-table {
   border-collapse: collapse;
@@ -124,8 +129,6 @@ body,
   background-color: var(--tertiary-color);
 }
 
-.pill {
-  padding: 5px 10px;
-  text-align: center;
-  border-radius: 16px !important;
+.my-bg-disabled {
+  background-color: var(--disabled-color);
 }
