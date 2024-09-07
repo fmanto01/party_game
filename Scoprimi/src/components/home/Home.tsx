@@ -73,6 +73,18 @@ const Home: React.FC = () => {
 
   return (
     <>
+      {/* Bottone login */}
+      <button
+        className="my-btn-login"
+        onClick={() => navigate('/login')}
+      >
+        <img
+          src={currentPlayerImage}
+          alt="Login"
+          className="login-icon"
+        />
+      </button>
+
       <div className="paginator">
         <h2>ScopriMi</h2>
         {/* Primo blocco */}

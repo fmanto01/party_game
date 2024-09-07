@@ -1,0 +1,16 @@
+.my-btn-login {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.my-btn-login img {
+  width: 50px;
+  /* regola le dimensioni dell'immagine */
+  height: 50px;
+  object-fit: cover;
+}
