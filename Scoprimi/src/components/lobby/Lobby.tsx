@@ -28,6 +28,7 @@ const Lobby: React.FC = () => {
       setIsReady(data.isReadyToGame[currentPlayer]);
     });
     socket.on(c.RENDER_LOBBY, (data: Game) => {
+      console.log(data);
       setGame(data);
       setIsReady(data.isReadyToGame[currentPlayer]);
     });
@@ -99,7 +100,7 @@ const Lobby: React.FC = () => {
             ))}
           </div>
         </div>
-        
+
         <div className='lobby-button-group mt-3'>
           <button
             onClick={() => setShowModal(true)}
