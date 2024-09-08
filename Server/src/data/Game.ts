@@ -37,6 +37,38 @@ export class Game {
     this.whatPlayersVoted = {};
   }
 
+  getMostVotedPerson(): string {
+    const voteCounts: { [key: string]: number } = {};
+    let mostVotedPerson = '';
+    let maxVotes = 0;
+    let isTie = false;
+
+    for (const voter in this.whatPlayersVoted) {
+      const votedPerson = this.whatPlayersVoted[voter];
+      if (votedPerson in voteCounts) {
+        voteCounts[votedPerson] += 1;
+      } else {
+        voteCounts[votedPerson] = 1;
+      }
+    }
+
+    for (const person in voteCounts) {
+      if (voteCounts[person] > maxVotes) {
+        maxVotes = voteCounts[person];
+        mostVotedPerson = person;
+        isTie = false;
+      } else if (voteCounts[person] === maxVotes) {
+        isTie = true;
+      }
+    }
+
+    if (isTie)
+      mostVotedPerson = '';
+
+    console.log('MostVotedPerson: ', mostVotedPerson);
+    return mostVotedPerson;
+  }
+
   calculateScores(): string {
     const voteCounts: { [key: string]: number } = {};
     let resultMessage: string;

@@ -13,6 +13,8 @@ const Game: React.FC = () => {
   const [question, setQuestion] = useState<string>('');
   const [players, setPlayers] = useState<string[]>([]);
   const [images, setImages] = useState<string[]>([]);
+  const [mostVotedPerson, setMostVotedPerson] = useState<string>('');
+  const [playerImages, setPlayerImages] = useState<{ [key: string]: string }>({});
   const [showResults, setShowResults] = useState<boolean>(false);
   const [resultMessage, setResultMessage] = useState<string>('');
   const [voteRecap, setVoteRecap] = useState<{ [key: string]: string }>({});
@@ -41,9 +43,14 @@ const Game: React.FC = () => {
       setResetSelection(false); // Resetta la selezione all'inizio della nuova domanda
     });
 
-    socket.on(c.SHOW_RESULTS, (data: { resultMessage: string, voteRecap: { [key: string]: string } }) => {
+    socket.on(c.SHOW_RESULTS, (data: {
+      resultMessage: string, voteRecap: { [key: string]: string },
+      playerImages: { [key: string]: string }, mostVotedPerson: string
+    }) => {
       setResultMessage(data.resultMessage);
       setVoteRecap(data.voteRecap);
+      setPlayerImages(data.playerImages);
+      setMostVotedPerson(data.mostVotedPerson);
       setShowResults(true);
       setIsTimerActive(false);
     });
@@ -105,7 +112,13 @@ const Game: React.FC = () => {
             {showResults ? (
               // Mostra il ResultMessage quando ci sono i risultati
               <div className="result-message">
-                <h3>{resultMessage}</h3>
+                <h3>Persona più votata</h3>
+                <img
+                  src={playerImages[mostVotedPerson]}
+                  alt={mostVotedPerson}
+                  className="voteEntryImage"
+                />
+                <p>{mostVotedPerson}</p>
               </div>
             ) : (
               // Altrimenti mostra la domanda e il timer
@@ -125,7 +138,7 @@ const Game: React.FC = () => {
         <div className='elegant-background image-container'>
           {showResults ? (
             <>
-              <Results resultMessage={null} voteRecap={voteRecap} />
+              <Results mostVotedPerson={mostVotedPerson} playerImages={playerImages} resultMessage={null} voteRecap={voteRecap} />
             </>
           ) : (
             <PlayerList players={players} images={images} onVote={handleVote} disabled={clicked} resetSelection={resetSelection} />
@@ -146,7 +159,6 @@ const Game: React.FC = () => {
       )}
     </div>
   );
-
 };
 
 export default Game;

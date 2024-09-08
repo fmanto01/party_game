@@ -71,7 +71,9 @@ export function setupSocket(io: any) {
             const resultMessage = game.calculateScores();
             const players = game.players;
             const voteRecap = game.whatPlayersVoted;
-            io.to(lobbyCode).emit(c.SHOW_RESULTS, { resultMessage, players, voteRecap });
+            const playerImages = game.images;
+            const mostVotedPerson = game.getMostVotedPerson();
+            io.to(lobbyCode).emit(c.SHOW_RESULTS, { resultMessage, players, voteRecap, playerImages, mostVotedPerson });
           }
         }
       }
@@ -153,7 +155,9 @@ export function setupSocket(io: any) {
         const resultMessage = thisGame.calculateScores();
         const players = thisGame.players;
         const voteRecap = thisGame.whatPlayersVoted;
-        io.to(data.lobbyCode).emit(c.SHOW_RESULTS, { resultMessage, players, voteRecap });
+        const playerImages = thisGame.images;
+        const mostVotedPerson = thisGame.getMostVotedPerson();
+        io.to(data.lobbyCode).emit(c.SHOW_RESULTS, { resultMessage, players, voteRecap, playerImages, mostVotedPerson });
       }
     });
 
