@@ -98,6 +98,7 @@ const Home: React.FC = () => {
             <i className="fa-solid fa-magnifying-glass"></i>
           </div>
           <input
+            name='lobby-code'
             type="text"
             className='my-input fill-input my-bg-tertiary'
             value={searchTerm}

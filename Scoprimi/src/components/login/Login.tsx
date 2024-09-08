@@ -39,6 +39,7 @@ const Login: React.FC = () => {
             <i className="fa-solid fa-user"></i>
           </div>
           <input
+            name='username'
             maxLength={8}
             type="text"
             value={currentPlayer || ''}
