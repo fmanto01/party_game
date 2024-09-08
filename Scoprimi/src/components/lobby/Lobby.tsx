@@ -99,10 +99,8 @@ const Lobby: React.FC = () => {
             ))}
           </div>
         </div>
-
-
-
-        <div className='button-group mt-3'>
+        
+        <div className='lobby-button-group mt-3'>
           <button
             onClick={() => setShowModal(true)}
             className="my-btn my-bg-error">

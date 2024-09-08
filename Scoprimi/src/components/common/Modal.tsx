@@ -12,14 +12,13 @@ const Modal: React.FC<ModalProps> = ({ show, onConfirm, onCancel }) => {
   return (
     <div className="modal-backdrop-custom">
       <div className="modal-content-custom">
-        <h5>Confirm Exit</h5>
-        <p>Are you sure you want to leave the lobby?</p>
+        <h5>Vuoi lasciare la lobby?</h5>
         <div className="button-group">
           <button className="my-btn my-bg-error" onClick={onConfirm}>
-            Yes, leave
+            Si, lascia
           </button>
           <button className="my-btn my-bg-success" onClick={onCancel}>
-            No, stay
+            No, rimani
           </button>
         </div>
       </div>
