@@ -40,3 +40,12 @@
   text-align: center;
   border-radius: 16px !important;
 }
+
+.lobby-button-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.lobby-button-group button {
+  width: 47%;
+}
