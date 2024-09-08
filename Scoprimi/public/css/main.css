@@ -122,7 +122,7 @@ input::placeholder {
 .my-btn {
   color: var(--text-color);
   border: none;
-  padding: 15px 25px;
+  padding: 2vh 5.2vw;
   border-radius: 16px !important;
   cursor: pointer;
 }
