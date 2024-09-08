@@ -15,3 +15,11 @@
   margin: 0;
   /* Rimuove margini extra del paragrafo */
 }
+
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}

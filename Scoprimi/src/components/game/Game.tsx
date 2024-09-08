@@ -106,13 +106,13 @@ const Game: React.FC = () => {
 
   return (
     <div className="paginator">
-      <div className="">
+      <div className={showResults ? 'text-center' : 'text-left'}>
         {!gameOver && (
           <>
             {showResults ? (
               // Mostra il ResultMessage quando ci sono i risultati
               <div className="result-message">
-                <h3>Persona più votata</h3>
+                {mostVotedPerson === '' ? (<h3>Pareggio!</h3>) : (<h3>Persona più votata</h3>)}
                 <img
                   src={playerImages[mostVotedPerson]}
                   alt={mostVotedPerson}
