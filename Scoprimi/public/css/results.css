@@ -1,0 +1,38 @@
+.voteEntryContent {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.voteEntryImage {
+  height: auto;
+  width: 20vw;
+  margin-right: 10px;
+  /* Spazio tra l'immagine e il testo */
+}
+
+.voteEntryText {
+  margin: 0;
+  /* Rimuove margini extra del paragrafo */
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.status-pill-vote {
+  padding: 5px 10px;
+  text-align: center;
+  border-radius: 16px !important;
+}
+
+.winnerImage {
+  height: auto;
+  width: 20vw;
+  margin-right: 10px;
+  /* Spazio tra l'immagine e il testo */
+}

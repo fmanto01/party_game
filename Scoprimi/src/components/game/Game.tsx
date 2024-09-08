@@ -11,18 +11,19 @@ import Results from './Results';
 
 const Game: React.FC = () => {
   const [question, setQuestion] = useState<string>('');
-  // TODO inizio a proporre la classe Player
   const [players, setPlayers] = useState<string[]>([]);
   const [images, setImages] = useState<string[]>([]);
+  const [mostVotedPerson, setMostVotedPerson] = useState<string>('');
+  const [playerImages, setPlayerImages] = useState<{ [key: string]: string }>({});
   const [showResults, setShowResults] = useState<boolean>(false);
-  // TODO Remove
   const [resultMessage, setResultMessage] = useState<string>('');
-  // TODO Remove
   const [voteRecap, setVoteRecap] = useState<{ [key: string]: string }>({});
   const [gameOver, setGameOver] = useState<boolean>(false);
 
   const [clicked, setClicked] = useState<boolean>(false);
   const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
+  const [resetSelection, setResetSelection] = useState<boolean>(false);
+  const [buttonClicked, setButtonClicked] = useState<boolean>(false); // Nuovo stato per il bottone
 
   const { currentLobby, currentPlayer, setCurrentPlayer, setCurrentLobby } = useSession();
   const navigate = useNavigate();
@@ -34,24 +35,27 @@ const Game: React.FC = () => {
 
   useEffect(() => {
     socket.on(c.SEND_QUESTION, ({ question, players, images }: QuestionData) => {
-      console.log('ecco la domanda');
       setClicked(false);
       setIsTimerActive(true);
       setQuestion(question);
       setPlayers(players);
       setImages(images);
       setShowResults(false);
+      setResetSelection(false);
+      setButtonClicked(false);
     });
 
-    socket.on(c.SHOW_RESULTS, (data: { resultMessage: string, voteRecap: { [key: string]: string } }) => {
-      // TODO REMOVE
+    socket.on(c.SHOW_RESULTS, (data: {
+      resultMessage: string, voteRecap: { [key: string]: string },
+      playerImages: { [key: string]: string }, mostVotedPerson: string
+    }) => {
       setResultMessage(data.resultMessage);
-      // TODO REMOVE
       setVoteRecap(data.voteRecap);
+      setPlayerImages(data.playerImages);
+      setMostVotedPerson(data.mostVotedPerson);
       setShowResults(true);
       setIsTimerActive(false);
     });
-
 
     socket.on(c.GAME_OVER, (data: { playerScores: PlayerScores, playerImages: PlayerImages }) => {
       setGameOver(true);
@@ -61,7 +65,6 @@ const Game: React.FC = () => {
       setCurrentLobby(undefined);
       socket.emit(c.LEAVE_ROOM, { playerName: currentPlayer, LobbyCode: currentLobby });
 
-      // Naviga alla pagina dei risultati finali
       const finalResults: FinalResultData = {};
       Object.keys(data.playerScores).forEach(playerName => {
         finalResults[playerName] = {
@@ -92,6 +95,8 @@ const Game: React.FC = () => {
   };
 
   const handleNextQuestion = () => {
+    setResetSelection(true);
+    setButtonClicked(true); // Cambia lo stato del bottone
     socket.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode: currentLobby, playerName: currentPlayer });
   };
 
@@ -104,37 +109,58 @@ const Game: React.FC = () => {
 
   return (
     <div className="paginator">
-      <div className="">
+      <div className={showResults ? 'text-center' : 'text-left'}>
         {!gameOver && (
           <>
-            <Question question={question} />
-            <div className='inline'>
-              <p>Scegli un giocatore</p>
-              <Timer duration={25} onTimeUp={handleTimeUp} isActive={isTimerActive} />
-            </div>
+            {showResults ? (
+              <div className="result-message">
+                {mostVotedPerson === '' ? (<h3>Pareggio!</h3>) : (<h3>Persona più votata</h3>)}
+                <img
+                  src={playerImages[mostVotedPerson]}
+                  alt={mostVotedPerson}
+                  className="winnerImage"
+                />
+                <p>{mostVotedPerson}</p>
+              </div>
+            ) : (
+              <>
+                <Question question={question} />
+                <div className='inline'>
+                  <p>Scegli un giocatore</p>
+                  <Timer duration={25} onTimeUp={handleTimeUp} isActive={isTimerActive} />
+                </div>
+              </>
+            )}
           </>
         )}
       </div>
-      {/* Blocco player */}
+
       {!gameOver && (
         <div className='elegant-background image-container'>
-          <PlayerList players={players} images={images} onVote={handleVote} disabled={clicked} />
+          {showResults ? (
+            <>
+              <Results mostVotedPerson={mostVotedPerson} playerImages={playerImages} resultMessage={null} voteRecap={voteRecap} />
+            </>
+          ) : (
+            <PlayerList players={players} images={images} onVote={handleVote} disabled={clicked} resetSelection={resetSelection} />
+          )}
         </div>
       )}
+
       {showResults && (
-        // TODO REMOVE
-        <>
-          <Results resultMessage={resultMessage} voteRecap={voteRecap} />
-          <div className="d-flex justify-content-center align-items-center">
-            <button
-              id="nextQuestionBtn"
-              className="my-btn my-bg-tertiary mt-3"
-              onClick={handleNextQuestion}
-            >
-              Prosegui al prossimo turno
-            </button>
-          </div>
-        </>
+        <div className="d-flex justify-content-center align-items-center">
+          <button
+            id="nextQuestionBtn"
+            className="my-btn my-bg-tertiary mt-3"
+            onClick={handleNextQuestion}
+            style={{
+              width: '100%',
+              backgroundColor: buttonClicked ? '#75b268' : '#3e424B', // Cambia il colore al clic
+            }}
+          >
+            Prosegui al prossimo turno
+          </button>
+        </div>
       )}
     </div>
   );
