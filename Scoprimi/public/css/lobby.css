@@ -3,8 +3,8 @@
 .player-img {
   width: auto;
   height: auto;
-  max-width: 20vw;
-  max-height: 20vw;
+  max-width: 15vw;
+  max-height: 15vw;
   object-fit: contain;
   border-radius: 50%;
 }
@@ -13,40 +13,43 @@
   font-weight: bold;
   font-size: 3.5vw;
   color: #d4d4d4;
-  text-align: left;
-  flex-grow: 1;
-  margin-right: 1vw;
+  text-align: center;
+  flex-basis: 33%;
 }
 
 .player-status {
-  flex-shrink: 0;
+  size: 15vw 10vw;
+  margin-left: 2vw;
+  margin-right: 2vw;
+  display: flex;
+  flex-basis: 40%;
 }
 
 .status-pill {
-  padding: 1vw 3vw;
-  font-size: 2.5vw;
+  padding: 2vw 4vw;
+  font-size: 3vw;
   border-radius: 2vw;
   color: #fff;
+  text-align: center;
+  width: 100%;
 }
 
 .players-list {
   display: flex;
   flex-direction: column;
-  gap: 2vw;
-  padding: 2vw;
 }
 
 .player-item {
   display: flex;
   align-items: center;
-  background-color: #787878;
+  /*background-color: #787878;*/
   padding: 1vw 2vw;
   border-radius: 2vw;
-  box-shadow: 0 0.8vw 1.2vw rgba(0, 0, 0, 0.1);
+  /*box-shadow: 0 0.8vw 1.2vw rgba(0, 0, 0, 0.1);*/
   color: #fff;
 }
 
 .player-image {
   flex-shrink: 0;
-  margin-right: 2vw;
+  flex-basis: 20%;
 }
