@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
 
+/* Rimozione stile standard */
+button:focus,
+input:focus {
+  outline: none;
+}
+
 html,
 body,
 #root {
@@ -7,6 +13,16 @@ body,
   height: 100%;
   color: var(--text-color);
   background-color: var(--background-color);
+}
+
+input,
+button {
+  color: var(--text-color);
+}
+
+/* Stile normale del placeholder */
+input::placeholder {
+  color: var(--text-color);
 }
 
 .paginator {
@@ -47,16 +63,49 @@ body,
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 15px;
-  border: none;
+}
+
+.form-floating {
+  position: relative;
+  padding-top: 7vh !important;
+}
+
+/* Quando l'input è in focus o ha un valore */
+.my-input:focus::placeholder,
+.my-input:not(:placeholder-shown)::placeholder {
+  color: transparent;
+}
+
+.my-input:focus+.my-label,
+.my-input:not(:placeholder-shown)+.my-label {
+  top: -2.1vh;
+  /* La label si sposta verso l'alto in vh */
+  color: var(--text-color);
 }
 
 .fill-input {
   width: 100%;
 }
 
+/* Label per input */
+
+/* Posizionamento iniziale della label con position: absolute */
+/* Non so davvero perche con questi numeri funziona */
+.my-label {
+  position: absolute;
+  margin-top: 5vh;
+  top: 3vh;
+  left: 7vw;
+  color: transparent;
+  pointer-events: none;
+  transition: 0.2s ease all;
+}
+
 .stretch {
   width: 30%;
 }
+
+
 
 /* Button */
 
@@ -66,10 +115,14 @@ body,
   margin-top: 20px;
 }
 
+.button-group button {
+  width: 40%;
+}
+
 .my-btn {
   color: var(--text-color);
   border: none;
-  padding: 15px 25px;
+  padding: 2vh 5.2vw;
   border-radius: 16px !important;
   cursor: pointer;
 }

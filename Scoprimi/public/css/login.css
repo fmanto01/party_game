@@ -19,19 +19,16 @@
 .image-column {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 /* Stile delle immagini */
 .image-thumbnail {
-  height: auto;
+  height: 20vw;
   width: 20vw;
-  /* Mantiene il rapporto d'aspetto */
   border-radius: 20%;
-  /* Arrotonda gli angoli */
   cursor: pointer;
-  /* Cambia il cursore su hover */
   transition: transform 0.2s ease-in-out, border-color 0.2s;
-  /* Aggiunge una transizione su hover */
 }
 
 /* Hover su immagini */
@@ -42,6 +39,5 @@
 
 /* Immagine selezionata */
 .selected {
-  border: 3px solid #007bff;
-  /* Bordo blu per l'immagine selezionata */
+  border: 3px solid var(--tertiary-color);
 }
