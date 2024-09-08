@@ -22,7 +22,8 @@ const Game: React.FC = () => {
 
   const [clicked, setClicked] = useState<boolean>(false);
   const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
-  const [resetSelection, setResetSelection] = useState<boolean>(false); // Nuovo stato
+  const [resetSelection, setResetSelection] = useState<boolean>(false);
+  const [buttonClicked, setButtonClicked] = useState<boolean>(false); // Nuovo stato per il bottone
 
   const { currentLobby, currentPlayer, setCurrentPlayer, setCurrentLobby } = useSession();
   const navigate = useNavigate();
@@ -40,7 +41,8 @@ const Game: React.FC = () => {
       setPlayers(players);
       setImages(images);
       setShowResults(false);
-      setResetSelection(false); // Resetta la selezione all'inizio della nuova domanda
+      setResetSelection(false);
+      setButtonClicked(false);
     });
 
     socket.on(c.SHOW_RESULTS, (data: {
@@ -93,7 +95,8 @@ const Game: React.FC = () => {
   };
 
   const handleNextQuestion = () => {
-    setResetSelection(true); // Resetta la selezione prima della prossima domanda
+    setResetSelection(true);
+    setButtonClicked(true); // Cambia lo stato del bottone
     socket.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode: currentLobby, playerName: currentPlayer });
   };
 
@@ -110,18 +113,16 @@ const Game: React.FC = () => {
         {!gameOver && (
           <>
             {showResults ? (
-              // Mostra il ResultMessage quando ci sono i risultati
               <div className="result-message">
                 {mostVotedPerson === '' ? (<h3>Pareggio!</h3>) : (<h3>Persona più votata</h3>)}
                 <img
                   src={playerImages[mostVotedPerson]}
                   alt={mostVotedPerson}
-                  className="voteEntryImage"
+                  className="winnerImage"
                 />
                 <p>{mostVotedPerson}</p>
               </div>
             ) : (
-              // Altrimenti mostra la domanda e il timer
               <>
                 <Question question={question} />
                 <div className='inline'>
@@ -152,6 +153,10 @@ const Game: React.FC = () => {
             id="nextQuestionBtn"
             className="my-btn my-bg-tertiary mt-3"
             onClick={handleNextQuestion}
+            style={{
+              width: '100%',
+              backgroundColor: buttonClicked ? '#75b268' : '#3e424B', // Cambia il colore al clic
+            }}
           >
             Prosegui al prossimo turno
           </button>

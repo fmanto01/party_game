@@ -24,7 +24,7 @@ const Results: React.FC<ResultsProps> = ({ resultMessage, voteRecap, playerImage
                 {voter} {vote ? 'ha votato' : 'non ha votato'}{' '}
                 {vote && (
                   <span
-                    className={`status-pill ${mostVotedPerson === vote ? 'my-bg-success' : 'my-bg-error'}`}
+                    className={`status-pill-vote ${mostVotedPerson === vote ? 'my-bg-success' : 'my-bg-error'}`}
                   >
                     {vote}
                   </span>
