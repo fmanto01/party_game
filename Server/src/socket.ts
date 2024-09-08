@@ -128,6 +128,7 @@ export function setupSocket(io: any) {
         return;
       }
       thisGame.toogleIsReadyToGame(data.playerName);
+      io.to(data.lobbyCode).emit(c.RENDER_LOBBY, thisGame);
       if (!thisGame.isAllPlayersReadyToGame()) {
         return;
       }
