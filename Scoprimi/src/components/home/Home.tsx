@@ -115,7 +115,7 @@ const Home: React.FC = () => {
           className='my-btn mt-3 my-bg-primary'
           onClick={() => setIsModalOpen(true)}
         >
-          Crea Partita
+          Crea partita
         </button>
       </div >
       <BottomModal
