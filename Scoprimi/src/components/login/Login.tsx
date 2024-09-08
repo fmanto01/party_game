@@ -39,15 +39,16 @@ const Login: React.FC = () => {
             <i className="fa-solid fa-user"></i>
           </div>
           <input
+            name="new-username"
             maxLength={8}
             type="text"
             value={currentPlayer || ''}
             onChange={(e) => setCurrentPlayer(e.target.value)}
             className="my-input fill-input my-bg-secondary"
-            placeholder='Username...'
-            required
+            placeholder="Username..."
             id="floatingInput"
-            autoComplete='new-password'
+            autoComplete="off"
+            required
           />
           <label className='my-label'>Username</label>
         </div>
