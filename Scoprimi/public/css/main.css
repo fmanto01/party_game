@@ -50,7 +50,6 @@ input::placeholder {
 
 .flex {
   display: flex;
-  justify-content: space-around;
 }
 
 /********************/
@@ -67,7 +66,7 @@ input::placeholder {
 
 .form-floating {
   position: relative;
-  padding-top: 7vh !important;
+  padding-top: 3vh !important;
 }
 
 /* Quando l'input è in focus o ha un valore */
@@ -105,7 +104,13 @@ input::placeholder {
   width: 30%;
 }
 
+/* Icon i for input */
 
+i {
+  padding-right: 4.5vw;
+  padding-bottom: 1.5vh;
+  font-size: 20px;
+}
 
 /* Button */
 

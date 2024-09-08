@@ -94,6 +94,9 @@ const Home: React.FC = () => {
         <h2>ScopriMi</h2>
         {/* Primo blocco */}
         <div className='elegant-background mt-3 form-floating'>
+          <div className='flex justify-content-end'>
+            <i className="fa-solid fa-magnifying-glass"></i>
+          </div>
           <input
             type="text"
             className='my-input fill-input my-bg-tertiary'
