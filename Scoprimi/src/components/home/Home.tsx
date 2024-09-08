@@ -105,6 +105,7 @@ const Home: React.FC = () => {
             placeholder='Codice lobby...'
             required
             id="floatingInput"
+            autoComplete='off'
           />
           <label className='my-label'>Codice lobby</label>
         </div>

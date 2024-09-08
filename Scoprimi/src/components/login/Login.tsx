@@ -47,6 +47,7 @@ const Login: React.FC = () => {
             placeholder='Username...'
             required
             id="floatingInput"
+            autoComplete='off'
           />
           <label className='my-label'>Username</label>
         </div>
