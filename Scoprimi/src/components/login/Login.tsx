@@ -37,7 +37,6 @@ const Login: React.FC = () => {
         <div className="elegant-background mt-3">
           <p>Username</p>
           <input
-            placeholder='Inserisci il tuo nome'
             maxLength={8}
             type="text"
             value={currentPlayer || ''}

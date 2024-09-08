@@ -96,7 +96,6 @@ const Home: React.FC = () => {
         <div className='elegant-background mt-3'>
           <p>Codice lobby:</p>
           <input
-            placeholder='Inserisci codice lobby'
             type="text"
             className='my-input fill-input my-bg-tertiary'
             value={searchTerm}
