@@ -39,7 +39,7 @@ const Login: React.FC = () => {
           <input
             maxLength={8}
             type="text"
-            value={currentPlayer}
+            value={currentPlayer || ''}
             onChange={(e) => setCurrentPlayer(e.target.value)}
             className="my-input fill-input my-bg-secondary"
           />

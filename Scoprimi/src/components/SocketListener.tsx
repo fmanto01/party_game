@@ -11,8 +11,6 @@ const SocketListener = () => {
 
   useEffect(() => {
     socket.on(c.FORCE_RESET, () => {
-      // Li tolgo tutti, come se il player si fosse appena connesso
-      sessionStorage.clear();
       navigate('/error');
     });
 

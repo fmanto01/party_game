@@ -28,23 +28,13 @@ const Game: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedQuestion = sessionStorage.getItem('currentQuestion');
-    const storedPlayers = sessionStorage.getItem('players');
-    const storedImages = sessionStorage.getItem('images');
+    console.log('Sono pronto a ricevere', currentLobby, currentPlayer);
+    socket.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode: currentLobby, playerName: currentPlayer });
+  }, [currentLobby, currentPlayer]);
 
-    if (storedQuestion && storedPlayers && storedImages) {
-      setQuestion(storedQuestion);
-      setPlayers(JSON.parse(storedPlayers));
-      setIsTimerActive(true);
-      setImages(JSON.parse(storedImages));
-    } else {
-      socket.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode: currentLobby, playerName: currentPlayer });
-    }
-
+  useEffect(() => {
     socket.on(c.SEND_QUESTION, ({ question, players, images }: QuestionData) => {
-      sessionStorage.setItem('currentQuestion', question);
-      sessionStorage.setItem('players', JSON.stringify(players));
-      sessionStorage.setItem('images', JSON.stringify(images));
+      console.log('ecco la domanda');
       setClicked(false);
       setIsTimerActive(true);
       setQuestion(question);
@@ -72,9 +62,6 @@ const Game: React.FC = () => {
       socket.emit(c.LEAVE_ROOM, { playerName: currentPlayer, LobbyCode: currentLobby });
 
       // Naviga alla pagina dei risultati finali
-      sessionStorage.removeItem('currentQuestion');
-      sessionStorage.removeItem('players');
-      sessionStorage.removeItem('currentLobby');
       const finalResults: FinalResultData = {};
       Object.keys(data.playerScores).forEach(playerName => {
         finalResults[playerName] = {
@@ -101,7 +88,6 @@ const Game: React.FC = () => {
     }
     setClicked(true);
     setIsTimerActive(false);
-    sessionStorage.removeItem('timeLeft');
     socket.emit(c.VOTE, { lobbyCode: currentLobby, voter: currentPlayer, vote: player });
   };
 

@@ -74,7 +74,7 @@ const Lobby: React.FC = () => {
       <div className="paginator">
         <h2>ScopriMi</h2>
         {/* Primo blocco */}
-        <div className="elegant-background">
+        <div className="elegant-background mt-3">
           <LobbyList lobbies={[game]} onJoin={() => void 0} />
         </div>
         {/* Secondo blocco */}

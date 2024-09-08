@@ -1,5 +1,3 @@
-import { socket } from '../ts/socketInit';
-import { JOIN_ROOM } from '../../../Server/src/socketConsts';
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 
 interface SessionContextProps {
@@ -31,67 +29,13 @@ export const SessionProvider = ({ children }: { children: ReactNode }) => {
   const [currentPlayerImage, setCurrentPlayerImage] = useState<string | undefined>(undefined);
   const [isSetPlayer, setIsSetPlayer] = useState<boolean>(false);
 
-  // stato per load sul refresh
-  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
-
   useEffect(() => {
-    const savedPlayer = sessionStorage.getItem('currentPlayer');
-    const savedPlayerImage = sessionStorage.getItem('currentPlayerImage');
-    const savedLobby = sessionStorage.getItem('currentLobby');
-
-    if (savedLobby && savedPlayer && savedPlayerImage) {
-      setCurrentLobby(savedLobby);
-      setCurrentPlayer(savedPlayer);
-      setCurrentPlayerImage(savedPlayerImage);
-      socket.emit(JOIN_ROOM, { playerName: savedPlayer, lobbyCode: savedLobby, image: savedPlayerImage });
-    } else if (savedPlayerImage && savedPlayer) {
-      setCurrentPlayerImage(savedPlayerImage);
-      setCurrentPlayer(savedPlayer);
+    if (currentPlayer && currentPlayerImage) {
+      setIsSetPlayer(true);
+    } else {
+      setIsSetPlayer(false);
     }
-
-    setInitialLoadComplete(true);
-  }, []);
-
-  useEffect(() => {
-    if (initialLoadComplete) {
-      if (currentPlayer && currentPlayerImage) {
-        setIsSetPlayer(true);
-      } else {
-        setIsSetPlayer(false);
-      }
-    }
-  }, [initialLoadComplete, currentPlayer, currentPlayerImage]);
-
-  useEffect(() => {
-    if (initialLoadComplete) {
-      if (currentPlayer) {
-        sessionStorage.setItem('currentPlayer', currentPlayer);
-      } else {
-        sessionStorage.removeItem('currentPlayer');
-      }
-    }
-  }, [currentPlayer, initialLoadComplete]);
-
-  useEffect(() => {
-    if (initialLoadComplete) {
-      if (currentPlayerImage) {
-        sessionStorage.setItem('currentPlayerImage', currentPlayerImage);
-      } else {
-        sessionStorage.removeItem('currentPlayerImage');
-      }
-    }
-  }, [currentPlayerImage, initialLoadComplete]);
-
-  useEffect(() => {
-    if (initialLoadComplete) {
-      if (currentLobby) {
-        sessionStorage.setItem('currentLobby', currentLobby);
-      } else {
-        sessionStorage.removeItem('currentLobby');
-      }
-    }
-  }, [currentLobby, initialLoadComplete]);
-
+  }, [currentPlayer, currentPlayerImage]);
 
   return (
     <SessionContext.Provider
