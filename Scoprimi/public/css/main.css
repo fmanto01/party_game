@@ -115,6 +115,10 @@ input::placeholder {
   margin-top: 20px;
 }
 
+.button-group button {
+  width: 40%;
+}
+
 .my-btn {
   color: var(--text-color);
   border: none;
