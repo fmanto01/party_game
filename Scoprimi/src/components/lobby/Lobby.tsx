@@ -79,28 +79,27 @@ const Lobby: React.FC = () => {
         </div>
         {/* Secondo blocco */}
         <div className="elegant-background mt-3 scrollable fill">
-          <table className="my-table my-table-players">
-            <tbody>
-              {game.players.map((player) => (
-                <tr key={player}>
-                  <td className="player-image">
-                    <img
-                      src={game.images[player] || 'default-image-url'}
-                      alt={player}
-                      className="player-img" />
-                  </td>
-                  <td className="player-name">{player}</td>
-                  <td className="player-status">
-                    <span className={`status-pill ${game.isReadyToGame[player] ? 'my-bg-success' : 'my-bg-error'}`}>
-                      {game.isReadyToGame[player] ? 'Ready' : 'Not Ready'}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="players-list">
+            {game.players.map((player) => (
+              <div className="player-item" key={player}>
+                <div className="player-image">
+                  <img
+                    src={game.images[player] || 'default-image-url'}
+                    alt={player}
+                    className="player-img"
+                  />
+                </div>
+                <div className="player-name">{player}</div>
+                <div className="player-status">
+                  <span className={`status-pill ${game.isReadyToGame[player] ? 'my-bg-success' : 'my-bg-error'}`}>
+                    {game.isReadyToGame[player] ? 'Pronto' : 'Non pronto'}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-
+        
         <div className='lobby-button-group mt-3'>
           <button
             onClick={() => setShowModal(true)}

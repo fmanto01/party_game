@@ -1,6 +1,7 @@
 /* Set the cursor to pointer for clickable rows */
 .lobby-row {
   cursor: pointer;
+  font-size: 3.5vw;
 }
 
 
