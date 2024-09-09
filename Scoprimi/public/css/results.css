@@ -33,6 +33,7 @@
 .winnerImage {
   height: auto;
   width: 20vw;
-  margin-right: 10px;
+  margin-left: auto;
+  margin-right: auto;
   /* Spazio tra l'immagine e il testo */
 }
