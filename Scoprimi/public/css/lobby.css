@@ -1,10 +1,32 @@
 /* Solo per le righe di lobby */
 
+.players-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2vw;
+}
+
+.player-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /*background-color: #787878;
+  border-radius: 2vw;
+  box-shadow: 0 0.8vw 1.2vw rgba(0, 0, 0, 0.1);*/
+  color: #fff;
+  text-align: left;
+}
+
+/* Div dell'immagine */
+.player-image {
+  flex-shrink: 0;
+}
+
 .player-img {
   width: auto;
   height: auto;
-  max-width: 15vw;
-  max-height: 15vw;
+  max-width: 12vw;
+  max-height: 12vw;
   object-fit: contain;
   border-radius: 50%;
 }
@@ -13,45 +35,21 @@
   font-weight: bold;
   font-size: 3.5vw;
   color: #d4d4d4;
-  text-align: center;
-  flex-basis: 33%;
 }
 
 .player-status {
-  size: 15vw 10vw;
+  width: 20vw;
   margin-left: 2vw;
   margin-right: 2vw;
-  display: flex;
-  flex-basis: 40%;
+  display: inline-flex;
+  text-align: center;
 }
 
 .status-pill {
-  padding: 2vw 4vw;
-  font-size: 3vw;
-  border-radius: 2vw;
-  color: #fff;
-  text-align: center;
-  width: 100%;
-}
-
-.players-list {
-  display: flex;
-  flex-direction: column;
-}
-
-.player-item {
-  display: flex;
-  align-items: center;
-  /*background-color: #787878;*/
-  padding: 1vw 2vw;
-  border-radius: 2vw;
-  /*box-shadow: 0 0.8vw 1.2vw rgba(0, 0, 0, 0.1);*/
-  color: #fff;
-}
-
-.player-image {
-  flex-shrink: 0;
-  flex-basis: 20%;
+  padding: 2vw;
+  border-radius: 5vw;
+  font-size: 2.5vw;
+  flex-grow: 1;
 }
 
 .lobby-button-group {
