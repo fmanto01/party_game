@@ -16,14 +16,12 @@ In questo gioco un gruppo di persone si connette ad una lobby e gli vengono prop
 - **Backend**: Express, Node.js.
 - **Database**: Attualmente non in utilizzo
 
-
 ## Installazione e avvio
 
 Clone del repository
 ```
 git clone https://github.com/fmanto01/party_game.git && cd Party_game/
 cd Party_game/
-
 ```
 Server
 ```
@@ -37,5 +35,4 @@ Client - Scoprimi
 cd Scoprimi/
 npm install
 npm run dev
-
 ```
