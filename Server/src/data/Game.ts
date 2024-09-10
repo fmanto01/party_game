@@ -65,6 +65,11 @@ export class Game {
     if (isTie)
       mostVotedPerson = '';
 
+    for (const voter in this.whatPlayersVoted) {
+      if (this.whatPlayersVoted[voter] === mostVotedPerson)
+        this.playerScores[voter] += 1;
+    }
+
     console.log('MostVotedPerson: ', mostVotedPerson);
     this.resetVoters();
     return mostVotedPerson;
