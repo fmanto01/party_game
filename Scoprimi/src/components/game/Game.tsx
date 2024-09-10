@@ -136,7 +136,7 @@ const Game: React.FC = () => {
       </div>
 
       {!gameOver && (
-        <div className='elegant-background image-container'>
+        <div className='elegant-background image-container fill'>
           {showResults ? (
             <>
               <Results mostVotedPerson={mostVotedPerson} playerImages={playerImages} resultMessage={null} voteRecap={voteRecap} />
