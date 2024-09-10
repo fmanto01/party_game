@@ -31,7 +31,6 @@
   padding: 5px 10px;
   text-align: center;
   border-radius: 16px !important;
-  display: inline-block;
   margin-top: 5px;
   width: fit-content;
   /* Adatta la pill alla lunghezza del testo */
@@ -43,4 +42,10 @@
   margin-left: auto;
   margin-right: auto;
   /* Spazio tra l'immagine e il testo */
+}
+
+.player-status {
+  display: block;
+  text-align: center;
+  margin-top: 2vw;
 }
