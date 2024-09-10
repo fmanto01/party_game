@@ -66,53 +66,8 @@ export class Game {
       mostVotedPerson = '';
 
     console.log('MostVotedPerson: ', mostVotedPerson);
-    return mostVotedPerson;
-  }
-
-  calculateScores(): string {
-    const voteCounts: { [key: string]: number } = {};
-    let resultMessage: string;
-
-    // Conta i voti
-    for (const voter in this.whatPlayersVoted) {
-      const votedPerson = this.whatPlayersVoted[voter];
-      if (votedPerson in voteCounts) {
-        voteCounts[votedPerson] += 1;
-      } else {
-        voteCounts[votedPerson] = 1;
-      }
-    }
-
-    // Trova la persona con il maggior numero di voti
-    let mostVotedPerson = '';
-    let maxVotes = 0;
-    let isTie = false;
-
-    for (const person in voteCounts) {
-      if (voteCounts[person] > maxVotes) {
-        maxVotes = voteCounts[person];
-        mostVotedPerson = person;
-        isTie = false;
-      } else if (voteCounts[person] === maxVotes) {
-        isTie = true;
-      }
-    }
-
-    console.log('Most voted person: ', mostVotedPerson);
-
-    if (isTie || mostVotedPerson === null || mostVotedPerson === '') {
-      resultMessage = 'Pareggio! Nessun punto assegnato';
-    } else {
-      resultMessage = `+ 1 punto a chi ha scelto ${mostVotedPerson}`;
-
-      for (const voter in this.whatPlayersVoted) {
-        if (this.whatPlayersVoted[voter] === mostVotedPerson)
-          this.playerScores[voter] += 1;
-      }
-    }
-
     this.resetVoters();
-    return resultMessage;
+    return mostVotedPerson;
   }
 
   resetVoters(): void {

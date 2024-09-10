@@ -69,12 +69,11 @@ export function setupSocket(io: any) {
 
           // TODO fix veloce per quando un player si disconnette
           if (game.didAllPlayersVote()) {
-            const resultMessage = game.calculateScores();
             const players = game.players;
             const voteRecap = game.whatPlayersVoted;
             const playerImages = game.images;
             const mostVotedPerson = game.getMostVotedPerson();
-            io.to(lobbyCode).emit(c.SHOW_RESULTS, { resultMessage, players, voteRecap, playerImages, mostVotedPerson });
+            io.to(lobbyCode).emit(c.SHOW_RESULTS, { players, voteRecap, playerImages, mostVotedPerson });
           }
         }
       }
@@ -154,12 +153,11 @@ export function setupSocket(io: any) {
         thisGame.castVote(data.voter, data.vote);
 
       if (thisGame.didAllPlayersVote()) {
-        const resultMessage = thisGame.calculateScores();
         const players = thisGame.players;
         const voteRecap = thisGame.whatPlayersVoted;
         const playerImages = thisGame.images;
         const mostVotedPerson = thisGame.getMostVotedPerson();
-        io.to(data.lobbyCode).emit(c.SHOW_RESULTS, { resultMessage, players, voteRecap, playerImages, mostVotedPerson });
+        io.to(data.lobbyCode).emit(c.SHOW_RESULTS, { players, voteRecap, playerImages, mostVotedPerson });
       }
     });
 

@@ -7,7 +7,7 @@ interface ResultsProps {
 }
 
 const Results: React.FC<ResultsProps> = ({ voteRecap, playerImages, mostVotedPerson }) => (
-  <div id="resultsContainer" className="text-center mt-3">
+  <div id="resultsContainer" className="text-center">
     <div id="resultMessageContainer">
       {
         Object.entries(voteRecap).map(([voter, vote]) => (
