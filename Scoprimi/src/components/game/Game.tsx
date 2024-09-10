@@ -16,7 +16,6 @@ const Game: React.FC = () => {
   const [mostVotedPerson, setMostVotedPerson] = useState<string>('');
   const [playerImages, setPlayerImages] = useState<{ [key: string]: string }>({});
   const [showResults, setShowResults] = useState<boolean>(false);
-  const [resultMessage, setResultMessage] = useState<string>('');
   const [voteRecap, setVoteRecap] = useState<{ [key: string]: string }>({});
   const [gameOver, setGameOver] = useState<boolean>(false);
 
@@ -46,10 +45,10 @@ const Game: React.FC = () => {
     });
 
     socket.on(c.SHOW_RESULTS, (data: {
-      resultMessage: string, voteRecap: { [key: string]: string },
-      playerImages: { [key: string]: string }, mostVotedPerson: string
+      voteRecap: { [key: string]: string },
+      playerImages: { [key: string]: string },
+      mostVotedPerson: string,
     }) => {
-      setResultMessage(data.resultMessage);
       setVoteRecap(data.voteRecap);
       setPlayerImages(data.playerImages);
       setMostVotedPerson(data.mostVotedPerson);
@@ -82,7 +81,7 @@ const Game: React.FC = () => {
       socket.off(c.RESULT_MESSAGE);
       socket.off(c.GAME_OVER);
     };
-  }, [currentLobby, currentPlayer, setCurrentPlayer, navigate, setCurrentLobby, resultMessage]);
+  }, [currentLobby, currentPlayer, setCurrentPlayer, navigate, setCurrentLobby]);
 
   const handleVote = (player: string) => {
     if (clicked) {
@@ -139,7 +138,7 @@ const Game: React.FC = () => {
         <div className='elegant-background image-container fill'>
           {showResults ? (
             <>
-              <Results mostVotedPerson={mostVotedPerson} playerImages={playerImages} resultMessage={null} voteRecap={voteRecap} />
+              <Results mostVotedPerson={mostVotedPerson} playerImages={playerImages} voteRecap={voteRecap} />
             </>
           ) : (
             <PlayerList players={players} images={images} onVote={handleVote} disabled={clicked} resetSelection={resetSelection} />

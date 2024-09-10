@@ -106,7 +106,7 @@ input::placeholder {
 
 /* Icon i for input */
 
-i {
+.icon-input {
   padding-right: 4.5vw;
   padding-bottom: 1.5vh;
   font-size: 20px;

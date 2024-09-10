@@ -16,21 +16,21 @@ function shuffle(array: string[]) {
   return array;
 }
 
-// // Funzione per verificare se una lobby è da eliminare
-// function checkLobbiesAge(io: any) {
-//   const lobbies = gameManager.listGames();
-//   const currentTime = Date.now();
+// Funzione per verificare se una lobby è da eliminare
+function checkLobbiesAge(io: any) {
+  const lobbies = gameManager.listGames();
+  const currentTime = Date.now();
 
-//   lobbies.forEach(lobby => {
-//     const game = gameManager.getGame(lobby.lobbyCode);
-//     if (game && currentTime - game.creationTime >= 60 * 60 * 1000) { // Eliminazione lobby dopo 60 minuti
-//       console.log(`Lobby da eliminare: ${lobby.lobbyCode}`);
-//       gameManager.deleteGame(lobby.lobbyCode);
-//       const lobbies = gameManager.listGames();
-//       io.emit(c.RENDER_LOBBIES, { lobbies });
-//     }
-//   });
-// }
+  lobbies.forEach(lobby => {
+    const game = gameManager.getGame(lobby.lobbyCode);
+    if (game && currentTime - game.creationTime >= 60 * 60 * 1000) { // Eliminazione lobby dopo 60 minuti
+      console.log(`Lobby da eliminare: ${lobby.lobbyCode}`);
+      gameManager.deleteGame(lobby.lobbyCode);
+      const lobbies = gameManager.listGames();
+      io.emit(c.RENDER_LOBBIES, { lobbies });
+    }
+  });
+}
 
 
 
@@ -39,7 +39,7 @@ export function setupSocket(io: any) {
 
     console.log(`Client connected: ${socket.id}`);
     // Avvia il controllo per l'eliminazione delle lobby (ogni 60 sec)
-    // setInterval(() => checkLobbiesAge(io), 10 * 1000);
+    setInterval(() => checkLobbiesAge(io), 10 * 1000);
 
     socket.on(c.DISCONNECT, () => {
       console.log('Client disconnected:', socket.id);
@@ -67,13 +67,13 @@ export function setupSocket(io: any) {
             break;
           }
 
+          // TODO fix veloce per quando un player si disconnette
           if (game.didAllPlayersVote()) {
-            const resultMessage = game.calculateScores();
             const players = game.players;
             const voteRecap = game.whatPlayersVoted;
             const playerImages = game.images;
             const mostVotedPerson = game.getMostVotedPerson();
-            io.to(lobbyCode).emit(c.SHOW_RESULTS, { resultMessage, players, voteRecap, playerImages, mostVotedPerson });
+            io.to(lobbyCode).emit(c.SHOW_RESULTS, { players, voteRecap, playerImages, mostVotedPerson });
           }
         }
       }
@@ -153,12 +153,11 @@ export function setupSocket(io: any) {
         thisGame.castVote(data.voter, data.vote);
 
       if (thisGame.didAllPlayersVote()) {
-        const resultMessage = thisGame.calculateScores();
         const players = thisGame.players;
         const voteRecap = thisGame.whatPlayersVoted;
         const playerImages = thisGame.images;
         const mostVotedPerson = thisGame.getMostVotedPerson();
-        io.to(data.lobbyCode).emit(c.SHOW_RESULTS, { resultMessage, players, voteRecap, playerImages, mostVotedPerson });
+        io.to(data.lobbyCode).emit(c.SHOW_RESULTS, { players, voteRecap, playerImages, mostVotedPerson });
       }
     });
 

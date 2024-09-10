@@ -95,7 +95,7 @@ const Home: React.FC = () => {
         {/* Primo blocco */}
         <div className='elegant-background mt-3 form-floating'>
           <div className='flex justify-content-end'>
-            <i className="fa-solid fa-magnifying-glass"></i>
+            <i className="icon-input fa-solid fa-magnifying-glass"></i>
           </div>
           <input
             name='lobby-code'

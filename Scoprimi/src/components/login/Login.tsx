@@ -36,7 +36,7 @@ const Login: React.FC = () => {
         {/* Primo blocco */}
         <div className="elegant-background mt-3 form-floating">
           <div className='flex justify-content-end'>
-            <i className="fa-solid fa-user"></i>
+            <i className="icon-input fa-solid fa-user"></i>
           </div>
           <input
             name="new-username"
