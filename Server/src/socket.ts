@@ -73,6 +73,7 @@ export function setupSocket(io: any) {
             const voteRecap = game.whatPlayersVoted;
             const playerImages = game.images;
             const mostVotedPerson = game.getMostVotedPerson();
+            game.whatPlayersVoted = {};
             io.to(lobbyCode).emit(c.SHOW_RESULTS, { players, voteRecap, playerImages, mostVotedPerson });
           }
         }
@@ -149,14 +150,18 @@ export function setupSocket(io: any) {
         return;
       }
 
-      if (thisGame.players.includes(data.vote) || data.vote === '')
+      if (thisGame.players.includes(data.vote) || data.vote === '') {
         thisGame.castVote(data.voter, data.vote);
+        io.to(data.lobbyCode).emit(c.PLAYERS_WHO_VOTED, { players: thisGame.whatPlayersVoted });
+      }
+
 
       if (thisGame.didAllPlayersVote()) {
         const players = thisGame.players;
         const voteRecap = thisGame.whatPlayersVoted;
         const playerImages = thisGame.images;
         const mostVotedPerson = thisGame.getMostVotedPerson();
+        thisGame.whatPlayersVoted = {};
         io.to(data.lobbyCode).emit(c.SHOW_RESULTS, { players, voteRecap, playerImages, mostVotedPerson });
       }
     });
