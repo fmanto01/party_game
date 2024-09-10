@@ -23,6 +23,7 @@ const Game: React.FC = () => {
   const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
   const [resetSelection, setResetSelection] = useState<boolean>(false);
   const [buttonClicked, setButtonClicked] = useState<boolean>(false); // Nuovo stato per il bottone
+  const [playersWhoVoted, setPlayersWhoVoted] = useState<string[]>([]);
 
   const { currentLobby, currentPlayer, setCurrentPlayer, setCurrentLobby } = useSession();
   const navigate = useNavigate();
@@ -31,6 +32,12 @@ const Game: React.FC = () => {
     console.log('Sono pronto a ricevere', currentLobby, currentPlayer);
     socket.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode: currentLobby, playerName: currentPlayer });
   }, [currentLobby, currentPlayer]);
+
+  useEffect(() => {
+    socket.on(c.PLAYERS_WHO_VOTED, (data: { players: { [key: string]: string } }) => {
+      setPlayersWhoVoted(Object.keys(data.players));
+    });
+  }, []);
 
   useEffect(() => {
     socket.on(c.SEND_QUESTION, ({ question, players, images }: QuestionData) => {
@@ -42,6 +49,7 @@ const Game: React.FC = () => {
       setShowResults(false);
       setResetSelection(false);
       setButtonClicked(false);
+      setPlayersWhoVoted([]);
     });
 
     socket.on(c.SHOW_RESULTS, (data: {
@@ -80,6 +88,7 @@ const Game: React.FC = () => {
       socket.off(c.SHOW_RESULTS);
       socket.off(c.RESULT_MESSAGE);
       socket.off(c.GAME_OVER);
+      //socket.off(c.PLAYERS_WHO_VOTED); IDK
     };
   }, [currentLobby, currentPlayer, setCurrentPlayer, navigate, setCurrentLobby]);
 
@@ -141,7 +150,7 @@ const Game: React.FC = () => {
               <Results mostVotedPerson={mostVotedPerson} playerImages={playerImages} voteRecap={voteRecap} />
             </>
           ) : (
-            <PlayerList players={players} images={images} onVote={handleVote} disabled={clicked} resetSelection={resetSelection} />
+            <PlayerList players={players} images={images} onVote={handleVote} disabled={clicked} resetSelection={resetSelection} playersWhoVoted={playersWhoVoted} />
           )}
         </div>
       )}

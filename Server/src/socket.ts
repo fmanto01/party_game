@@ -149,8 +149,11 @@ export function setupSocket(io: any) {
         return;
       }
 
-      if (thisGame.players.includes(data.vote) || data.vote === '')
+      if (thisGame.players.includes(data.vote) || data.vote === '') {
         thisGame.castVote(data.voter, data.vote);
+        io.to(data.lobbyCode).emit(c.PLAYERS_WHO_VOTED, { players: thisGame.whatPlayersVoted });
+      }
+
 
       if (thisGame.didAllPlayersVote()) {
         const players = thisGame.players;

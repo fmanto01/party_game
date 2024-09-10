@@ -6,9 +6,10 @@ interface PlayerListProps {
   onVote: (player: string) => void;
   disabled: boolean;
   resetSelection: boolean;
+  playersWhoVoted: string[];
 }
 
-const PlayerList: React.FC<PlayerListProps> = ({ players, images, onVote, disabled, resetSelection }) => {
+const PlayerList: React.FC<PlayerListProps> = ({ players, images, onVote, disabled, resetSelection, playersWhoVoted }) => {
   const [selectedPlayer, setSelectedPlayer] = useState<string | null>(null);
 
   useEffect(() => {
@@ -40,7 +41,9 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, images, onVote, disabl
               src={images[player]}
               className={`image-thumbnail ${selectedPlayer === player ? 'selected' : ''}`}
               alt={`Image of ${player}`}
+              style={{ filter: (disabled && !playersWhoVoted.includes(player)) ? 'grayscale(100%)' : 'none' }}
             />
+
           </div>
           <p>{player}</p>
         </div>
