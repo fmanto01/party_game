@@ -20,7 +20,7 @@ In questo gioco un gruppo di persone si connette ad una lobby e gli vengono prop
 
 Clone del repository
 ```
-git clone https://github.com/fmanto01/party_game.git && cd Party_game/
+git clone https://github.com/fmanto01/party_game.git
 cd Party_game/
 ```
 Server
