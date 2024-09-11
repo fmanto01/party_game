@@ -1,7 +1,7 @@
 /* Contenitore principale */
 .image-container {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  /* justify-content: center; */
 }
 
 /* Righe per le immagini */
