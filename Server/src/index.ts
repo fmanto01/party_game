@@ -9,8 +9,6 @@ import { SetAllQuestions } from './API/questions.js'
 
 const app = express();
 app.use(cors());
-
-setupAPI(app);
 const server = createServer(app);
 
 const io = new Server(server, {
@@ -20,7 +18,7 @@ const io = new Server(server, {
     credentials: true
   }
 });
-
+setupAPI(app);
 async function init() {
   try {
 
