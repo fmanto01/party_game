@@ -111,7 +111,7 @@ const Lobby: React.FC = () => {
             id="toggleisReadyToGame"
             className={`my-btn ${isReady ? 'my-bg-success' : 'my-bg-secondary'}`}
             onClick={() => toggleReady()}>
-            {isReady ? 'Pronto' : 'Non pronto'}
+            {isReady ? 'Non pronto' : 'Pronto'}
           </button>
         </div>
         {/* // Modal for confirm exit lobby */}
