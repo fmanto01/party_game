@@ -28,6 +28,9 @@
   transition: transform 0.3s ease-in-out;
   transform: translateY(100%);
   z-index: 1000;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  overflow: hidden;
 }
 
 .bottom-modal.open {
