@@ -21,13 +21,14 @@ In questo gioco un gruppo di persone si connette ad una lobby e gli vengono prop
 
 ## Funzionalità in arrivo👀
 - **Disegni✏️**: nuova modalità di gioco in cui è possibile disegnare / modificare un immagine basandosi su uno dei giocatori presenti
-- **Gestione lobby**: aggiunta di un admin per ogni lobby, con la possibilità di rimuovere giocatore e fare partire la partita
+- **Gestione lobby**: aggiunta di un admin per ogni lobby, con la possibilità di rimuovere giocatore e fare iniziare la partita
 - **Foto📷**: è possibile scattarsi una foto da usare durante la partita
 - **Tanto altro**: varie modifiche server-side, miglioramento UI/UX...
 
 ## Contributori
 
-Ringraziamo tutti coloro che hanno contribuito a questo progetto!
+Ringraziamo tutti coloro che hanno contribuito a questo progetto e che impiegano il loro tempo libero per lo sviluppo dell'applicazione.
+Un ringraziamento speciale va anche a tutti coloro che hanno giocato a Scoprimi, si sono divertiti e hanno proposto modifiche / miglioramenti!
 
 | ![fmanto01](https://github.com/fmanto01.png?size=100) | ![pesto13](https://github.com/pesto13.png?size=100) | ![simomux](https://github.com/simomux.png?size=100) |
 |:-----------------------------------------------------:|:---------------------------------------------------:|:---------------------------------------------------:|
