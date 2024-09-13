@@ -72,6 +72,10 @@ const Lobby: React.FC = () => {
 
   return (
     <>
+      <button className='my-btn-login elegant-background'
+      >
+        <i className="fa-solid fa-arrow-up-from-bracket"></i>
+      </button>
       <div className="paginator">
         <h2>ScopriMi</h2>
         {/* Primo blocco */}
