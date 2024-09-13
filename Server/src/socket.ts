@@ -81,7 +81,7 @@ export function setupSocket(io: any) {
     });
 
     socket.on(c.CREATE_LOBBY, ([code, numQuestionsParam]: [string, number]) => {
-      console.log('Ho ricevuto questo dato: ', code, ' - ', numQuestionsParam);
+      console.log('Creo la lobby con [codice - domande]: ', code, ' - ', numQuestionsParam);
       const newGame = actualGameManager.createGame(code, numQuestionsParam);
       actualGameManager.getGame(code).selectedQuestions = shuffle(AllQuestions).slice(0, numQuestionsParam);
       const lobbies = actualGameManager.listGames();
@@ -136,7 +136,7 @@ export function setupSocket(io: any) {
       thisGame.isGameStarted = true;
       const lobbies = actualGameManager.listGames();
       io.emit(c.RENDER_LOBBIES, { lobbies });
-      console.log(`inizio ${data.lobbyCode}`);
+      console.log(`Inizia partita - ${data.lobbyCode}`);
       io.to(data.lobbyCode).emit(c.INIZIA);
     });
 
