@@ -105,6 +105,10 @@ const Game: React.FC = () => {
   const handleNextQuestion = () => {
     setResetSelection(true);
     setButtonClicked(true); // Cambia lo stato del bottone
+    if ("vibrate" in navigator) {
+      // vibration API supported
+      navigator.vibrate(1000);
+    }
     socket.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode: currentLobby, playerName: currentPlayer });
   };
 
@@ -134,7 +138,9 @@ const Game: React.FC = () => {
               <>
                 <Question question={question} />
                 <div className='inline'>
-                  <p>Scegli un giocatore</p>
+                  <div className='label-container'>
+                    <p>Scegli un giocatore</p>
+                  </div>
                   <Timer duration={25} onTimeUp={handleTimeUp} isActive={isTimerActive} />
                 </div>
               </>

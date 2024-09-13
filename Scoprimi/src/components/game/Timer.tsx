@@ -37,7 +37,19 @@ const Timer: React.FC<TimerProps> = ({ duration, onTimeUp, isActive }) => {
     };
   }, [isActive, startTimer]);
 
-  return <p>⌛: <span id="timer">{timeLeft}</span> secondi</p>;
+  return (
+    <div className='timer-div'>
+      <img
+        src="/svg/hourglass.svg"
+        alt="timer"
+        className='timer-icon'
+      />
+
+      <div className='timer'>
+        <p>{timeLeft} secondi</p>
+      </div>
+    </div>
+  );
 };
 
 export default Timer;
