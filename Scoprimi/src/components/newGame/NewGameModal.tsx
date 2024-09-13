@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { socket } from '../../ts/socketInit';
 import * as c from '../../../../Server/src/socketConsts.js';
+import { useSwipeable } from 'react-swipeable';  // Importa il gestore dello swipe
 
 interface NewGameModalProps {
   isOpen: boolean;
@@ -52,8 +53,15 @@ const NewGameModal: React.FC<NewGameModalProps> = ({ isOpen, onClose }) => {
     onClose();
   };
 
+  // Gestore dello swipe
+  const swipeHandlers = useSwipeable({
+    onSwipedDown: () => onClose(), // Chiusura su swipe verso il basso
+    delta: 5, // Minima distanza di swipe per attivare l'evento
+    trackMouse: true, // Facoltativo: attiva il test anche per il mouse
+  });
+
   return (
-    <div className={`bottom-modal ${isOpen ? 'open' : ''}`}>
+    <div {...swipeHandlers} className={`bottom-modal ${isOpen ? 'open' : ''}`}>
       <button className="btn-bottom-modal-close" onClick={onClose}><i className="fa-solid fa-xmark"></i></button>
       <div className="paginator">
         <div className="elegant-background">
@@ -74,7 +82,6 @@ const NewGameModal: React.FC<NewGameModalProps> = ({ isOpen, onClose }) => {
           </div>
         </div>
       </div>
-
     </div>
   );
 };
