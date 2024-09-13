@@ -40,7 +40,7 @@ const Timer: React.FC<TimerProps> = ({ duration, onTimeUp, isActive }) => {
   return (
     <div className='timer-div'>
       <img
-        src="/svg/hourglass.svg"
+        src="./svg/hourglass.svg"
         alt="timer"
         className='timer-icon'
       />

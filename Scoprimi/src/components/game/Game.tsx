@@ -105,10 +105,11 @@ const Game: React.FC = () => {
   const handleNextQuestion = () => {
     setResetSelection(true);
     setButtonClicked(true); // Cambia lo stato del bottone
+    /* Non funziona
     if ("vibrate" in navigator) {
       // vibration API supported
       navigator.vibrate(1000);
-    }
+    }*/
     socket.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode: currentLobby, playerName: currentPlayer });
   };
 
