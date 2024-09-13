@@ -16,7 +16,10 @@ const io = new Server(server, {
     origin: ['http://localhost:5173', 'http://127.0.0.1:5173', 'https://fmanto01.github.io'],
     methods: ['GET', 'POST'],
     credentials: true
-  }
+  },
+  // 25000 e 20000 sono i valori di default
+  pingInterval: 25000 * 2,
+  pingTimeout: 20000 * 5,
 });
 setupAPI(app);
 async function init() {
