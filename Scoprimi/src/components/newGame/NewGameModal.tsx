@@ -56,7 +56,7 @@ const NewGameModal: React.FC<NewGameModalProps> = ({ isOpen, onClose }) => {
   // Gestore dello swipe
   const swipeHandlers = useSwipeable({
     onSwipedDown: () => onClose(), // Chiusura su swipe verso il basso
-    delta: 5, // Minima distanza di swipe per attivare l'evento
+    delta: 3, // Minima distanza di swipe per attivare l'evento
     trackMouse: true, // Facoltativo: attiva il test anche per il mouse
   });
 
