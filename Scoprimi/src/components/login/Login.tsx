@@ -2,11 +2,11 @@ import { useSession } from '../../contexts/SessionContext';
 import { useNavigate } from 'react-router-dom';
 
 const images = [
-  'https://cdn.jsdelivr.net/gh/alohe/avatars/png/memo_1.png',
-  'https://cdn.jsdelivr.net/gh/alohe/avatars/png/memo_2.png',
-  'https://cdn.jsdelivr.net/gh/alohe/avatars/png/memo_3.png',
-  'https://cdn.jsdelivr.net/gh/alohe/avatars/png/memo_4.png',
-  'https://cdn.jsdelivr.net/gh/alohe/avatars/png/memo_5.png',
+  'https://raw.githubusercontent.com/fmanto01/image-repo-scoprimi/main/images/profile_icon_1.png',
+  'https://raw.githubusercontent.com/fmanto01/image-repo-scoprimi/main/images/profile_icon_2.png',
+  'https://raw.githubusercontent.com/fmanto01/image-repo-scoprimi/main/images/profile_icon_3.png',
+  'https://raw.githubusercontent.com/fmanto01/image-repo-scoprimi/main/images/profile_icon_4.png',
+  'https://raw.githubusercontent.com/fmanto01/image-repo-scoprimi/main/images/profile_icon_5.png',
   'https://cdn.jsdelivr.net/gh/alohe/avatars/png/memo_6.png',
   'https://cdn.jsdelivr.net/gh/alohe/avatars/png/memo_7.png',
   'https://cdn.jsdelivr.net/gh/alohe/avatars/png/memo_8.png',
