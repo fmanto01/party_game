@@ -2,12 +2,12 @@
 ## v0.5.0
 - [x] Fixare disconnessione alla game
 - [x] Controllare il reset del timer, tra la selezione di un player all'altro
-- [] Tirare giù selezione domande senza la X quello fatto da pesto dal basso (gesture) 
+- [fede] Tirare giù selezione domande senza la X quello fatto da pesto dal basso (gesture) 
 - [] Cambio bottone (non pronto, non è intuitivo)
-- [] Condivisione link per unirsi alla lobby
-- [] Vibrazione per far capire che è arrivata una nuova domanda
-- [] Cambiamento emoji clessidra
-- [] Gestione lobby quando si torna indietro con il touch (player fantasma)
+- [pesto] Condivisione link per unirsi alla lobby
+- [mux] Vibrazione per far capire che è arrivata una nuova domanda
+- [mux] Cambiamento emoji clessidra
+- [fede] Gestione lobby quando si torna indietro con il touch (player fantasma)
 
 ## v0.6.0
 - [] Refactor del player sul backend
