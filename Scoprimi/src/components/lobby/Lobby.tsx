@@ -68,7 +68,7 @@ const Lobby: React.FC = () => {
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => setShowModal(true),
     onSwipedRight: () => setShowModal(true),
-    delta: 5, // Sensibilità dello swipe (la distanza minima per attivarlo)
+    delta: 3, // Sensibilità dello swipe (la distanza minima per attivarlo)
     trackMouse: true, // Permette di testare lo swipe anche col mouse
   });
 
