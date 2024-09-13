@@ -16,8 +16,11 @@ const images = [
   'https://cdn.jsdelivr.net/gh/alohe/avatars/png/memo_32.png',
 ];
 
+interface LoginProps {
+  onButtonClick?: () => void; // Optional prop for a custom button click handler
+}
 
-const Login: React.FC = () => {
+const Login: React.FC<LoginProps> = ({ onButtonClick }) => {
   const { currentPlayer, setCurrentPlayer, currentPlayerImage, setCurrentPlayerImage } = useSession();
   const navigator = useNavigate();
 
@@ -29,53 +32,58 @@ const Login: React.FC = () => {
     navigator('/');
   };
 
+  const handleClick = () => {
+    if (onButtonClick) {
+      onButtonClick(); // Call the custom function if provided
+    } else {
+      toHomePage(); // Otherwise, call the default function
+    }
+  };
+
   return (
-    <>
-      <div className="paginator">
-        <h2>ScopriMi</h2>
-        {/* Primo blocco */}
-        <div className="elegant-background mt-3 form-floating">
-          <div className='flex justify-content-end'>
-            <i className="icon-input fa-solid fa-user"></i>
-          </div>
-          <input
-            name="new-username"
-            maxLength={8}
-            type="text"
-            value={currentPlayer || ''}
-            onChange={(e) => setCurrentPlayer(e.target.value)}
-            className="my-input fill-input my-bg-secondary"
-            placeholder="Username..."
-            id="floatingInput"
-            autoComplete="off"
-            required
-          />
-          <label className='my-label'>Username</label>
+    <div className="paginator">
+      <h2>ScopriMi</h2>
+      {/* Primo blocco */}
+      <div className="elegant-background mt-3 form-floating">
+        <div className='flex justify-content-end'>
+          <i className="icon-input fa-solid fa-user"></i>
         </div>
-        {/* Secondo blocco */}
-        <div className="elegant-background image-container mt-3 fill">
-          <div className="image-row">
-            {images.map((image, index) => (
-              <div key={index}
-                className="image-column">
-                <img
-                  src={image}
-                  alt={`Profile ${index + 1}`}
-                  className={`image-thumbnail ${currentPlayerImage === image ? 'selected' : ''}`}
-                  onClick={() => handleImageSelect(image)} />
-              </div>
-            ))}
-          </div>
-        </div>
-        <button
-          className={`my-btn mt-3 ${!currentPlayer || !currentPlayerImage ? 'my-bg-disabled' : 'my-bg-tertiary'}`}
-          onClick={toHomePage}
-          disabled={!currentPlayer || !currentPlayerImage}
-        >
-          Crea utente
-        </button>
+        <input
+          name="new-username"
+          maxLength={8}
+          type="text"
+          value={currentPlayer || ''}
+          onChange={(e) => setCurrentPlayer(e.target.value)}
+          className="my-input fill-input my-bg-secondary"
+          placeholder="Username..."
+          id="floatingInput"
+          autoComplete="off"
+          required
+        />
+        <label className='my-label'>Username</label>
       </div>
-    </>
+      {/* Secondo blocco */}
+      <div className="elegant-background image-container mt-3 fill">
+        <div className="image-row">
+          {images.map((image, index) => (
+            <div key={index} className="image-column">
+              <img
+                src={image}
+                alt={`Profile ${index + 1}`}
+                className={`image-thumbnail ${currentPlayerImage === image ? 'selected' : ''}`}
+                onClick={() => handleImageSelect(image)} />
+            </div>
+          ))}
+        </div>
+      </div>
+      <button
+        className={`my-btn mt-3 ${!currentPlayer || !currentPlayerImage ? 'my-bg-disabled' : 'my-bg-tertiary'}`}
+        onClick={handleClick}
+        disabled={!currentPlayer || !currentPlayerImage}
+      >
+        Crea utente
+      </button>
+    </div>
   );
 };
 

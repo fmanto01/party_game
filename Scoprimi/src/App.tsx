@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import { webServerBaseUrl } from './ts/socketInit';
 import Loader from './components/Loader';
 import SocketListener from './components/SocketListener';
+import JoinLobbyWithShare from './components/JoinLobbyWithShare/JoinLobbyWithShare';
 
 const App = () => {
   const [serviceUp, setServiceUp] = useState(null); // null: loading, true: up, false: down
@@ -52,6 +53,7 @@ const App = () => {
           <Route path="/lobby" element={<ProtectedRoute component={Lobby} />} />
           <Route path="/game" element={<ProtectedRoute component={Game} />} />
           <Route path="/final-results" element={<FinalResults />} />
+          <Route path="/join/:lobbyCode" element={<JoinLobbyWithShare />} />
           <Route path="/error" element={<ErrorPage />} />
         </Routes>
       </Router>

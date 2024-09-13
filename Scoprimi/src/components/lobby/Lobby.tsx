@@ -70,8 +70,24 @@ const Lobby: React.FC = () => {
     return <div>Loading...</div>;
   }
 
+  async function handleShareLobby(lobbyCode: string) {
+    const shareableLink = `${window.location.origin}/party_game/join/${lobbyCode}`;
+
+    try {
+      await navigator.clipboard.writeText(shareableLink);
+    } catch (error) {
+      console.error('Unable to copy to clipboard:', error);
+    }
+  }
+
   return (
     <>
+      <button
+        className='my-btn-login elegant-background'
+        onClick={() => handleShareLobby(currentLobby)}
+      >
+        <i className="fa-solid fa-arrow-up-from-bracket"></i>
+      </button>
       <div className="paginator">
         <h2>ScopriMi</h2>
         {/* Primo blocco */}
