@@ -1,0 +1,18 @@
+.timer-div {
+  display: flex;
+  width: 80%;
+}
+
+.timer-icon {
+  width: auto;
+  height: auto;
+  max-width: 5vw;
+  max-height: 5vw;
+  object-fit: contain;
+  border-radius: 50%;
+  margin-top: 1vw;
+}
+
+.timer {
+  margin-left: 1vw;
+}

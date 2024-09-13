@@ -134,7 +134,9 @@ const Game: React.FC = () => {
               <>
                 <Question question={question} />
                 <div className='inline'>
-                  <p>Scegli un giocatore</p>
+                  <div className='label-container'>
+                    <p>Scegli un giocatore</p>
+                  </div>
                   <Timer duration={25} onTimeUp={handleTimeUp} isActive={isTimerActive} />
                 </div>
               </>

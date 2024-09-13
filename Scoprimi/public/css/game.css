@@ -1,8 +1,13 @@
 .inline {
   display: flex;
   justify-content: space-between;
+  margin-top: 3vw;
 }
 
 .player-image-card {
   text-align: center;
+}
+
+.label-container {
+  width: 100%;
 }
