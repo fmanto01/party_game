@@ -6,7 +6,6 @@ import { useSession } from '../../contexts/SessionContext.tsx';
 import LobbyList from '../common/LobbyList.tsx';
 import { Game } from '../../../../Server/src/data/Game.ts';
 import Modal from '../common/Modal.tsx';
-import { useSwipeable } from 'react-swipeable';
 
 function handleToggleisReadyToGame(data: { lobbyCode: string, playerName: string }) {
   console.log('handleLobbycode ', data.lobbyCode);
@@ -14,6 +13,7 @@ function handleToggleisReadyToGame(data: { lobbyCode: string, playerName: string
 }
 
 const Lobby: React.FC = () => {
+
   const [game, setGame] = useState<Game | undefined>(undefined);
   const { currentLobby, currentPlayer, setCurrentLobby } = useSession();
   const [isReady, setIsReady] = useState<boolean>(false);
@@ -34,8 +34,9 @@ const Lobby: React.FC = () => {
     });
     socket.on(c.INIZIA, () => {
       setGame((prevGame) => {
-        if (!prevGame) { return undefined; }
+        if (!prevGame) { return undefined; } // Check if prevGame is undefined
 
+        // Return the full previous game state with the updated property
         return Object.assign(Object.create(Object.getPrototypeOf(prevGame)), prevGame, {
           isGameStarted: true,
         });
@@ -64,14 +65,6 @@ const Lobby: React.FC = () => {
     handleToggleisReadyToGame({ lobbyCode: currentLobby, playerName: currentPlayer });
   };
 
-  // Gestore dello swipe per chiudere la lobby (equivalente al pulsante Indietro)
-  const swipeHandlers = useSwipeable({
-    onSwipedLeft: () => setShowModal(true),
-    onSwipedRight: () => setShowModal(true),
-    delta: 3, // Sensibilità dello swipe (la distanza minima per attivarlo)
-    trackMouse: true, // Permette di testare lo swipe anche col mouse
-  });
-
   // TODO load page
   if (!game) {
     return <div>Loading...</div>;
@@ -79,7 +72,7 @@ const Lobby: React.FC = () => {
 
   return (
     <>
-      <div {...swipeHandlers} className="paginator">
+      <div className="paginator">
         <h2>ScopriMi</h2>
         {/* Primo blocco */}
         <div className="elegant-background mt-3">
@@ -121,7 +114,7 @@ const Lobby: React.FC = () => {
             {isReady ? 'Non pronto' : 'Pronto'}
           </button>
         </div>
-        {/* Modal per confermare l'uscita dalla lobby */}
+        {/* // Modal for confirm exit lobby */}
         <Modal
           show={showModal}
           onConfirm={handleConfirmLeave}
@@ -130,6 +123,7 @@ const Lobby: React.FC = () => {
       </div>
     </>
   );
+
 };
 
 export default Lobby;
