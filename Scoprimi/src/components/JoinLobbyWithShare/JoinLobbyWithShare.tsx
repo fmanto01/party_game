@@ -14,12 +14,12 @@ const JoinLobbyWithShare = () => {
   const { currentPlayer, currentPlayerImage, setCurrentLobby } = useSession();
 
   useEffect(() => {
-    socket.emit(c.TEST_LOBBY, { lobbyCode: 'someCode' }, (response: boolean) => {
+    socket.emit(c.TEST_LOBBY, { lobbyCode: lobbyCode }, (response: boolean) => {
       if (!response) {
         navigate('/error');
       }
     });
-  }, [navigate]);
+  }, [lobbyCode, navigate]);
 
   function handleJoinGame(lobbyCode: string) {
     const data = {
