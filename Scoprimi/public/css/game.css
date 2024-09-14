@@ -6,6 +6,7 @@
 
 .player-image-card {
   text-align: center;
+  height: fit-content;
 }
 
 .label-container {
