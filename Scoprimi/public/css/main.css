@@ -18,7 +18,7 @@ body,
 input,
 button {
   color: var(--text-color);
-  border: none !important;
+  border: none;
 }
 
 /* Stile normale del placeholder */
@@ -61,9 +61,12 @@ input::placeholder {
 
 .my-input {
   padding: 10px;
-  border: 1px solid #ccc;
   border-radius: 15px;
-  color: black;
+  color: var(--text-color);
+}
+
+.input-question {
+  color: black !important;
 }
 
 .form-floating {

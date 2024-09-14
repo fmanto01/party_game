@@ -70,7 +70,7 @@ const NewGameModal: React.FC<NewGameModalProps> = ({ isOpen, onClose }) => {
             <button className="btn-change-value my-bg-quartary" onClick={decrement}>-</button>
             <input
               type="number"
-              className="my-input stretch text-center"
+              className="my-input stretch text-center input-question"
               value={numQuestions}
               onChange={(e) => handleInputChange(e.target.value)}
               min="5"
