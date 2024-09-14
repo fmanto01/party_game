@@ -18,6 +18,7 @@ body,
 input,
 button {
   color: var(--text-color);
+  border: none !important;
 }
 
 /* Stile normale del placeholder */
