@@ -83,7 +83,7 @@ export function setupSocket(io: any) {
     socket.on(c.TEST_LOBBY, (data: { lobbyCode: string }, callback: (arg0: boolean) => void) => {
 
       const game = actualGameManager.getGame(data.lobbyCode);
-      if (!game && game.isGameStarted)
+      if (game && game.isGameStarted)
         callback(false);
 
       callback(true);
