@@ -6,6 +6,7 @@ import { useSession } from '../../contexts/SessionContext.tsx';
 import LobbyList from '../common/LobbyList.tsx';
 import { Game } from '../../../../Server/src/data/Game.ts';
 import Modal from '../common/Modal.tsx';
+import Alert from '../common/Alert.tsx';
 
 function handleToggleisReadyToGame(data: { lobbyCode: string, playerName: string }) {
   console.log('handleLobbycode ', data.lobbyCode);
@@ -74,7 +75,7 @@ const Lobby: React.FC = () => {
     const shareableLink = `${window.location.origin}/join/${lobbyCode}`;
     const shareData = {
       title: 'Join my lobby!',
-      text: 'Click the link to join my lobby.',
+      text: 'Click the link to join my lobby!\n',
       url: shareableLink,
     };
 
@@ -87,6 +88,7 @@ const Lobby: React.FC = () => {
     } else {
       try {
         await navigator.clipboard.writeText(shareableLink);
+        <Alert text='Link copiato negli appunti' />;
         console.log('Link copied to clipboard:', shareableLink);
       } catch (error) {
         console.error('Unable to copy to clipboard:', error);
