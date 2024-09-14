@@ -72,13 +72,28 @@ const Lobby: React.FC = () => {
 
   async function handleShareLobby(lobbyCode: string) {
     const shareableLink = `${window.location.origin}/join/${lobbyCode}`;
+    const shareData = {
+      title: 'Join my lobby!',
+      text: 'Click the link to join my lobby.',
+      url: shareableLink,
+    };
 
-    try {
-      await navigator.clipboard.writeText(shareableLink);
-    } catch (error) {
-      console.error('Unable to copy to clipboard:', error);
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (error) {
+        console.error('Error sharing:', error);
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(shareableLink);
+        console.log('Link copied to clipboard:', shareableLink);
+      } catch (error) {
+        console.error('Unable to copy to clipboard:', error);
+      }
     }
   }
+
 
   return (
     <>
