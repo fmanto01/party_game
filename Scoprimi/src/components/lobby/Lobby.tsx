@@ -71,7 +71,7 @@ const Lobby: React.FC = () => {
   }
 
   async function handleShareLobby(lobbyCode: string) {
-    const shareableLink = `${window.location.origin}/party_game/join/${lobbyCode}`;
+    const shareableLink = `${window.location.origin}/join/${lobbyCode}`;
 
     try {
       await navigator.clipboard.writeText(shareableLink);

@@ -50,7 +50,7 @@ const App = () => {
       <Router>
         <SocketListener />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/lobby" element={<ProtectedRoute component={Lobby} />} />
           <Route path="/game" element={<ProtectedRoute component={Game} />} />
