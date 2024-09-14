@@ -1,13 +1,13 @@
 
 ## v0.5.0
-- [x] Fixare disconnessione alla game
-- [x] Controllare il reset del timer, tra la selezione di un player all'altro
-- [fede] Tirare giù selezione domande senza la X quello fatto da pesto dal basso (gesture) 
-- [] Cambio bottone (non pronto, non è intuitivo)
-- [pesto] Condivisione link per unirsi alla lobby
-- [mux] Vibrazione per far capire che è arrivata una nuova domanda
-- [mux] Cambiamento emoji clessidra
-- [fede] Gestione lobby quando si torna indietro con il touch (player fantasma)
+- [x] Sistemare disconnessione dal gioco
+- [x] Controllo del timer, tra il voto di un giocatore e un altro ritorna a 25 secondi
+- [x] Aggiungere gesture di swipe down quando si seleziona il numero di domande [Fede]
+- [] Cambio bottone per pronto / non pronto, al momento non è intuitivo
+- [] Aggiungere possibilità di condividere un link per entrare in una lobby [Pesto]
+- [] Far vibrare il cellulare all'arrivo di una nuova domanda, in modo che il giocatore lo capisca [Mux]
+- [x] Cambiare emoji della clessidra con un'immagine  [Mux]
+- [] Risolvere problema del player fantasma, quando si è dentro ad una lobby e si clicca il pulsante indietro del browser (o swipe su cellulare) il giocatore esce dalla lobby ma risulta allo stesso tempo dentro, rendendogli impossibile il rientro [Fede]
 
 ## v0.6.0
 - [] Refactor del player sul backend
