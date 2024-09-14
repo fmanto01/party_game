@@ -20,6 +20,7 @@ const Lobby: React.FC = () => {
   const [isReady, setIsReady] = useState<boolean>(false);
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
 
   useEffect(() => {
     document.title = `Lobby - ${currentLobby}`;
@@ -99,7 +100,7 @@ const Lobby: React.FC = () => {
     } else {
       try {
         await navigator.clipboard.writeText(shareableLink);
-        <Alert text='Link copiato negli appunti' />;
+        setShowAlert(true);
         console.log('Link copied to clipboard:', shareableLink);
       } catch (error) {
         console.error('Unable to copy to clipboard:', error);
@@ -107,9 +108,9 @@ const Lobby: React.FC = () => {
     }
   }
 
-
   return (
     <>
+      <Alert text='Link copiato negli appunti' show={showAlert} onHide={() => setShowAlert(false)} />
       <button
         className='my-btn-login elegant-background'
         onClick={() => handleShareLobby(currentLobby)}

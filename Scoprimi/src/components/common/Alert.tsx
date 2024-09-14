@@ -1,23 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 interface AlertProps {
   text: string;
+  show: boolean;
+  onHide: () => void;
 }
 
-const Alert: React.FC<AlertProps> = ({ text }) => {
-  const [visible, setVisible] = useState(true);
-
+const Alert: React.FC<AlertProps> = ({ text, show, onHide }) => {
   useEffect(() => {
-    // Mantieni il testo visibile per 2 secondi
-    const timer = setTimeout(() => {
-      setVisible(false); // Nascondi il testo dopo 2 secondi
-    }, 2000);
+    if (show) {
+      // Nascondi l'alert dopo 2 secondi
+      const timer = setTimeout(() => {
+        onHide(); // Chiama la funzione per nascondere l'alert
+      }, 2000);
 
-    return () => clearTimeout(timer); // Pulisci il timer
-  }, []);
+      return () => clearTimeout(timer); // Pulisci il timer quando l'alert viene nascosto o il componente viene smontato
+    }
+  }, [show, onHide]);
 
   return (
-    <div className={`fade-text ${visible ? 'visible' : 'hidden'}`}>
+    <div className={`fade-text ${show ? 'visible' : 'hidden'}`}>
       {text}
     </div>
   );
