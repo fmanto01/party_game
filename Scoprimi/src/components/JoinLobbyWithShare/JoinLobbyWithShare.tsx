@@ -34,7 +34,7 @@ const JoinLobbyWithShare = () => {
 
   return (
     <>
-      <Alert text='Sei già in questa lobby' show={showAlert} onHide={() => setShowAlert(false)} />
+      <Alert text='Cambia nome' show={showAlert} onHide={() => setShowAlert(false)} />
       <Login onButtonClick={() => handleJoinGame(lobbyCode)} />
     </>
   );
