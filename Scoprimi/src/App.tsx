@@ -12,6 +12,7 @@ import { webServerBaseUrl } from './ts/socketInit';
 import Loader from './components/Loader';
 import SocketListener from './components/SocketListener';
 import JoinLobbyWithShare from './components/JoinLobbyWithShare/JoinLobbyWithShare';
+import Page404 from './components/Page404';
 
 const App = () => {
   const [serviceUp, setServiceUp] = useState(null); // null: loading, true: up, false: down
@@ -57,6 +58,7 @@ const App = () => {
           <Route path="/final-results" element={<FinalResults />} />
           <Route path="/join/:lobbyCode" element={<JoinLobbyWithShare />} />
           <Route path="/error" element={<ErrorPage />} />
+          <Route path="*" element={<Page404 />} />
         </Routes>
       </Router>
     </SessionProvider>
