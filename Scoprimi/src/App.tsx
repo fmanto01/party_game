@@ -45,7 +45,9 @@ const App = () => {
 
   return (
     <SessionProvider>
-      <Router basename="/party_game/">
+      {/* Questo era qua per github pages */}
+      {/* <Router basename="/party_game/"> */}
+      <Router>
         <SocketListener />
         <Routes>
           <Route path="/" element={<Home />} />
