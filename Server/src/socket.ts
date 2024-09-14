@@ -80,6 +80,16 @@ export function setupSocket(io: any) {
       }
     });
 
+    socket.on(c.TEST_LOBBY, (data: { lobbyCode: string }, callback: (arg0: boolean) => void) => {
+      let isValid = true;
+      const game = actualGameManager.getGame(data.lobbyCode);
+
+      if (!game) {
+        isValid = false;
+      }
+      callback(isValid);
+    });
+
     socket.on(c.CREATE_LOBBY, ([code, numQuestionsParam]: [string, number]) => {
       console.log('Creo la lobby con [codice - domande]: ', code, ' - ', numQuestionsParam);
       const newGame = actualGameManager.createGame(code, numQuestionsParam);
@@ -96,6 +106,7 @@ export function setupSocket(io: any) {
         const game = actualGameManager.getGame(code);
 
         if (!game) {
+          console.log('non esiste questa lobby');
           socket.emit(c.FORCE_RESET);
           return;
         }

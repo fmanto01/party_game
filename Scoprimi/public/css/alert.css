@@ -3,11 +3,17 @@
   position: fixed;
   top: 10vh;
   left: 50%;
+  width: 60vw;
+  height: 10vh;
   transform: translateX(-50%);
   background-color: var(--tertiary-color);
   padding: 10px 20px;
   border-radius: 5px;
   z-index: 1000;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .fade-text.hidden {

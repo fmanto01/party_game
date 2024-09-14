@@ -4,14 +4,24 @@ import Login from '../login/Login';
 import { socket } from '../../ts/socketInit';
 import { useSession } from '../../contexts/SessionContext';
 import * as c from '../../../../Server/src/socketConsts.js';
+import { useEffect, useState } from 'react';
+import Alert from '../common/Alert.js';
 
 const JoinLobbyWithShare = () => {
   const navigate = useNavigate();
   const { lobbyCode } = useParams();
+  const [showAlert, setShowAlert] = useState<boolean>(false);
   const { currentPlayer, currentPlayerImage, setCurrentLobby } = useSession();
 
-  function handleJoinGame(lobbyCode: string) {
+  useEffect(() => {
+    socket.emit(c.TEST_LOBBY, { lobbyCode: 'someCode' }, (response: boolean) => {
+      if (!response) {
+        navigate('/error');
+      }
+    });
+  }, [navigate]);
 
+  function handleJoinGame(lobbyCode: string) {
     const data = {
       lobbyCode: lobbyCode,
       playerName: currentPlayer,
@@ -25,12 +35,15 @@ const JoinLobbyWithShare = () => {
       setCurrentLobby(data.lobbyCode);
       navigate('/lobby');
     } else {
-      alert('Sei già in questa lobby');
+      setShowAlert(true);
     }
   });
 
   return (
-    <Login onButtonClick={() => handleJoinGame(lobbyCode)} />
+    <>
+      <Alert text='Cambia nome' show={showAlert} onHide={() => setShowAlert(false)} />
+      <Login onButtonClick={() => handleJoinGame(lobbyCode)} />
+    </>
   );
 };
 
