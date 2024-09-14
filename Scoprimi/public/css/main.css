@@ -190,3 +190,8 @@ input::placeholder {
 .my-bg-disabled {
   background-color: var(--disabled-color);
 }
+
+.bottom-modal {
+  touch-action: none;
+  /* Disabilita il comportamento di default delle gestures del browser */
+}

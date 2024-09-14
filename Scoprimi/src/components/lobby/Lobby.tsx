@@ -27,6 +27,14 @@ const Lobby: React.FC = () => {
       setGame(data);
       setIsReady(data.isReadyToGame[currentPlayer]);
     });
+
+    const handlePopState = (event: PopStateEvent) => {
+      console.log('Back button clicked', event);
+      handleConfirmLeave();
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
     socket.on(c.RENDER_LOBBY, (data: Game) => {
       console.log(data);
       setGame(data);
@@ -44,8 +52,11 @@ const Lobby: React.FC = () => {
       navigate('/game');
     });
 
+
     return () => {
       socket.off(c.INIZIA);
+      // TODO Capire perchè con il removeEventLister non funziona
+      //window.removeEventListener('popstate', handlePopState);
     };
   }, [currentLobby, navigate, currentPlayer]);
 
