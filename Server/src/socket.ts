@@ -81,13 +81,14 @@ export function setupSocket(io: any) {
     });
 
     socket.on(c.TEST_LOBBY, (data: { lobbyCode: string }, callback: (arg0: boolean) => void) => {
-      let isValid = true;
-      const game = actualGameManager.getGame(data.lobbyCode);
-
-      if (!game) {
-        isValid = false;
+      try {
+        const game = actualGameManager.getGame(data.lobbyCode);
+        const isValid = game !== null; // Usa null per verificare se il gioco esiste
+        callback(isValid);
+      } catch (error) {
+        console.error("Errore nella verifica del lobby:", error);
+        callback(false); // Restituisce false in caso di errore
       }
-      callback(isValid);
     });
 
     socket.on(c.CREATE_LOBBY, ([code, numQuestionsParam]: [string, number]) => {
