@@ -6,6 +6,7 @@ import { Game } from '../../../../Server/src/data/Game.ts';
 import LobbyList from '../common/LobbyList.tsx';
 import { useSession } from '../../contexts/SessionContext.tsx';
 import BottomModal from '../newGame/NewGameModal.tsx';
+import Alert from '../common/Alert.tsx';
 
 const Home: React.FC = () => {
   const { currentPlayer, setCurrentLobby, currentPlayerImage, isSetPlayer } = useSession();
@@ -14,6 +15,7 @@ const Home: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
 
   function handleJoinGame(lobbyCode: string) {
     if (!currentPlayer) {
@@ -57,7 +59,7 @@ const Home: React.FC = () => {
         setCurrentLobby(data.lobbyCode);
         navigate('/lobby');
       } else {
-        alert('Sei già in questa lobby');
+        setShowAlert(true);
       }
     });
 
@@ -75,6 +77,7 @@ const Home: React.FC = () => {
 
   return (
     <>
+      <Alert text='Sei già in questa lobby' show={showAlert} onHide={() => setShowAlert(false)} />
       {/* Bottone login */}
       <button
         className="my-btn-login"
