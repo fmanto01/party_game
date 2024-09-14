@@ -63,6 +63,7 @@ input::placeholder {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 15px;
+  color: black;
 }
 
 .form-floating {
@@ -176,6 +177,10 @@ input::placeholder {
   background-color: var(--error-color);
 }
 
+.my-bg-not-ready {
+  background-color: var(--not-ready);
+}
+
 .my-bg-primary {
   background-color: var(--primary-color);
 }
@@ -188,8 +193,20 @@ input::placeholder {
   background-color: var(--tertiary-color);
 }
 
+.my-bg-quartary {
+  background-color: var(--quartary-color);
+}
+
 .my-bg-disabled {
   background-color: var(--disabled-color);
+}
+
+.my-bg-elegant-backgorund {
+  background-color: var(--elegant-background-color);
+}
+
+.my-bg-puss {
+  background-color: var(--puss-color);
 }
 
 .bottom-modal {

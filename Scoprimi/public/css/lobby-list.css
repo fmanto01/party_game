@@ -23,6 +23,6 @@
 
 /* Color for started status */
 .status-indicator.started {
-  background-color: var(--error-color);
+  background-color: var(--not-ready);
   /* Orange */
 }

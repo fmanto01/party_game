@@ -1,13 +1,16 @@
 :root {
   --primary-color: #76B16A;
   --secondary-color: #6D6AB1;
-  --tertiary-color: #6AB1A6;
+  --tertiary-color: #6D6AB1;
+  --quartary-color: #6A96B1;
   --success-color: #76B16A;
-  --error-color: #B1936A;
+  --error-color: #B16D6A;
 
-  --not-ready: #B16D6A;
+  --puss-color: #B16AA2;
 
-  --disabled-color: #B1B1B1;
+  --not-ready: #B1936A;
+
+  --disabled-color: #818181;
   --text-color: #d9d9d9;
   --background-color: #121216;
   --elegant-background-color: #33363d;

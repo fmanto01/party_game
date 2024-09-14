@@ -149,12 +149,12 @@ const Lobby: React.FC = () => {
         <div className='lobby-button-group mt-3'>
           <button
             onClick={() => setShowModal(true)}
-            className="my-btn my-bg-error">
+            className="my-btn my-bg-elegant-backgorund">
             Indietro
           </button>
           <button
             id="toggleisReadyToGame"
-            className={`my-btn ${isReady ? 'my-bg-success' : 'my-bg-secondary'}`}
+            className={`my-btn ${isReady ? 'my-bg-error' : 'my-bg-success'}`}
             onClick={() => toggleReady()}>
             {isReady ? 'Non pronto' : 'Pronto'}
           </button>

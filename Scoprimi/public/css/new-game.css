@@ -10,7 +10,6 @@
   border: 0;
   height: 50px;
   width: 50px;
-  background-color: var(--primary-color);
   border-radius: 10px;
   border: none;
   font-size: 35px;
@@ -18,7 +17,7 @@
 }
 
 .bottom-modal {
-  border-top: 2px solid var(--tertiary-color);
+  border-top: 2px solid var(--quartary-color);
   /* Added border style, width, and color */
   position: fixed;
   bottom: 0;

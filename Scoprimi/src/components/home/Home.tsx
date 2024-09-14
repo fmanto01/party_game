@@ -103,7 +103,7 @@ const Home: React.FC = () => {
           <input
             name='lobby-code'
             type="text"
-            className='my-input fill-input my-bg-tertiary'
+            className='my-input fill-input my-bg-quartary'
             value={searchTerm}
             onChange={filterLobbies}
             placeholder='Codice lobby...'
@@ -120,7 +120,7 @@ const Home: React.FC = () => {
             onJoin={handleJoinGame} />
         </div>
         <button
-          className='my-btn mt-3 my-bg-primary'
+          className='my-btn mt-3 my-bg-quartary'
           onClick={() => setIsModalOpen(true)}
         >
           Crea partita

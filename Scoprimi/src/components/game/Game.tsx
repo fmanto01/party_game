@@ -170,7 +170,7 @@ const Game: React.FC = () => {
             onClick={handleNextQuestion}
             style={{
               width: '100%',
-              backgroundColor: buttonClicked ? '#75b268' : '#3e424B', // Cambia il colore al clic
+              backgroundColor: buttonClicked ? 'var(--disabled-color)' : '#75b268', // Cambia il colore al clic
             }}
           >
             Prosegui al prossimo turno

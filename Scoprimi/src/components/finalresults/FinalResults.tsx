@@ -43,7 +43,7 @@ const FinalResults: React.FC = () => {
           </table>
         </div>
         <button
-          className='my-btn mt-3 my-bg-tertiary'
+          className='my-btn mt-3 my-bg-puss'
           onClick={() => navigate('/')}
         >
           Torna alla homepage
