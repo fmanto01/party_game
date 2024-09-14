@@ -4,7 +4,7 @@ import Login from '../login/Login';
 import { socket } from '../../ts/socketInit';
 import { useSession } from '../../contexts/SessionContext';
 import * as c from '../../../../Server/src/socketConsts.js';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Alert from '../common/Alert.js';
 
 const JoinLobbyWithShare = () => {
@@ -13,8 +13,15 @@ const JoinLobbyWithShare = () => {
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const { currentPlayer, currentPlayerImage, setCurrentLobby } = useSession();
 
-  function handleJoinGame(lobbyCode: string) {
+  useEffect(() => {
+    socket.emit(c.TEST_LOBBY, { lobbyCode: 'someCode' }, (response: boolean) => {
+      if (!response) {
+        navigate('/error');
+      }
+    });
+  }, [navigate]);
 
+  function handleJoinGame(lobbyCode: string) {
     const data = {
       lobbyCode: lobbyCode,
       playerName: currentPlayer,
