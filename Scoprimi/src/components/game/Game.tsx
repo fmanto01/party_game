@@ -8,6 +8,7 @@ import Question from './Question';
 import PlayerList from './PlayerList';
 import { useSession } from '../../contexts/SessionContext';
 import Results from './Results';
+import Modal from '../common/Modal.tsx';
 
 const Game: React.FC = () => {
   const [question, setQuestion] = useState<string>('');
@@ -24,6 +25,7 @@ const Game: React.FC = () => {
   const [resetSelection, setResetSelection] = useState<boolean>(false);
   const [buttonClicked, setButtonClicked] = useState<boolean>(false); // Nuovo stato per il bottone
   const [playersWhoVoted, setPlayersWhoVoted] = useState<string[]>([]);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const { currentLobby, currentPlayer, setCurrentPlayer, setCurrentLobby } = useSession();
   const navigate = useNavigate();
@@ -92,6 +94,29 @@ const Game: React.FC = () => {
     };
   }, [currentLobby, currentPlayer, setCurrentPlayer, navigate, setCurrentLobby]);
 
+  useEffect(() => {
+    const handlePopState = (event: PopStateEvent) => {
+      console.log('TODO: Attivare modal');
+      setShowModal(true);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      //window.removeEventListener('popstate', handlePopState);
+    };
+  }, []); // L'array di dipendenze è vuoto perché questa parte si registra una volta sola
+
+  const handleConfirmLeave = () => {
+    socket.emit(c.EXIT_LOBBY, { currentPlayer, currentLobby });
+    setCurrentLobby(undefined);
+    navigate('/');
+  };
+
+  const handleCancelLeave = () => {
+    setShowModal(false);
+  };
+
   const handleVote = (player: string) => {
     if (clicked) {
       console.log('Hai già votato!');
@@ -105,11 +130,6 @@ const Game: React.FC = () => {
   const handleNextQuestion = () => {
     setResetSelection(true);
     setButtonClicked(true); // Cambia lo stato del bottone
-    /* Non funziona
-    if ("vibrate" in navigator) {
-      // vibration API supported
-      navigator.vibrate(1000);
-    }*/
     socket.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode: currentLobby, playerName: currentPlayer });
   };
 
@@ -177,6 +197,12 @@ const Game: React.FC = () => {
           </button>
         </div>
       )}
+      {/* // Modal for confirm exit lobby */}
+      <Modal
+        show={showModal}
+        onConfirm={handleConfirmLeave}
+        onCancel={handleCancelLeave}
+      />
     </div>
   );
 };
