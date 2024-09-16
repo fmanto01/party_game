@@ -12,3 +12,14 @@
 .label-container {
   width: 100%;
 }
+
+.check-mark {
+  position: absolute;
+  bottom: 3%;
+  left: 80%;
+  transform: translate(-80%, -3%);
+  color: var(--success-color);
+  background-color: var(--background-color);
+  padding: 0.5vh 1vw;
+  border-radius: 10px;
+}

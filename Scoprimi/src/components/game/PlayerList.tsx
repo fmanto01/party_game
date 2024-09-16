@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 interface PlayerListProps {
   players: string[];
-  images: string[];
+  images: { [key: string]: string };
   onVote: (player: string) => void;
   disabled: boolean;
   resetSelection: boolean;
@@ -30,20 +30,28 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, images, onVote, disabl
       {players.map(player => (
         <div
           key={player}
-          className={'player-image-card'}
+          className="player-image-card"
+
         >
           <div
             className="image-column"
             onClick={() => handlePlayerClick(player)}
-            style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
+            style={{ cursor: disabled ? 'not-allowed' : 'pointer', position: 'relative' }}
           >
             <img
               src={images[player]}
-              className={`image-thumbnail ${selectedPlayer === player ? 'selected' : ''}`}
+              className="image-thumbnail"
               alt={`Image of ${player}`}
-              style={{ filter: (disabled && !playersWhoVoted.includes(player)) ? 'grayscale(100%)' : 'none' }}
+              style={{
+                filter: disabled && selectedPlayer !== player ? 'grayscale(100%)' : 'none', // Colore normale per il giocatore selezionato
+              }}
             />
-
+            <i
+              className="check-mark fa-solid fa-check"
+              style={{
+                display: disabled && playersWhoVoted.includes(player) ? 'block' : 'none', // Mostra la spunta verde per i giocatori che hanno votato
+              }}
+            ></i>
           </div>
           <p>{player}</p>
         </div>
