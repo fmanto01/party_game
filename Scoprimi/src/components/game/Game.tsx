@@ -95,7 +95,7 @@ const Game: React.FC = () => {
   }, [currentLobby, currentPlayer, setCurrentPlayer, navigate, setCurrentLobby]);
 
   useEffect(() => {
-    const handlePopState = (event: PopStateEvent) => {
+    const handlePopState = () => {
       console.log('TODO: Attivare modal');
       setShowModal(true);
     };
