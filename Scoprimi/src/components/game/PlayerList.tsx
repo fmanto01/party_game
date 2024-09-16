@@ -48,7 +48,7 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, images, onVote, disabl
             <i
               className="check-mark fa-solid fa-check"
               style={{
-                display: disabled && player in playersWhoVoted ? 'block' : 'none', // Mostra la spunta verde per i giocatori che hanno votato
+                display: disabled && playersWhoVoted.includes(player) ? 'block' : 'none', // Mostra la spunta verde per i giocatori che hanno votato
               }}
             ></i>
           </div>
