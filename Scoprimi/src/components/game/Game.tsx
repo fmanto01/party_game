@@ -92,6 +92,20 @@ const Game: React.FC = () => {
     };
   }, [currentLobby, currentPlayer, setCurrentPlayer, navigate, setCurrentLobby]);
 
+  useEffect(() => {
+    const handlePopState = () => {
+      // socket.emit(c.EXIT_LOBBY, { currentPlayer, currentLobby });
+      socket.emit('mydisconnet');
+      navigate('/');
+    };
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      // window.removeEventListener('popstate', handlePopState);
+    };
+  }, [currentLobby, currentPlayer, navigate, setCurrentLobby]);
+
+
   const handleVote = (player: string) => {
     if (clicked) {
       console.log('Hai già votato!');
@@ -105,11 +119,6 @@ const Game: React.FC = () => {
   const handleNextQuestion = () => {
     setResetSelection(true);
     setButtonClicked(true); // Cambia lo stato del bottone
-    /* Non funziona
-    if ("vibrate" in navigator) {
-      // vibration API supported
-      navigator.vibrate(1000);
-    }*/
     socket.emit(c.READY_FOR_NEXT_QUESTION, { lobbyCode: currentLobby, playerName: currentPlayer });
   };
 

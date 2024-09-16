@@ -32,6 +32,46 @@ function checkLobbiesAge(io: any) {
   });
 }
 
+function mydisconnet(socket, io) {
+  console.log('Client disconnected:', socket.id);
+
+  for (const lobbyCode of actualGameManager.listLobbiesCode()) {
+    const game = actualGameManager.getGame(lobbyCode);
+    if (!game) {
+      socket.emit(c.FORCE_RESET);
+      return;
+    }
+    const playerName = game.players.find(pname => game.playerSocketIds[pname] === socket.id);
+
+    if (playerName) {
+      console.log(`Removing ${playerName} from lobby ${lobbyCode}`);
+      game.removePlayer(playerName);
+      io.to(lobbyCode).emit(c.RENDER_LOBBY, game);
+      socket.leave(lobbyCode);
+
+      // Se la lobby è vuota, la elimino
+      if (game.players.length === 0) {
+        console.log(`Deleting empty lobby ${lobbyCode}`);
+        actualGameManager.deleteGame(lobbyCode);
+        const lobbies = actualGameManager.listGames();
+        io.emit(c.RENDER_LOBBIES, { lobbies });
+        break;
+      }
+
+      // TODO fix veloce per quando un player si disconnette
+      if (game.didAllPlayersVote()) {
+        const players = game.players;
+        const voteRecap = game.whatPlayersVoted;
+        const playerImages = game.images;
+        const mostVotedPerson = game.getMostVotedPerson();
+        game.whatPlayersVoted = {};
+        io.to(lobbyCode).emit(c.SHOW_RESULTS, { players, voteRecap, playerImages, mostVotedPerson });
+      }
+    }
+  }
+}
+
+
 
 
 export function setupSocket(io: any) {
@@ -41,44 +81,9 @@ export function setupSocket(io: any) {
     // Avvia il controllo per l'eliminazione delle lobby (ogni 60 sec)
     setInterval(() => checkLobbiesAge(io), 10 * 1000);
 
-    socket.on(c.DISCONNECT, () => {
-      console.log('Client disconnected:', socket.id);
+    socket.on('mydisconnet', () => mydisconnet(socket, io));
 
-      for (const lobbyCode of actualGameManager.listLobbiesCode()) {
-        const game = actualGameManager.getGame(lobbyCode);
-        if (!game) {
-          socket.emit(c.FORCE_RESET);
-          return;
-        }
-        const playerName = game.players.find(pname => game.playerSocketIds[pname] === socket.id);
-
-        if (playerName) {
-          console.log(`Removing ${playerName} from lobby ${lobbyCode}`);
-          game.removePlayer(playerName);
-          io.to(lobbyCode).emit(c.RENDER_LOBBY, game);
-          socket.leave(lobbyCode);
-
-          // Se la lobby è vuota, la elimino
-          if (game.players.length === 0) {
-            console.log(`Deleting empty lobby ${lobbyCode}`);
-            actualGameManager.deleteGame(lobbyCode);
-            const lobbies = actualGameManager.listGames();
-            io.emit(c.RENDER_LOBBIES, { lobbies });
-            break;
-          }
-
-          // TODO fix veloce per quando un player si disconnette
-          if (game.didAllPlayersVote()) {
-            const players = game.players;
-            const voteRecap = game.whatPlayersVoted;
-            const playerImages = game.images;
-            const mostVotedPerson = game.getMostVotedPerson();
-            game.whatPlayersVoted = {};
-            io.to(lobbyCode).emit(c.SHOW_RESULTS, { players, voteRecap, playerImages, mostVotedPerson });
-          }
-        }
-      }
-    });
+    socket.on(c.DISCONNECT, () => mydisconnet(socket, io));
 
     socket.on(c.TEST_LOBBY, (data: { lobbyCode: string }, callback: (arg0: boolean) => void) => {
 
