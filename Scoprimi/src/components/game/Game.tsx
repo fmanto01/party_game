@@ -101,9 +101,9 @@ const Game: React.FC = () => {
     window.addEventListener('popstate', handlePopState);
 
     return () => {
-      // window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('popstate', handlePopState);
     };
-  }, [currentLobby, currentPlayer, navigate, setCurrentLobby]);
+  }, [navigate]);
 
 
   const handleVote = (player: string) => {

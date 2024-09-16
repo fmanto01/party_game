@@ -25,14 +25,16 @@ const Lobby: React.FC = () => {
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
       console.log('Back button clicked', event);
-      handleConfirmLeave();
+      socket.emit(c.EXIT_LOBBY, { currentPlayer, currentLobby });
+      setCurrentLobby(undefined);
+      navigate('/');
     };
     window.addEventListener('popstate', handlePopState);
 
     return () => {
-      // window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('popstate', handlePopState);
     };
-  });
+  }, [currentLobby, currentPlayer, navigate, setCurrentLobby]);
 
   useEffect(() => {
     document.title = `Lobby - ${currentLobby}`;
