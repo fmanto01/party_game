@@ -12,7 +12,7 @@ import Results from './Results';
 const Game: React.FC = () => {
   const [question, setQuestion] = useState<string>('');
   const [players, setPlayers] = useState<string[]>([]);
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState<{ [key: string]: string }>({});
   const [mostVotedPerson, setMostVotedPerson] = useState<string>('');
   const [playerImages, setPlayerImages] = useState<{ [key: string]: string }>({});
   const [showResults, setShowResults] = useState<boolean>(false);
@@ -23,7 +23,7 @@ const Game: React.FC = () => {
   const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
   const [resetSelection, setResetSelection] = useState<boolean>(false);
   const [buttonClicked, setButtonClicked] = useState<boolean>(false); // Nuovo stato per il bottone
-  const [playersWhoVoted, setPlayersWhoVoted] = useState<string[]>([]);
+  const [playersWhoVoted, setPlayersWhoVoted] = useState<string[]>([]); //non è come il server, questo è un array e bona
 
   const { currentLobby, currentPlayer, setCurrentPlayer, setCurrentLobby } = useSession();
   const navigate = useNavigate();

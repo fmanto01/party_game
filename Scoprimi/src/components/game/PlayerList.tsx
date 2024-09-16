@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 interface PlayerListProps {
-  players: string[];
+  players: string[]
   images: { [key: string]: string };
   onVote: (player: string) => void;
   disabled: boolean;
@@ -31,7 +31,6 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, images, onVote, disabl
         <div
           key={player}
           className="player-image-card"
-
         >
           <div
             className="image-column"
@@ -49,7 +48,7 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, images, onVote, disabl
             <i
               className="check-mark fa-solid fa-check"
               style={{
-                display: disabled && playersWhoVoted.includes(player) ? 'block' : 'none', // Mostra la spunta verde per i giocatori che hanno votato
+                display: disabled && player in playersWhoVoted ? 'block' : 'none', // Mostra la spunta verde per i giocatori che hanno votato
               }}
             ></i>
           </div>
