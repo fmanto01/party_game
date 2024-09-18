@@ -35,7 +35,7 @@ Features:
 
 ## v0.7.0
 
-- [] Fare in modo di disegnare le immagini
-- [] Messaggi che il server invia durante la partita
-- [] Refactor del player sul backend
-- [] Controlli server-side per non rompere tutto
+- [ ] Fare in modo di disegnare le immagini
+- [ ] Messaggi che il server invia durante la partita
+- [ ] Refactor del player sul backend
+- [ ] Controlli server-side per non rompere tutto
