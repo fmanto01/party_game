@@ -3,6 +3,7 @@ import Home from './components/home/Home';
 import Lobby from './components/lobby/Lobby';
 import Game from './components/game/Game';
 import { SessionProvider } from './contexts/SessionContext';
+import { PopStateProvider } from './contexts/EventListener';
 import ProtectedRoute from './components/ProtectedRoutes';
 import ErrorPage from './components/ErrorPage';
 import FinalResults from './components/finalresults/FinalResults';
@@ -46,22 +47,24 @@ const App = () => {
 
   return (
     <SessionProvider>
-      {/* Questo era qua per github pages */}
-      {/* <Router basename="/party_game/"> */}
+
       <Router>
         <SocketListener />
-        <Routes>
-          <Route path="" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/lobby" element={<ProtectedRoute component={Lobby} />} />
-          <Route path="/game" element={<ProtectedRoute component={Game} />} />
-          <Route path="/final-results" element={<FinalResults />} />
-          <Route path="/join/:lobbyCode" element={<JoinLobbyWithShare />} />
-          <Route path="/error" element={<ErrorPage />} />
-          <Route path="*" element={<Page404 />} />
-        </Routes>
+        <PopStateProvider>
+          <Routes>
+            <Route path="" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/lobby" element={<ProtectedRoute component={Lobby} />} />
+            <Route path="/game" element={<ProtectedRoute component={Game} />} />
+            <Route path="/final-results" element={<FinalResults />} />
+            <Route path="/join/:lobbyCode" element={<JoinLobbyWithShare />} />
+            <Route path="/error" element={<ErrorPage />} />
+            <Route path="*" element={<Page404 />} />
+          </Routes>
+        </PopStateProvider>
       </Router>
-    </SessionProvider>
+
+    </SessionProvider >
   );
 };
 

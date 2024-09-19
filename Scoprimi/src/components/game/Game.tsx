@@ -92,19 +92,6 @@ const Game: React.FC = () => {
     };
   }, [currentLobby, currentPlayer, setCurrentPlayer, navigate, setCurrentLobby]);
 
-  useEffect(() => {
-    const handlePopState = () => {
-      // socket.emit(c.EXIT_LOBBY, { currentPlayer, currentLobby });
-      socket.emit('mydisconnet');
-      navigate('/');
-    };
-    window.addEventListener('popstate', handlePopState);
-
-    return () => {
-      window.removeEventListener('popstate', handlePopState);
-    };
-  }, [navigate]);
-
 
   const handleVote = (player: string) => {
     if (clicked) {

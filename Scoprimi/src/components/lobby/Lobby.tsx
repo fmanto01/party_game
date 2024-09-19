@@ -23,20 +23,6 @@ const Lobby: React.FC = () => {
   const [showAlert, setShowAlert] = useState<boolean>(false);
 
   useEffect(() => {
-    const handlePopState = (event: PopStateEvent) => {
-      console.log('Back button clicked', event);
-      socket.emit(c.EXIT_LOBBY, { currentPlayer, currentLobby });
-      setCurrentLobby(undefined);
-      navigate('/');
-    };
-    window.addEventListener('popstate', handlePopState);
-
-    return () => {
-      window.removeEventListener('popstate', handlePopState);
-    };
-  }, [currentLobby, currentPlayer, navigate, setCurrentLobby]);
-
-  useEffect(() => {
     document.title = `Lobby - ${currentLobby}`;
     socket.emit(c.REQUEST_RENDER_LOBBY, currentLobby, (data: Game) => {
       console.log('Received data:', data);
