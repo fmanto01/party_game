@@ -9,7 +9,7 @@ const PopStateContext = createContext<void>(undefined);
 export const useOnPopStateContext = () => {
   const context = useContext(PopStateContext);
   if (context === undefined) {
-    throw new Error('useOnPopStateContext must be used within a PageProvider');
+    throw new Error('PopStateContext must be used within a PopStateProvider');
   }
   return context;
 };
