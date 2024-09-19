@@ -86,12 +86,11 @@ export function setupSocket(io: any) {
     socket.on(c.DISCONNECT, () => mydisconnet(socket, io));
 
     socket.on(c.TEST_LOBBY, (data: { lobbyCode: string }, callback: (arg0: boolean) => void) => {
-
       const game = actualGameManager.getGame(data.lobbyCode);
-      if (game && game.isGameStarted)
-        callback(false);
-
-      callback(true);
+      if (game && !game.isGameStarted) {
+        callback(true);
+      }
+      callback(false);
     });
 
     socket.on(c.CREATE_LOBBY, ([code, numQuestionsParam]: [string, number]) => {
