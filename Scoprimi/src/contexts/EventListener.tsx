@@ -37,16 +37,21 @@ export const PopStateProvider: React.FC<React.PropsWithChildren> = ({ children }
 
   useEffect(() => {
     // Definizione dell'handler per il popstate
+    // TODO trova un modo per fixare questa merda
+    // e` una completa merda, stakka funzioni allinfinito una sopra
+    // allaltra di handlepopstate
     const handlePopState = () => {
-      if (currentPage === 'lobby') {
-        console.log('@LOBBY');
-        socket.emit('exitLobby', { currentPlayer, currentLobby });
-        setCurrentLobby(undefined);
-        navigate('/', { replace: true });
-      } else if (currentPage === 'game') {
-        console.log('@GAME');
-        socket.emit('mydisconnet');
-        navigate('/', { replace: true });
+      if (currentLobby !== undefined && currentPlayer !== undefined) {
+        if (currentPage === 'lobby') {
+          console.log('@LOBBY');
+          socket.emit('exitLobby', { currentPlayer, currentLobby });
+          setCurrentLobby(undefined);
+          navigate('/', { replace: true });
+        } else if (currentPage === 'game') {
+          console.log('@GAME');
+          socket.emit('mydisconnet');
+          navigate('/', { replace: true });
+        }
       }
     };
 

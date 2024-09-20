@@ -49,14 +49,14 @@ function mydisconnet(socket, io) {
       io.to(lobbyCode).emit(c.RENDER_LOBBY, game);
       socket.leave(lobbyCode);
 
-      // Se la lobby è vuota, la elimino
-      if (game.players.length === 0) {
-        console.log(`Deleting empty lobby ${lobbyCode}`);
-        actualGameManager.deleteGame(lobbyCode);
-        const lobbies = actualGameManager.listGames();
-        io.emit(c.RENDER_LOBBIES, { lobbies });
-        break;
-      }
+      // // Se la lobby è vuota, la elimino
+      // if (game.players.length === 0) {
+      //   console.log(`Deleting empty lobby ${lobbyCode}`);
+      //   actualGameManager.deleteGame(lobbyCode);
+      //   const lobbies = actualGameManager.listGames();
+      //   io.emit(c.RENDER_LOBBIES, { lobbies });
+      //   break;
+      // }
 
       // TODO fix veloce per quando un player si disconnette
       if (game.didAllPlayersVote()) {
